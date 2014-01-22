@@ -15,9 +15,10 @@
 * 打开 网络和共享中心 - 更改适配器设置 选择 本地连接 或 宽带连接（取决于实际使用的网络适配器）
     * 右击 属性 - Internet协议版本4(IPv4) - 属性 - 勾选 “使用下面的DNS服务器地址”
     * **在 首选DNS服务器 内填入 127.0.0.1 确定保存并退出即可**
-    * 如果需要使用IPv6协议的本地服务器，请先编辑 Config.ini 的 IPv6 DNS Address 一栏，参见下文 [Config.ini 详细参数说明](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe#configini-%E8%AF%A6%E7%BB%86%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E) 一节
-    * 右击 属性 - Internet协议版本6(IPv6) - 属性 - 勾选 “使用下面的DNS服务器地址”
-    * 在 首选DNS服务器 内填入 ::1 确定保存并退出即可
+    * 如果需要使用IPv6协议的本地服务器
+        * 请先编辑 Config.ini 的 IPv6 DNS Address 一栏，参见下文 [Config.ini 详细参数说明](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe#configini-%E8%AF%A6%E7%BB%86%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E) 一节
+        * 右击 属性 - Internet协议版本6(IPv6) - 属性 - 勾选 “使用下面的DNS服务器地址”
+        * 在 首选DNS服务器 内填入 ::1 确定保存并退出即可
 
 ### 卸载方法（**需要以管理员身份进行**）
 * 运行 ServiceUninstall.bat 即可，批处理将直接停止服务并卸载服务
