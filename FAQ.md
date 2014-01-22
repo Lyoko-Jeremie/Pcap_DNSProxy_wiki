@@ -3,13 +3,13 @@
 ### 运行结果分析
 * 正常的运行结果应类似：
     >nslookup www.google.com<br />
-    服务器:  pcap_dnsproxy.localhost.server（注意：此处由 Config.ini 设置的值确定，参见下文 Config.ini 详细参数说明）<br />
+    服务器:  pcap_dnsproxy.localhost.server（注意：此处由 Config.ini 设置的值确定，参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 [Config.ini 详细参数说明](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe#configini-%E8%AF%A6%E7%BB%86%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E)）<br />
     Address:  127.0.0.1（IPv4，IPv6下为 ::1 ）<br /><br />
     非权威应答:<br />
     &nbsp;&nbsp;&nbsp;&nbsp;名称:    www.google.com<br />
     &nbsp;&nbsp;&nbsp;&nbsp;Addresses: ……（IP地址或地址列表）<br />
 
-* **如果瞬间出现以下结果，则说明服务没有运行成功或者设置出错，请检查是否有错误报告生成，或请移步 ReadMe 文档中 安装方法 一节**
+* **如果瞬间出现以下结果，则说明服务没有运行成功或者设置出错，请检查是否有错误报告生成，或请移步 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 [安装方法](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe#%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95%E9%9C%80%E8%A6%81%E4%BB%A5%E7%AE%A1%E7%90%86%E5%91%98%E8%BA%AB%E4%BB%BD%E8%BF%9B%E8%A1%8C) 一节**
 
     >nslookup www.google.com<br />
     服务器:  UnKnown<br />
@@ -18,11 +18,11 @@
 	
 * **如果出现以下结果，则说明服务已经运行成功但远程DNS服务器没有回应，请检查是否有错误报告生成**
     * 请务必设置一个正确的、有效的、可以使用的境外DNS服务器
-    * **出现这种情况可能为网络问题。部分地区ISP/运营商对UDP协议转发丢包率比较高，可尝试切换到TCP协议模式（参见 ReadMe 文档中 “Config.ini 详细参数说明” 一节中 “Base - 基本区域” 的 Operation Mode 一节）**
-    * 也可能是因为长时间运行有错误累积造成，项目组正努力解决。可尝试重启服务（参见 ReadMe 文档中 “注意事项” 一节中的 重启服务）
+    * **出现这种情况可能为网络问题。部分地区ISP/运营商对UDP协议转发丢包率比较高，可尝试切换到TCP协议模式（参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 [Config.ini 详细参数说明](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe#configini-%E8%AF%A6%E7%BB%86%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E) 一节中 “Base - 基本区域” 的 Operation Mode 一节）**
+    * 也可能是因为长时间运行有错误累积造成，项目组正努力解决。可尝试重启服务（参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 [注意事项](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9) 一节中的 重启服务）
 
     >nslookup www.google.com<br />
-    服务器:  pcap_dnsproxy.localhost.server（注意：此处由 Config.ini 设置的值确定，参见下文 Config.ini 详细参数说明）<br />
+    服务器:  pcap_dnsproxy.localhost.server（注意：此处由 Config.ini 设置的值确定，参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 [Config.ini 详细参数说明](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe#configini-%E8%AF%A6%E7%BB%86%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E)）<br />
     Address:  127.0.0.1（IPv4，IPv6下为 ::1 ）<br /><br />
     DNS request timed out.<br />
     &nbsp;&nbsp;&nbsp;&nbsp;timeout was 2 seconds.<br />
@@ -32,11 +32,11 @@
     &nbsp;&nbsp;&nbsp;&nbsp;timeout was 2 seconds.<br />
     DNS request timed out.<br />
     &nbsp;&nbsp;&nbsp;&nbsp;timeout was 2 seconds.<br />
-    *** 请求 pcap_dnsproxy.localhost.server 超时（注意：此处由 Config.ini 设置的值确定，参见下文 Config.ini 详细参数说明）<br />
+    *** 请求 pcap_dnsproxy.localhost.server 超时（注意：此处由 Config.ini 设置的值确定，参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 [Config.ini 详细参数说明](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe#configini-%E8%AF%A6%E7%BB%86%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E)）<br />
 
 -----
 
-当程序运行时发生错误，可能会生成错误报告也就是 Error.log 文件，**其位于工具服务注册的目录内**，对解决问题至关重要
+当程序运行时发生错误，可能会生成错误报告也就是 Error.log 文件，**其位于工具服务注册的目录内**，对解决问题至关重要<br />
 错误报告的格式为 **日期 时间 -> 错误类型: 详细错误信息(行数, 错误代码)**（括号为可能出现内容）
 * 行数为 Config.ini 或 Hosts.ini 文件内出错内容的行数
 * 错误代码为系统/Winsock/WinPcap API 提供的出错代码，详细情况参见下文 Error.log 详细错误报告
@@ -48,7 +48,7 @@
     * Memory allocation failed - 内存申请失败，说明内存严重不足：可能为其它程序耗尽内存所致，或者您可能需要更新硬件设备
     * Service start failed(It's probably a Firewall Test, please restart service and check once again) - 服务启动失败：您可能未在系统注册服务，或在系统内注册的服务路径不正确
         * **注意：初次运行程序时进行的Windows防火墙测试也可能会产生此错误，服务成功启动后将自己删除**
-        * 详细情况参见 ReadMe 文档
+        * 详细情况参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 [安装方法](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe#%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95%E9%9C%80%E8%A6%81%E4%BB%A5%E7%AE%A1%E7%90%86%E5%91%98%E8%BA%AB%E4%BB%BD%E8%BF%9B%E8%A1%8C) 一节
 	* 其它错误代码原因参见 http://msdn.microsoft.com/en-us/library/windows/desktop/ms686324(v=vs.85).aspx
  
 * **Parameter Error - 读取 Config.ini 参数错误**
