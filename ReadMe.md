@@ -15,7 +15,7 @@
 * 打开 网络和共享中心 - 更改适配器设置 选择 本地连接 或 宽带连接（取决于实际使用的网络适配器）
     * 右击 属性 - Internet协议版本4(IPv4) - 属性 - 勾选 “使用下面的DNS服务器地址”
     * **在 首选DNS服务器 内填入 127.0.0.1 确定保存并退出即可**
-    * 如果需要使用IPv6协议的本地服务器，请先编辑 Config.ini 的 IPv6 DNS Address 一栏，参见下文 Config.ini 详细参数说明 一节
+    * 如果需要使用IPv6协议的本地服务器，请先编辑 Config.ini 的 IPv6 DNS Address 一栏，参见下文 [Config.ini 详细参数说明](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe#configini-%E8%AF%A6%E7%BB%86%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E) 一节
     * 右击 属性 - Internet协议版本6(IPv6) - 属性 - 勾选 “使用下面的DNS服务器地址”
     * 在 首选DNS服务器 内填入 ::1 确定保存并退出即可
 
@@ -40,13 +40,13 @@
     &nbsp;&nbsp;&nbsp;&nbsp;名称:    www.google.com<br />
     &nbsp;&nbsp;&nbsp;&nbsp;Addresses: ……（IP地址或地址列表）
 
-* 如非以上结果，请移步 FAQ 文档中 运行结果分析 一节
+* 如非以上结果，请移步 [FAQ 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/FAQ) 中 [运行结果分析](https://github.com/chengr28/pcap_dnsproxy/wiki/FAQ#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C%E5%88%86%E6%9E%90) 一节
 
 ### 注意事项
 * 请务必设置一个正确的、有效的、可以正常使用的**境外**DNS服务器！
 * 配置文件和错误报告所在的目录以上文 安装方法 一节中第4步注册的服务信息为准
 * 服务启动前请先**确认没有其它本地DNS服务器运行或本工具多个拷贝在运行中**，否则可能会导致监听冲突无法正常工作
-    * 监听冲突会生成错误报告，可留意 Windows socket 相关的错误（参见 FAQ 文档 Error.log 详细错误报告 一节）
+    * 监听冲突会生成错误报告，可留意 Windows socket 相关的错误（参见 [FAQ 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/FAQ) 中 [Error.log 详细错误报告](https://github.com/chengr28/pcap_dnsproxy/wiki/FAQ#errorlog-%E8%AF%A6%E7%BB%86%E9%94%99%E8%AF%AF%E6%8A%A5%E5%91%8A%E9%94%99%E8%AF%AF%E6%8A%A5%E5%91%8A%E4%B8%80%E5%85%B1%E6%9C%895%E5%A4%A7%E7%B1%BB%E5%9E%8B) 一节）
 * 杀毒软件/第三方防火墙可能会阻止本程序的操作，请将行为全部允许或将本程序加入到白名单中
 * 文件夹内批处理的作用（运行结束会有运行结果，可留意屏幕上的提示）：
     * ServiceInstall - 将程序注册系统服务，并初次启动程序进行Windows防火墙测试
@@ -70,13 +70,13 @@
 
 ### Config.ini 详细参数说明
 有效参数格式为 **选项名称 = 数值/数据**（注意空格和等号的位置）<br />
-**注意：Config.ini 只会在工具服务开始时读取，修改本文件的参数后请重启服务（参见上文 注意事项 一节中的 重启服务）**
+**注意：Config.ini 只会在工具服务开始时读取，修改本文件的参数后请重启服务（参见上文 [注意事项](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9) 一节中的 重启服务）**
 
 * Base - 基本区域
     * Print Error - 错误报告功能：开启为1/关闭为0，默认为1
     * Hosts - Hosts.ini 文件刷新间隔时间：单位为秒，最短间隔时间为5秒，默认为10秒
-    * IPv4 DNS Address - IPv4的DNS服务器地址：只能输入一个地址，默认为 8.8.4.4(Google Public DNS No.2)
-    * IPv6 DNS Address - IPv4的DNS服务器地址：只能输入一个地址，默认为空
+    * **IPv4 DNS Address - IPv4的DNS服务器地址：只能输入一个地址，默认为 8.8.4.4(Google Public DNS No.2)**
+    * IPv6 DNS Address - IPv4的DNS服务器地址：**只能输入一个地址**，默认为空
     * Operation Mode - 程序的工作模式，分 Server/服务器模式 和 Proxy/代理模式：默认为 Server
         * Server/服务器模式：打开DNS通用端口（TCP/UDP同时打开）可为其它设备提供代理域名解析请求服务
         * Proxy/代理模式：只打开回环地址的DNS端口（TCP/UDP同时打开），只能为本机提供代理域名解析请求服务
