@@ -54,6 +54,7 @@
 * **Parameter Error - 读取 Config.ini 参数错误**
     * Cannot open configuration file(Config.ini) - 无法打开 Config.ini 文件：请确认文件是否存在
     * Parameter data of a line is too long - Config.ini 文件一行数据超过2048字节/2KB：请确认文件的内容是否符合要求
+    * Configuration file version error - 配置文件版本错误：请确认配置文件是否需要更新
     * DNS server IPv4 Address format error - IPv4的DNS服务器地址格式错误（可根据报告的行数查找）：请确认IPv4的DNS服务器地址
     * DNS server IPv4 Address convert failed - IPv4的DNS服务器地址转换错误（可根据报告的行数查找）：请确认IPv4的DNS服务器地址
     * DNS server IPv6 Address format error - IPv6的DNS服务器地址格式错误（可根据报告的行数查找）：请确认IPv6的DNS服务器地址
@@ -68,6 +69,7 @@
 * **Hosts Error - 读取 Hosts 错误**
     * Cannot open hosts file(Hosts.ini) - 无法打开 Hosts.ini 文件：请确认文件是否存在
     * Hosts data of a line is too long - Hosts.ini 文件一行数据超过2048字节/2KB：请确认文件的内容是否符合要求
+    * Hosts file version error - Hosts文件版本错误：请确认Hosts文件是否需要更新
     * Too many Hosts IP addresses - 过多的平行地址条目（可根据报告的行数查找）：请删除过多的平行地址数据，解析结果容量有限
     * **Multiple addresses format error - 错误的平行地址条目格式（可根据报告的行数查找）：参见 ReadMe 文档**
     * **Hosts IPv4 address format error - Hosts的IPv4地址格式错误（可根据报告的行数查找）：请确认地址的正确性**
@@ -77,8 +79,8 @@
     * **Regular expression pattern error - 错误的正则表达式（可根据报告的行数查找）：请确认正则表达式的正确性**
 
 * **Winsock Error - Windows socket 错误**
-    * Windows Firewall Test failed - Windows防火墙测试失败：请确认是否为管理员身份运行批处理
     * Winsock initialization failed - Winsock初始化失败：请确认使用的操作系统平台是否受支持
+    * Windows Firewall Test failed - Windows防火墙测试失败：请确认是否为管理员身份运行批处理
     * UDP Monitor socket initialization failed - UDP本地套接字初始化失败：原因参见错误代码
     * **Bind UDP Monitor socket error - UDP本地套接字绑定失败：可能是因为本地已经存在DNS服务器或者多重运行了本工具，具体原因参见错误代码**
     * TCP Monitor socket initialization failed - TCP本地套接字初始化失败：原因参见错误代码
