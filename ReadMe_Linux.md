@@ -36,14 +36,14 @@
     * **附带的脚本适用于 Linux Debian 6.0 官方发行版以及更新版本系统环境，测试通过可以直接使用**<br />
     * Linux Debian 系列：官方发行版 6.0 以上版本使用 insserv 管理系统服务，6.0 以下版本需要使用 update-rc.d 管理系统服务，参见 https://wiki.debian.org/Daemon
     * Linux Red Hat 和 openSUSE 系列：使用 chkconfig 管理系统服务，参见 https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/s2-services-chkconfig.html
-    * 如果需要自己编写服务启动脚本，请注意 Pcap_DNSProxy(Linux) 服务需要在以下模块初始化之后才能正常使用，建议尽量将优先级降低，否则将生成错误报告并直接退出：
+    * 如果需要自己编写服务启动脚本，请注意 Pcap_DNSProxy(Linux) 服务需要在以下模块初始化之后才能正常使用，**建议尽量将优先级降低**，否则将生成错误报告并直接退出：
         * 需要在挂载所有文件系统后
         * 需要初始化系统日志后
         * 需要在启动网络服务后
         * 需要在系统时间被设置后
         * 需要在本机名称被设置后
     * 直接使用脚本配置的步骤：
-        * 首先需要编辑 PcapDNSProxyService 脚本，其中 NAME 项为程序的名称，PATH 项为程序的路径
+        * **首先需要编辑 PcapDNSProxyService 脚本，其中 NAME 项为程序的名称，PATH 项为程序的路径**
         * 使用 su/sudo 命令获得 root 权限，进入 Pcap_DNSProxy 目录
         * 使用 "ln -s PcapDNSProxyService /etc/init.d"（不含引号，注意空格）在系统启动服务目录创建脚本的软链接
         * 将终端切换到 /etc/init.d 目录下，使用 insserv PcapDNSProxyService 注册服务
@@ -63,12 +63,12 @@
             * 使用 su/sudo 命令获得 root 权限，进入 /etc/dhcp 或 /etc/dhcp3 目录（看具体哪个目录存在 dhclient.conf 文件）
             * 直接修改 dhclient.conf 文件，修改或添加 prepend domain-name-servers 一项即可
             * 如果 prepend domain-name-servers 一项被 # 注释则需要把注释去掉以使配置生效，不需要添加新的条目
-            * dhclient.conf 文件可能存在多个 prepend domain-name-servers 项，是各个网络接口的配置项目，直接修改总的配置项目即可
+            * **dhclient.conf 文件可能存在多个 prepend domain-name-servers 项，是各个网络接口的配置项目，直接修改总的配置项目即可**<br />
             * 使用 service network(/networking) restart 或 ipdown/ipup 或 ifcondig stop/start 重启网络服务/网络端口
         * 非自动获取地址(DHCP)时：
             * 使用 su/sudo 命令获得 root 权限，进入 /etc 目录
             * 直接修改 resolv.conf 文件里的 nameserver 即可
-            * 如果重启后配置被覆盖，则需要修改或新建 /etc/resolvconf/resolv.conf.d 文件，内容和 resolv.conf 一样
+            * **如果重启后配置被覆盖，则需要修改或新建 /etc/resolvconf/resolv.conf.d 文件，内容和 resolv.conf 一样**
             * 使用 service network(/networking) restart 或 ipdown/ipup 或 ifcondig stop/start 重启网络服务/网络端口
 
 ### 卸载方法（**整个过程均需以 root 权限进行**）
