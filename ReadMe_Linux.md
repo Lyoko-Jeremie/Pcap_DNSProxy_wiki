@@ -8,9 +8,9 @@
     * **Pcap_DNSProxy(Linux) 依赖于 GCC(C++/g++，需要支持 C++ 11 标准的版本) 和 LibPcap 库**，编译前需要先安装依赖库
     * **LibPcap 库依赖于GCC库、bison库、m4库、flex库和 libpcap-dev 库**，可使用发行版自带包管理系统自动安装或手动前往官方网站下载编译安装
     * 编译安装 LibPcap 库，Release(_x86/_x64)分支内含 LibPcap 源代码的压缩包，安装过程：
-        * 使用 su/sudo 命令获得 root 权限，并使用 root 权限解压压缩包到任何位置，进入解压生成的文件夹
-        * 使用 ./configure 生成 Makefile，使用 make 编译 LibPcap 库，使用 make install 安装 LibPcap 库
-        * 使用 man pcap 确认 LibPcap 库安装成功。如果安装成功，应该会显示类似：<br />
+        * 使用 `su/sudo` 命令获得 root 权限，并使用 root 权限解压压缩包到任何位置，进入解压生成的文件夹
+        * 使用 `./configure` 生成 Makefile，使用 make 编译 LibPcap 库，使用 `make install` 安装 LibPcap 库
+        * 使用 `man pcap` 确认 LibPcap 库安装成功。如果安装成功，应该会显示类似：<br />
 <br />
             PCAP(3PCAP)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;               PCAP(3PCAP)<br />
             NAME<br />
@@ -24,8 +24,8 @@
 
 * **编译 Pcap_DNSProxy(Linux) 程序**<br />
     * 切勿更改源代码的编码(UTF-8/without BOM)和换行格式(UNIX/LF)
-    * 使用 su/sudo 命令获得 root 权限，解压 Pcap_DNSProxy(Linux) 源代码压缩包并进入 Pcap_DNSProxy 目录
-    * 直接使用 make 命令编译即可。Makefile 所进行的操作：
+    * 使用 `su/sudo` 命令获得 root 权限，解压 Pcap_DNSProxy(Linux) 源代码压缩包并进入 Pcap_DNSProxy 目录
+    * 直接使用 `make` 命令编译即可。Makefile 所进行的操作：
         * 为目标文件创建文件夹
         * 编译源代码并链接生成程序
         * 将 PcapDNSProxyService 脚本所有者更改为 root 同时赋予 777/rwxrwxrwx 权限
@@ -34,8 +34,8 @@
 * **配置 Pcap_DNSProxy(Linux) 服务**<br />
 **注意：由于不同的Linux发行版对系统服务和守护进程的处理方式不同，本部分仅供参考，更多详情可参见所使用Linux发行版的说明**<br />
     * **附带的脚本适用于 Linux Debian 6.0 官方发行版以及更新版本系统环境，测试通过可以直接使用**<br />
-    * Linux Debian 系列：官方发行版 6.0 以上版本使用 insserv 管理系统服务，6.0 以下版本需要使用 update-rc.d 管理系统服务，参见 https://wiki.debian.org/Daemon
-    * Linux Red Hat 和 openSUSE 系列：使用 chkconfig 管理系统服务，参见 https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/s2-services-chkconfig.html
+    * Linux Debian 系列：官方发行版 6.0 以上版本使用 `insserv` 管理系统服务，6.0 以下版本需要使用 `update-rc.d` 管理系统服务，参见 https://wiki.debian.org/Daemon
+    * Linux Red Hat 和 openSUSE 系列：使用 `chkconfig` 管理系统服务，参见 https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/s2-services-chkconfig.html
     * 如果需要自己编写服务启动脚本，请注意 Pcap_DNSProxy(Linux) 服务需要在以下模块初始化之后才能正常使用，**建议尽量将优先级降低**，否则将生成错误报告并直接退出：
         * 需要在挂载所有文件系统后
         * 需要初始化系统日志后
@@ -43,49 +43,53 @@
         * 需要在系统时间被设置后
         * 需要在本机名称被设置后
     * 直接使用脚本配置的步骤：
-        * **首先需要编辑 PcapDNSProxyService 脚本，其中 NAME 项为程序的名称，PATH 项为程序的路径**
-        * 使用 su/sudo 命令获得 root 权限，进入 Pcap_DNSProxy 目录
-        * 使用 "ln -s PcapDNSProxyService /etc/init.d"（不含引号，注意空格）在系统启动服务目录创建脚本的软链接
-        * 将终端切换到 /etc/init.d 目录下，使用 insserv PcapDNSProxyService 注册服务
-        * 运行 sh PcapDNSProxyService start 或直接使用 service PcapDNSProxyService start 启动 Pcap_DNSProxy(Linux) 服务
+        * **首先需要编辑 `PcapDNSProxyService` 脚本，其中 `NAME` 项为程序的名称，`PATH` 项为程序的路径**
+        * 使用 `su/sudo` 命令获得 root 权限，进入 Pcap_DNSProxy 目录
+        * 使用 `ln -s 脚本所在目录/PcapDNSProxyService /etc/init.d`（注意空格）在系统启动服务目录创建脚本的软链接
+        * 将终端切换到 `/etc/init.d` 目录下，使用 `insserv PcapDNSProxyService` 注册服务
+        * 运行 `sh PcapDNSProxyService start` 或直接使用 `service PcapDNSProxyService start` 启动 Pcap_DNSProxy(Linux) 服务
         * 以后每次系统启动都将自动运行脚本启动服务
-        * PcapDNSProxyService 脚本参数有 start/启动服务、stop/停止服务和 restart/重启服务，可直接输入 sh PcapDNSProxyService 不带参数查询用法
+        * 可直接输入 sh PcapDNSProxyService 不带参数查询用法
+            * `start` - 启动服务
+            * `stop` - 停止服务
+            * `force-reload/restart` - 重启服务
+            * `status` - 服务状态。如果PID为空则服务未启动
 
 * **配置系统DNS服务器设置**<br />
-    * 可参见 https://developers.google.com/speed/public-dns/docs/using 中 Changing your DNS servers settings 中 Linux 一节
+    * 可参见 https://developers.google.com/speed/public-dns/docs/using 中 `Changing your DNS servers settings` 中 `Linux` 一节
     * 图形界面以 GNOME 为例：
-        * 进入 系统设置 - 网络 或直接点击 网络 打开设置界面
-        * 选中需要设置的网络连接，打开 选项 - IPv4/IPv6设置
-        * 在 DNS服务器 填入 127.0.0.1(IPv4)/::1(IPv6) 保存即可
-        * 如果使用了DHCP自动获取网络信息，则需要将 方法 选为 自动(DHCP)仅地址(IPv4)/自动，仅地址(IPv6) 才能填入 DNS服务器
+        * 进入 `系统设置` - `网络` 或直接点击 `网络` 打开设置界面
+        * 选中需要设置的网络连接，打开 `选项` - `IPv4/IPv6设置`
+        * 在 DNS服务器 填入 `127.0.0.1(IPv4)/::1(IPv6)` 保存即可
+        * 如果使用了DHCP自动获取网络信息，则需要将 `方法` 选为 `自动(DHCP)仅地址(IPv4)/自动，仅地址(IPv6)` 才能填入 DNS服务器
     * 直接修改系统文件修改DNS服务器设置：
         * 自动获取地址(DHCP)时：
-            * 使用 su/sudo 命令获得 root 权限，进入 /etc/dhcp 或 /etc/dhcp3 目录（看具体哪个目录存在 dhclient.conf 文件）
-            * 直接修改 dhclient.conf 文件，修改或添加 prepend domain-name-servers 一项即可
-            * 如果 prepend domain-name-servers 一项被 # 注释则需要把注释去掉以使配置生效，不需要添加新的条目
-            * **dhclient.conf 文件可能存在多个 prepend domain-name-servers 项，是各个网络接口的配置项目，直接修改总的配置项目即可**<br />
-            * 使用 service network(/networking) restart 或 ipdown/ipup 或 ifcondig stop/start 重启网络服务/网络端口
+            * 使用 `su/sudo` 命令获得 root 权限，进入 `/etc/dhcp` 或 `/etc/dhcp3` 目录（看具体哪个目录存在 `dhclient.conf` 文件）
+            * 直接修改 `dhclient.conf` 文件，修改或添加 `prepend domain-name-servers` 一项即可
+            * 如果 `prepend domain-name-servers` 一项被 # 注释则需要把注释去掉以使配置生效，不需要添加新的条目
+            * **`dhclient.conf` 文件可能存在多个 `prepend domain-name-servers` 项，是各个网络接口的配置项目，直接修改总的配置项目即可**<br />
+            * 使用 `service network(/networking) restart` 或 `ipdown/ipup` 或 `ifcondig stop/start` 重启网络服务/网络端口
         * 非自动获取地址(DHCP)时：
-            * 使用 su/sudo 命令获得 root 权限，进入 /etc 目录
-            * 直接修改 resolv.conf 文件里的 nameserver 即可
-            * **如果重启后配置被覆盖，则需要修改或新建 /etc/resolvconf/resolv.conf.d 文件，内容和 resolv.conf 一样**
-            * 使用 service network(/networking) restart 或 ipdown/ipup 或 ifcondig stop/start 重启网络服务/网络端口
+            * 使用 `su/sudo` 命令获得 root 权限，进入 `/etc` 目录
+            * 直接修改 `resolv.conf` 文件里的 `nameserver` 即可
+            * **如果重启后配置被覆盖，则需要修改或新建 `/etc/resolvconf/resolv.conf.d` 文件，内容和 `resolv.conf` 一样**
+            * 使用 `service network(/networking) restart` 或 `ipdown/ipup` 或 `ifcondig stop/start` 重启网络服务/网络端口
 
 ### 卸载方法（**整个过程均需以 root 权限进行**）
 **注意：由于不同的Linux发行版对系统服务和守护进程的处理方式不同，本部分仅供参考，更多详情可参见所使用Linux发行版的说明**
 
 * 停止服务
-    * 使用 su/sudo 命令获得 root 权限，然后使用 service PcapDNSProxyService stop 停止服务
+    * 使用 `su/sudo` 命令获得 root 权限，然后使用 `service PcapDNSProxyService stop` 停止服务
 * 删除服务
-    * 切换到 /etc/init.d 目录，使用 insserv -r PcapDNSProxyService 删除服务
-    * 使用 rm PcapDNSProxyService 删除脚本的软链接
+    * 切换到 `/etc/init.d` 目录，使用 `insserv -r PcapDNSProxyService` 删除服务
+    * 使用 `rm PcapDNSProxyService` 删除脚本的软链接
 * 删除所有 Pcap_DNSProxy(Linux) 相关文件
 * 还原系统网络配置
     * 将所有修改过的文件恢复原状即可，参见 安装方法 一节
 
 ### 正常工作查看方法
 * 打开终端
-* 输入 dig www.google.com 并回车
+* 输入 `dig www.google.com` 并回车
 * 运行结果应类似：<br />
 <br />
     >dig www.google.com<br />
@@ -106,22 +110,21 @@
     ;; WHEN: ...<br />
     ;; MSG SIZE  rcvd: ...<br />
 <br />
-* 如非以上结果，请移步 Linux 版 FAQ 文档中 运行结果分析 一节
+* 如非以上结果，请移步 [[Linux 版 FAQ 文档|https://github.com/chengr28/pcap_dnsproxy/wiki/FAQ_Linux]]中 运行结果分析 一节
 
 ### 注意事项
 * 请务必设置一个正确的、有效的、可以正常使用的境外DNS服务器！
 * 配置文件和错误报告所在的目录以上文 安装方法 一节中第3步注册的服务信息为准，注意填写时一行不要超过2048字节/2KB
 * 服务启动前请先确认没有其它本地DNS服务器运行或本工具多个拷贝在运行中，否则可能会导致监听冲突无法正常工作
-    * 监听冲突会生成错误报告，可留意 Socket 相关的错误（参见 Linux 版 FAQ 文档 Error.log 详细错误报告 一节）
+    * 监听冲突会生成错误报告，可留意 Socket 相关的错误（参见 [[Linux 版 FAQ 文档|https://github.com/chengr28/pcap_dnsproxy/wiki/FAQ_Linux]]中 Error.log 详细错误报告 一节）
 * 杀毒软件/第三方防火墙可能会阻止本程序的操作，请将行为全部允许或将本程序加入到白名单中
-* 重启服务，以 root 权限使用 service PcapDNSProxyService restart 即可
 * 更新程序
     * 如非更新日志有需要更新配置文件/Hosts文件的提示，否则更新程序均仅需重新编译可执行程序
         * 如更新日志有需要更新配置文件/Hosts文件的提示，请将这2个文件内的运行参数/Hosts记录下来并填入新的配置文件/Hosts文件内
         * 注意切勿直接覆盖，否则可能会造成错误
     * 先停止服务，并将旧版本的 Source 目录和可执行文件删除
     * 将新版本的 Source 放入相同的位置，按照 安装方法 一节中 编译 Pcap_DNSProxy(Linux) 程序 重新编译可执行程序
-    * 以 root 权限使用 service PcapDNSProxyService start 启动服务即可
+    * 以 root 权限使用 `service PcapDNSProxyService start` 启动服务即可
 * 文件夹和程序的名称可以随意更改，但请务必在进行安装方法第3步前完成。如果服务注册后需移动工具文件夹的路径，则需要:
     * 停止服务
     * 移动工具文件夹
