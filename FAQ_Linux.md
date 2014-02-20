@@ -12,7 +12,6 @@
 <br />
     ;; QUESTION SECTION:<br />
     ;www.google.com.            IN    A<br />
-<br />
     ;; ANSWER SECTION:<br />
     ...<br />
 <br />
@@ -57,62 +56,62 @@
 <br />
 
 -----
-当程序运行时发生错误，可能会生成错误报告也就是 Error.log 文件，其位于工具服务注册的目录内，对解决问题至关重要
+当程序运行时发生错误，可能会生成错误报告也就是 `Error.log` 文件，其位于工具服务注册的目录内，对解决问题至关重要
 **错误报告的格式为 日期 时间 -> 错误类型: 详细错误信息(行数, 错误代码)**（括号为可能出现内容）
-* 行数为 Config.conf 或 Hosts.conf 文件内出错内容的行数
-* 错误代码为系统/Linux/LibPcap API 提供的出错代码，详细情况参见下文 Error.log 详细错误报告
+* 行数为 `Config.conf` 或 `Hosts.conf` 文件内出错内容的行数
+* 错误代码为系统/LibPcap API 提供的出错代码，详细情况参见下文 `Error.log` 详细错误报告
 * 由于程序重启时会自动删除之前生成的错误报告，所以如果有错误报告生成建议先备份再尝试重新启动工具服务
 
-### Error.log 详细错误报告，错误报告一共有5大类型：
+### `Error.log` 详细错误报告，错误报告一共有5大类型：
 
-* **System Error - 系统错误**<br />
-    * Memory allocation failed - 内存申请失败，说明内存严重不足：可能为其它程序耗尽内存所致，或者您可能需要更新硬件设备
-    * Set system daemon failed - 服务启动失败：可能由于系统平台不支持守护进程所致
+* **`System Error` - 系统错误**<br />
+    * `Memory allocation failed` - 内存申请失败，说明内存严重不足：可能为其它程序耗尽内存所致，或者您可能需要更新硬件设备
+    * `Set system daemon failed` - 服务启动失败：可能由于系统平台不支持守护进程所致
  
-* **Parameter Error - 读取 Config.conf 参数错误**<br />
-    * Cannot open configuration file(Config.conf) - 无法打开 Config.conf 文件：请确认文件是否存在
-    * Parameter data of a line is too long - Config.conf 文件一行数据超过2048字节/2KB：请确认文件的内容是否符合要求
-    * Configuration file version error - 配置文件版本错误：请确认配置文件是否需要更新。注意，Windows版的配置文件和Linux版的配置文件不通用！
-    * DNS server IPv4 Address format error - IPv4的DNS服务器地址格式错误（可根据报告的行数查找）：请确认IPv4的DNS服务器地址
-    * DNS server IPv4 Address convert failed - IPv4的DNS服务器地址转换错误（可根据报告的行数查找）：请确认IPv4的DNS服务器地址
-    * DNS server IPv6 Address format error - IPv6的DNS服务器地址格式错误（可根据报告的行数查找）：请确认IPv6的DNS服务器地址
-    * DNS server IPv6 Address convert failed - IPv6的DNS服务器地址转换错误（可根据报告的行数查找）：请确认IPv6的DNS服务器地址
-    * The ICMP padding data is too long - Config.ini 内提供的ICMP附加数据过长（可根据报告的行数查找）：请缩短ICMP附加数据的长度。ICMP附加数据长度介乎于18字节-64字节ASCII之间
+* **`Parameter Error` - 读取 `Config.conf` 参数错误**<br />
+    * `Cannot open configuration file(Config.conf)` - 无法打开 Config.conf 文件：请确认文件是否存在
+    * `Parameter data of a line is too long - Config.conf` 文件一行数据超过2048字节/2KB：请确认文件的内容是否符合要求
+    * `Configuration file version error` - 配置文件版本错误：请确认配置文件是否需要更新。**注意，Windows版的配置文件和Linux版的配置文件不通用！**
+    * `DNS server IPv4 Address format error` - IPv4的DNS服务器地址格式错误（可根据报告的行数查找）：请确认IPv4的DNS服务器地址
+    * `DNS server IPv4 Address convert failed` - IPv4的DNS服务器地址转换错误（可根据报告的行数查找）：请确认IPv4的DNS服务器地址
+    * `DNS server IPv6 Address format error` - IPv6的DNS服务器地址格式错误（可根据报告的行数查找）：请确认IPv6的DNS服务器地址
+    * `DNS server IPv6 Address convert failed` - IPv6的DNS服务器地址转换错误（可根据报告的行数查找）：请确认IPv6的DNS服务器地址
+    * `The ICMP padding data is too long - Config.ini` 内提供的ICMP附加数据过长（可根据报告的行数查找）：请缩短ICMP附加数据的长度。ICMP附加数据长度介乎于18字节-64字节ASCII之间
         * 如果ICMP附加数据的长度小于18字节，则会默认载入使用 Linux Dig 程序的ICMP附加数据
-    * Localhost server name format error - 本地服务器名称错误（可根据报告的行数查找）：含有非法域名字符
+    * `Localhost server name format error` - 本地服务器名称错误（可根据报告的行数查找）：含有非法域名字符
         * 规则参见 https://en.wikipedia.org/wiki/Internationalized_domain_name
-    * Base rule(s) error - 基本规则错误：可能因为 Config.ini 里同时不存在合法的IPv4/IPv6的DNS服务器地址，或者在TCP模式下开启了TCP头选项的检测
-        * **TCP头选项检测问题参见 ReadMe 文档中 “Config.ini 详细参数信息” 中 “Extend Test - 扩展检测区域” 中对 TCP Options Filter 选项的介绍**<br />
+    * `Base rule(s) error` - 基本规则错误：可能因为 Config.ini 里同时不存在合法的IPv4/IPv6的DNS服务器地址，或者在TCP模式下开启了TCP头选项的检测
+        * **TCP头选项检测问题参见 ReadMe 文档中 “Config.ini 详细参数信息” 中 “`Extend Test` - 扩展检测区域” 中对 TCP Options Filter 选项的介绍**<br />
 
-* **Hosts Error - 读取 Hosts 错误**<br />
-    * Cannot open hosts file(Hosts.conf) - 无法打开 Hosts.conf 文件：请确认文件是否存在
-    * Hosts data of a line is too long - Hosts.conf 文件一行数据超过2048字节/2KB：请确认文件的内容是否符合要求
-    * Hosts file version error - Hosts文件版本错误：请确认Hosts文件是否需要更新。注意，Windows版的配置文件和Linux版的配置文件不通用！
-    * Too many Hosts IP addresses - 过多的平行地址条目（可根据报告的行数查找）：请删除过多的平行地址数据，解析结果容量有限
-    * **Multiple addresses format error - 错误的平行地址条目格式（可根据报告的行数查找）：参见 ReadMe 文档**<br />
-    * **Hosts IPv4 address format error - Hosts的IPv4地址格式错误（可根据报告的行数查找）：请确认地址的正确性**<br />
-    * Hosts IPv4 address convert failed - Hosts的IPv4地址转换错误（可根据报告的行数查找）：请确认地址的正确性
-    * Hosts IPv6 address format error - Hosts的IPv6地址格式错误（可根据报告的行数查找）：请确认地址的正确性
-    * Hosts IPv6 address convert failed - Hosts的IPv6地址转换错误（可根据报告的行数查找）：请确认地址的正确性
-    * **Regular expression pattern error - 错误的正则表达式（可根据报告的行数查找）：请确认正则表达式的正确性**<br />
+* **`Hosts Error` - 读取 Hosts 错误**<br />
+    * `Cannot open hosts file(Hosts.conf)` - 无法打开 `Hosts.conf` 文件：请确认文件是否存在
+    * `Hosts data of a line is too long` - Hosts.conf 文件一行数据超过2048字节/2KB：请确认文件的内容是否符合要求
+    * `Hosts file version error` - Hosts文件版本错误：请确认Hosts文件是否需要更新。注意，Windows版的配置文件和Linux版的配置文件不通用！
+    * `Too many Hosts IP addresses` - 过多的平行地址条目（可根据报告的行数查找）：请删除过多的平行地址数据，解析结果容量有限
+    * **`Multiple addresses format error` - 错误的平行地址条目格式（可根据报告的行数查找）：参见 ReadMe 文档**<br />
+    * **`Hosts IPv4 address format error` - Hosts的IPv4地址格式错误（可根据报告的行数查找）：请确认地址的正确性**<br />
+    * `Hosts IPv4 address convert failed` - Hosts的IPv4地址转换错误（可根据报告的行数查找）：请确认地址的正确性
+    * `Hosts IPv6 address format error` - Hosts的IPv6地址格式错误（可根据报告的行数查找）：请确认地址的正确性
+    * `Hosts IPv6 address convert failed` - Hosts的IPv6地址转换错误（可根据报告的行数查找）：请确认地址的正确性
+    * **`Regular expression pattern error` - 错误的正则表达式（可根据报告的行数查找）：请确认正则表达式的正确性**<br />
 
-* **Socket Error - Socket 错误**<br />
-    * UDP Monitor socket initialization failed - UDP本地套接字初始化失败：原因参见错误代码
-    * **Bind UDP Monitor socket error - UDP本地套接字绑定失败：可能是因为本地已经存在DNS服务器或者多重运行了本工具，具体原因参见错误代码**<br />
-    * TCP Monitor socket initialization failed - TCP本地套接字初始化失败：原因参见错误代码
-    * **Bind TCP Monitor socket error - TCP本地套接字绑定失败：可能是因为本地已经存在DNS服务器或者多重运行了本工具，具体原因参见错误代码**<br />
-    * TCP Monitor socket listening initialization failed - TCP本地套接字监听失败：原因参见错误代码
-    * Get localhost address(es) failed - 获取本地计算机所有地址失败：没有任何生效的网络适配器，可能是硬件或者驱动程序的问题
-    * Local IPv4 Address format error - 本地计算机IPv4地址格式错误：原因参见错误代码
-    * Local IPv6 Address format error - 本地计算机IPv6地址格式错误：原因参见错误代码
-    * ICMP Echo(Ping) request error - ICMP/Ping 请求错误：可能为网络错误，具体原因可参见错误代码
-    * ICMPv6 Echo(Ping) request error - ICMPv6/Ping 请求错误：可能为网络错误，具体原因可参见错误代码
-    * UDP request initialization failed - UDP请求套接字初始化失败：原因参见错误代码
-    * UDP request error - UDP请求发送失败：可能为网络错误，具体原因可参见错误代码
-    * TCP request initialization failed - TCP请求套接字初始化失败：原因参见错误代码
-    * Socket 错误代码具体含义可使用 man errno 查询
+* **`Socket Error` - Socket 错误**<br />
+    * `UDP Monitor socket initialization failed` - UDP本地套接字初始化失败：原因参见错误代码
+    * **`Bind UDP Monitor socket error` - UDP本地套接字绑定失败：可能是因为本地已经存在DNS服务器或者多重运行了本工具，具体原因参见错误代码**<br />
+    * `TCP Monitor socket initialization failed` - TCP本地套接字初始化失败：原因参见错误代码
+    * **`Bind TCP Monitor socket error` - TCP本地套接字绑定失败：可能是因为本地已经存在DNS服务器或者多重运行了本工具，具体原因参见错误代码**<br />
+    * `TCP Monitor socket listening initialization failed` - TCP本地套接字监听失败：原因参见错误代码
+    * `Get localhost address(es) failed` - 获取本地计算机所有地址失败：没有任何生效的网络适配器，可能是硬件或者驱动程序的问题
+    * `Local IPv4 Address format error` - 本地计算机IPv4地址格式错误：原因参见错误代码
+    * `Local IPv6 Address format error` - 本地计算机IPv6地址格式错误：原因参见错误代码
+    * `ICMP Echo(Ping) request error` - ICMP/Ping 请求错误：可能为网络错误，具体原因可参见错误代码
+    * `ICMPv6 Echo(Ping) request error` - ICMPv6/Ping 请求错误：可能为网络错误，具体原因可参见错误代码
+    * `UDP request initialization failed` - UDP请求套接字初始化失败：原因参见错误代码
+    * `UDP request error` - UDP请求发送失败：可能为网络错误，具体原因可参见错误代码
+    * `TCP request initialization failed` - TCP请求套接字初始化失败：原因参见错误代码
+    * Socket 错误代码具体含义可使用 `man errno` 查询
 
-* **LibPcap Error - WinPcap 错误**<br />
-    * EOF was reached reading from an offline capture in XXX - 名称为 XXX 的网络适配器已经离线或不可用
+* **`LibPcap Error` - WinPcap 错误**<br />
+    * `EOF was reached reading from an offline capture in XXX` - 名称为 XXX 的网络适配器已经离线或不可用
     * **本类型错误会直接将LibPcap的错误信息直接打印至错误报告****<br />
     * LibPcap错误信息的具体含义可参考WinPcap的说明文档 http://www.winpcap.org/docs/docs_40_2/html/group__wpcapfunc.html
