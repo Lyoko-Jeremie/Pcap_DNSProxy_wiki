@@ -77,7 +77,7 @@
     * `DNS server IPv6 Address format error` - IPv6的DNS服务器地址格式错误（可根据报告的行数查找）：请确认IPv6的DNS服务器地址
     * `DNS server IPv6 Address convert failed` - IPv6的DNS服务器地址转换错误（可根据报告的行数查找）：请确认IPv6的DNS服务器地址
     * `The ICMP padding data is too long - Config.ini` 内提供的ICMP附加数据过长（可根据报告的行数查找）：请缩短ICMP附加数据的长度。ICMP附加数据长度介乎于18字节-64字节ASCII之间
-        * 如果ICMP附加数据的长度小于18字节，则会默认载入使用 Linux Dig 程序的ICMP附加数据
+        * 如果ICMP附加数据的长度小于18字节，则会默认载入使用 `Linux Dig` 程序的ICMP附加数据
     * `Localhost server name format error` - 本地服务器名称错误（可根据报告的行数查找）：含有非法域名字符
         * 规则参见 https://en.wikipedia.org/wiki/Internationalized_domain_name
     * `Base rule(s) error` - 基本规则错误：可能因为 Config.ini 里同时不存在合法的IPv4/IPv6的DNS服务器地址，或者在TCP模式下开启了TCP头选项的检测
@@ -85,7 +85,7 @@
 
 * **`Hosts Error` - 读取 Hosts 错误**<br />
     * `Cannot open hosts file(Hosts.conf)` - 无法打开 `Hosts.conf` 文件：请确认文件是否存在
-    * `Hosts data of a line is too long` - Hosts.conf 文件一行数据超过2048字节/2KB：请确认文件的内容是否符合要求
+    * `Hosts data of a line is too long` - `Hosts.conf` 文件一行数据超过2048字节/2KB：请确认文件的内容是否符合要求
     * `Hosts file version error` - Hosts文件版本错误：请确认Hosts文件是否需要更新。注意，Windows版的配置文件和Linux版的配置文件不通用！
     * `Too many Hosts IP addresses` - 过多的平行地址条目（可根据报告的行数查找）：请删除过多的平行地址数据，解析结果容量有限
     * **`Multiple addresses format error` - 错误的平行地址条目格式（可根据报告的行数查找）：参见 ReadMe 文档**<br />
