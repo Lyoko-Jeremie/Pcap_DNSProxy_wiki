@@ -54,7 +54,7 @@
 * **`Parameter Error` - 读取 `Config.ini` 参数错误**
     * `Cannot open configuration file(Config.ini)` - 无法打开 Config.ini 文件：请确认文件是否存在
     * `Parameter data of a line is too long - Config.ini` 文件一行数据超过2048字节/2KB：请确认文件的内容是否符合要求
-    * `Configuration file version error` - 配置文件版本错误：请确认配置文件是否需要更新。注意，Windows版的配置文件和Linux版的配置文件不通用！
+    * `Configuration file version error` - 配置文件版本错误：请确认配置文件是否需要更新。注意，Windows/Linux/Mac版配置文件互不通用！
     * `DNS server IPv4 Address format error` - IPv4的DNS服务器地址格式错误（可根据报告的行数查找）：请确认IPv4的DNS服务器地址
     * `DNS server IPv4 Address convert failed` - IPv4的DNS服务器地址转换错误（可根据报告的行数查找）：请确认IPv4的DNS服务器地址
     * `DNS server IPv6 Address format error` - IPv6的DNS服务器地址格式错误（可根据报告的行数查找）：请确认IPv6的DNS服务器地址
@@ -69,7 +69,7 @@
 * **`Hosts Error` - 读取 Hosts 错误**
     * `Cannot open hosts file(Hosts.ini)` - 无法打开 `Hosts.ini` 文件：请确认文件是否存在
     * `Hosts data of a line is too long` - `Hosts.ini` 文件一行数据超过2048字节/2KB：请确认文件的内容是否符合要求
-    * `Hosts file version error` - Hosts文件版本错误：请确认Hosts文件是否需要更新。注意，Windows版的配置文件和Linux版的配置文件不通用！
+    * `Hosts file version error` - Hosts文件版本错误：请确认Hosts文件是否需要更新。注意，Windows/Linux/Mac版配置文件互不通用！
     * `Too many Hosts IP addresses` - 过多的平行地址条目（可根据报告的行数查找）：请删除过多的平行地址数据，解析结果容量有限
     * **`Multiple addresses format error` - 错误的平行地址条目格式（可根据报告的行数查找）：参见 ReadMe 文档**
     * **`Hosts IPv4 address format error` - Hosts的IPv4地址格式错误（可根据报告的行数查找）：请确认地址的正确性**
