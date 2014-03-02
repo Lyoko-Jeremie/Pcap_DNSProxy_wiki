@@ -45,6 +45,7 @@
 
 * **`System Error` - 系统错误**
     * `Memory allocation failed` - 内存申请失败，说明内存严重不足：可能为其它程序耗尽内存所致，或者您可能需要更新硬件设备
+    * `Insufficient permissions` - 权限不足：请使用管理员权限运行本程序
     * `Service start failed(It's probably a Firewall Test, please restart service and check once again)` - 服务启动失败：您可能未在系统注册服务，或在系统内注册的服务路径不正确
         * **注意：初次运行程序时进行的Windows防火墙测试也可能会产生此错误，服务成功启动后将自己删除**
         * 详细情况参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 安装方法 一节
@@ -96,8 +97,8 @@
     * Winsock 错误代码具体含义可移步 http://msdn.microsoft.com/en-us/library/windows/desktop/ms740668(v=vs.85).aspx
 
 * **`WinPcap Error` - WinPcap 错误**
-    * `Cannot open any NICs/Network Interface Cards` - 无法打开任何网络适配器：请检查是否已经安装WinPcap、网络适配器驱动程序和硬件设备
-    * `XXX is not a Ethernet device` - 名称为 XXX 的网络适配器不是Ethernet类型：不支持非Ethernet类型的网络设配器
+    * `Not any available network devices` - 没有任何可用的网络适配器：请检查硬件设备和驱动程序是否安装正确
+    * `XXX is not a Ethernet device` - 发现非 Ethernet 类型的网络适配器：这不是错误，但可以说明系统内存在非 Ethernet 类型的网络适配器
     * `An error occurred in XXX` - 名称为 XXX 的网络适配器抓取数据包错误
     * `EOF was reached reading from an offline capture in XXX` - 名称为 XXX 的网络适配器已经离线或不可用
     * **本类型错误有时可能会直接将WinPcap的错误信息直接打印出来**
