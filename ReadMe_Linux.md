@@ -7,7 +7,7 @@
         * 使用 Download ZIP 并解压，Linux目录内即为 LibPcap 库和 Pcap_DNSProxy(Linux) 源代码的压缩包
     * **Pcap_DNSProxy(Linux) 依赖于 GCC(C++/g++，需要支持 C++ 11 标准的版本) 和 LibPcap 库**，编译前需要先安装依赖库
     * **LibPcap 库依赖于GCC库、bison库、m4库、flex库和 libpcap-dev 库**，可使用发行版自带包管理系统自动安装或手动前往官方网站下载编译安装
-    * 编译安装 LibPcap 库，Release(_x86/_x64)分支内含 LibPcap 源代码的压缩包，安装过程：
+    * 编译安装 LibPcap 库（当然也可以使用系统自带的包管理系统安装，更多详情可参见所使用Linux发行版的说明），Release(_x86/_x64)分支内含 LibPcap 源代码的压缩包，安装过程：
         * 使用 `su/sudo` 命令获得 root 权限，并使用 root 权限解压压缩包到任何位置，进入解压生成的文件夹
         * 使用 `./configure` 生成 Makefile，使用 make 编译 LibPcap 库，使用 `make install` 安装 LibPcap 库
         * 使用 `man pcap` 确认 LibPcap 库安装成功。如果安装成功，应该会显示类似：<br />
@@ -22,7 +22,7 @@
         * 即为安装成功。如果出现无法找到命令等情况，请检查系统平台是否受 LibPcap 库支持或依赖包安装是否成功
     * LibPcap 库安装成功后解压出来的文件夹/文件即可删除
 
-* **编译 Pcap_DNSProxy(Linux) 程序**<br />
+* **编译 Pcap_DNSProxy(Linux) 程序**（如果是下载的可执行文件可跳过这步）<br />
     * 切勿更改源代码的编码(UTF-8/without BOM)和换行格式(UNIX/LF)
     * 使用 `su/sudo` 命令获得 root 权限，解压 Pcap_DNSProxy(Linux) 源代码压缩包并进入 Pcap_DNSProxy 目录
     * 直接使用 `make` 命令编译即可。Makefile 所进行的操作：
@@ -30,6 +30,11 @@
         * 编译源代码并链接生成程序
         * 将 PcapDNSProxyService 脚本所有者更改为 root 同时赋予 777/rwxrwxrwx 权限
         * 清理所有目标文件
+
+* **调整可执行程序的属性**（如果是自行编译的程序可跳过这步）<br />
+    * 使用 `su/sudo` 命令获得 root 权限，解压 Pcap_DNSProxy(Linux) 的Release压缩包并进入 Pcap_DNSProxy 目录
+    * 使用 `chmod 777 PcapDNSProxyService` 赋予脚本 777/rwxrwxrwx 权限
+    * 使用 `chown root:root PcapDNSProxyService` 将脚本所有者更改为 root
 
 * **配置 Pcap_DNSProxy(Linux) 服务**<br />
 **注意：由于不同的Linux发行版对系统服务和守护进程的处理方式不同，本部分仅供参考，更多详情可参见所使用Linux发行版的说明**<br />
@@ -78,14 +83,14 @@
 ### 卸载方法（**整个过程均需以 root 权限进行**）
 **注意：由于不同的Linux发行版对系统服务和守护进程的处理方式不同，本部分仅供参考，更多详情可参见所使用Linux发行版的说明**
 
+* 还原系统网络配置
+    * 将所有修改过的文件恢复原状即可，参见 安装方法 一节
 * 停止服务
     * 使用 `su/sudo` 命令获得 root 权限，然后使用 `service PcapDNSProxyService stop` 停止服务
 * 删除服务
     * 切换到 `/etc/init.d` 目录，使用 `insserv -r PcapDNSProxyService` 删除服务
     * 使用 `rm PcapDNSProxyService` 删除脚本的软链接
 * 删除所有 Pcap_DNSProxy(Linux) 相关文件
-* 还原系统网络配置
-    * 将所有修改过的文件恢复原状即可，参见 安装方法 一节
 
 ### 正常工作查看方法
 * 打开终端
