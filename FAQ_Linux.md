@@ -23,7 +23,7 @@
 * **如果出现以下结果，则说明服务没有运行成功或者设置出错或者服务已经运行成功但远程DNS服务器没有回应，请检查是否有错误报告生成，或请移步 [Linux版 ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe_Linux)中 安装方法 一节**<br />
     * 请务必设置一个正确的、有效的、可以使用的境外DNS服务器
     * 出现这种情况可能为网络问题。部分地区ISP/运营商对UDP协议转发丢包率比较高，可尝试切换到TCP协议模式（参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe)中 “Config.ini 详细参数说明” 一节中 “Base - 基本区域” 的 Operation Mode 一节）
-    * 也可能是因为长时间运行有错误累积造成，项目组正努力解决。可尝试重启服务（参见 [Linux版 ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe_Linux)中 “注意事项” 一节中的 重启服务）<br />
+    * 也可能是因为长时间运行有错误累积造成，项目组正努力解决。可尝试重启服务（参见 [Linux版 ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe_Linux)中 “注意事项” 一节中的 “重启服务”）<br />
 <br />
     >dig www.google.com<br />
 <br />
@@ -78,7 +78,7 @@
     * `DNS server IPv6 Address format error` - IPv6的DNS服务器地址格式错误（可根据报告的行数查找）：请确认IPv6的DNS服务器地址
     * `DNS server IPv6 Address convert failed` - IPv6的DNS服务器地址转换错误（可根据报告的行数查找）：请确认IPv6的DNS服务器地址
     * `The ICMP padding data is too long - Config.ini` 内提供的ICMP附加数据过长（可根据报告的行数查找）：请缩短ICMP附加数据的长度。ICMP附加数据长度介乎于18字节-64字节ASCII之间
-        * 如果ICMP附加数据的长度小于18字节，则会默认载入使用 `Linux Dig` 程序的ICMP附加数据
+        * 如果ICMP附加数据的长度小于18字节，则会默认载入使用 `Linux/Mac Dig` 程序的ICMP附加数据
     * `Localhost server name format error` - 本地服务器名称错误（可根据报告的行数查找）：含有非法域名字符
         * 规则参见 https://en.wikipedia.org/wiki/Internationalized_domain_name
     * `Base rule(s) error` - 基本规则错误：可能因为 Config.ini 里同时不存在合法的IPv4/IPv6的DNS服务器地址，或者在TCP模式下开启了TCP头选项的检测
