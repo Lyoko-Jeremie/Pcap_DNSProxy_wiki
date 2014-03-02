@@ -84,6 +84,6 @@
     * 重复 安装方法 中的第3步操作
 * 安装/卸载某些软件可能会导致网络设配器离线使LibPcap模块返回，网络设配器离线又重新启动后请重启服务
 * 关于请求域名解析的优先级
-    * 使用系统API函数进行域名解析（大部分）：系统 Hosts > Pcap_DNSProxy 的 Hosts.ini（Whitelist/白名单条目 > Local Hosts/境内DNS解析域名列表 > Hosts/主要Hosts列表） > 远程DNS服务器
-    * 直接使用网络适配器设置进行域名解析（小部分）：Pcap_DNSProxy 的 Hosts.ini（Whitelist/白名单条目 > Local Hosts/境内DNS解析域名列表 > Hosts/主要Hosts列表） > 远程DNS服务器
+    * 使用系统API函数进行域名解析（大部分）：系统 Hosts > Pcap_DNSProxy 的 Hosts.conf（Whitelist/白名单条目 > Local Hosts/境内DNS解析域名列表 > Hosts/主要Hosts列表） > 远程DNS服务器
+    * 直接使用网络适配器设置进行域名解析（小部分）：Pcap_DNSProxy 的 Hosts.conf（Whitelist/白名单条目 > Local Hosts/境内DNS解析域名列表 > Hosts/主要Hosts列表） > 远程DNS服务器
 * **Config.conf 详细参数 和 Hosts.conf 格式说明 和Windows版一样**，参见主 [ReadMe](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 文档
