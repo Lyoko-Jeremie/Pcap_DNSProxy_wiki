@@ -66,12 +66,13 @@
 
 * **`System Error` - 系统错误**<br />
     * `Memory allocation failed` - 内存申请失败，说明内存严重不足：可能为其它程序耗尽内存所致，或者您可能需要更新硬件设备
+    * `Insufficient permissions` - 权限不足：请使用管理员权限运行本程序
     * `Set system daemon failed` - 服务启动失败：可能由于系统平台不支持守护进程所致
  
 * **`Parameter Error` - 读取 `Config.conf` 参数错误**<br />
     * `Cannot open configuration file(Config.conf)` - 无法打开 Config.conf 文件：请确认文件是否存在
     * `Parameter data of a line is too long - Config.conf` 文件一行数据超过2048字节/2KB：请确认文件的内容是否符合要求
-    * `Configuration file version error` - 配置文件版本错误：请确认配置文件是否需要更新。**注意，Windows版的配置文件和Linux版的配置文件不通用！**
+    * `Configuration file version error` - 配置文件版本错误：请确认配置文件是否需要更新。注意，Windows/Linux/Mac版配置文件互不通用！
     * `DNS server IPv4 Address format error` - IPv4的DNS服务器地址格式错误（可根据报告的行数查找）：请确认IPv4的DNS服务器地址
     * `DNS server IPv4 Address convert failed` - IPv4的DNS服务器地址转换错误（可根据报告的行数查找）：请确认IPv4的DNS服务器地址
     * `DNS server IPv6 Address format error` - IPv6的DNS服务器地址格式错误（可根据报告的行数查找）：请确认IPv6的DNS服务器地址
@@ -86,7 +87,7 @@
 * **`Hosts Error` - 读取 Hosts 错误**<br />
     * `Cannot open hosts file(Hosts.conf)` - 无法打开 `Hosts.conf` 文件：请确认文件是否存在
     * `Hosts data of a line is too long` - `Hosts.conf` 文件一行数据超过2048字节/2KB：请确认文件的内容是否符合要求
-    * `Hosts file version error` - Hosts文件版本错误：请确认Hosts文件是否需要更新。注意，Windows版的配置文件和Linux版的配置文件不通用！
+    * `Hosts file version error` - Hosts文件版本错误：请确认Hosts文件是否需要更新。注意，Windows/Linux/Mac版配置文件互不通用！
     * `Too many Hosts IP addresses` - 过多的平行地址条目（可根据报告的行数查找）：请删除过多的平行地址数据，解析结果容量有限
     * **`Multiple addresses format error` - 错误的平行地址条目格式（可根据报告的行数查找）：参见 ReadMe 文档**<br />
     * **`Hosts IPv4 address format error` - Hosts的IPv4地址格式错误（可根据报告的行数查找）：请确认地址的正确性**<br />
@@ -112,6 +113,8 @@
     * Socket 错误代码具体含义可使用 `man errno` 查询
 
 * **`LibPcap Error` - WinPcap 错误**<br />
+    * `Not any available network devices` - 没有任何可用的网络适配器：请检查硬件设备和驱动程序是否安装正确
+    * `XXX is not a Ethernet device` - 发现非 Ethernet 类型的网络适配器：这不是错误，但可以说明系统内存在非 Ethernet 类型的网络适配器
     * `EOF was reached reading from an offline capture in XXX` - 名称为 XXX 的网络适配器已经离线或不可用
-    * **本类型错误会直接将LibPcap的错误信息直接打印至错误报告****<br />
+    * **本类型错误会直接将LibPcap的错误信息直接打印至错误报告**<br />
     * LibPcap错误信息的具体含义可参考WinPcap的说明文档 http://www.winpcap.org/docs/docs_40_2/html/group__wpcapfunc.html
