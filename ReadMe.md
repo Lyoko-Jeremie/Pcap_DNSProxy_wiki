@@ -1,7 +1,7 @@
 ### 安装方法（**需要以管理员身份进行**）
-* 访问 http://www.winpcap.org/install/default.htm 下载并安装WinPcap（**第2步中的ZIP也含有安装包**）<br />
+* 访问 http://www.winpcap.org/install/default.htm 下载并安装WinPcap（ **第2步中的ZIP也含有安装包** ）<br />
     * 安装时自启动选项对工具的运行没有影响，因为本工具直接调用 WinPcap API，不需要经过服务器程序
-* 访问 https://github.com/chengr28/pcap_dnsproxy/branches 随便选择一个Release版本，并使用GitHub的 `Download ZIP`（[Release_x86](https://github.com/chengr28/pcap_dnsproxy/archive/Release_x86.zip) 或 [Release_x64](https://github.com/chengr28/pcap_dnsproxy/archive/Release_x64.zip)） 功能将所有文件下载到本地
+* 访问 https://github.com/chengr28/pcap_dnsproxy/branches **随便选择一个Release版本**，并使用GitHub的 `Download ZIP`（[Release_x86](https://github.com/chengr28/pcap_dnsproxy/archive/Release_x86.zip) 或 [Release_x64](https://github.com/chengr28/pcap_dnsproxy/archive/Release_x64.zip)） 功能将所有文件下载到本地
     * Windows 下批处理会自动判断 x64 和 x86 版本
 * 打开下载回来的ZIP文件，将 Main 目录解压到磁盘的任意位置
     * 目录和程序的名称可以随意更改
@@ -13,7 +13,7 @@
     * 右击 `属性` - `Internet协议版本4(IPv4)` - 属性 - 勾选 `使用下面的DNS服务器地址`
     * **在 `首选DNS服务器` 内填入 `127.0.0.1` 确定保存并退出即可**
     * 如果需要使用IPv6协议的本地服务器
-        * 请先编辑 Config.ini 的 `IPv6 DNS Address` 一栏，参见下文 Config.ini 详细参数说明 一节
+        * 请先编辑配置文件的 `IPv6 DNS Address` 一栏，参见下文 配置文件详细参数说明 一节
         * 右击 `属性` - `Internet协议版本6(IPv6)` - `属性` - 勾选 `使用下面的DNS服务器地址`
         * 在 `首选DNS服务器` 内填入 `::1` 确定保存并退出即可
 
@@ -93,7 +93,7 @@
   * `File Hash` - 文件 Hash 功能，开启此功能能降低刷新文件时的CPU占用：开启为1/关闭为0，默认为1
 
 * `DNS` - 域名解析参数区域
-  * `Protocol` - 发送请求所使用的协议，分 `UDP` 和 `TCP`：默认为 UDP
+  * `Protocol` - **发送请求所使用的协议，分 `UDP` 和 `TCP`**：默认为 UDP
     * 注意：此处所指的协议指的是程序请求远程DNS服务器所使用的协议，而向本程序请求域名解析时可随意使用 UDP 或 TCP
   * `Hosts Only` - Hosts Only 模式，启用后将不进行任何数据包过滤，只适用本工具的 Hosts 功能：开启为1/关闭为0，默认为0
   * `Cache Type` - DNS缓存的类型：分 `Timer`/计时型以及 `Queue`/队列型
@@ -108,7 +108,7 @@
   * `IPFilter Level` - IPFilter 参数的过滤级别，级别越高过滤越严格，与 IPFilter 条目相对应：0为不启用过滤，如果留空则为0，默认为空
   
 * `Addresses` - 普通模式地址区域
-  * `IPv4 DNS Address` - IPv4主要DNS服务器地址：需要输入一个带端口格式的地址，默认为 `8.8.4.4:53`(Google Public DNS No.2)
+  * `IPv4 DNS Address` - **IPv4主要DNS服务器地址：需要输入一个带端口格式的地址**，默认为 `8.8.4.4:53`(Google Public DNS No.2)
   * `IPv4 Alternate DNS Address` - IPv4备用DNS服务器地址：需要输入一个带端口格式的地址，默认为 `8.8.8.8:53`(Google Public DNS No.1)
   * `IPv4 Local DNS Address` - IPv4主要境内DNS服务器地址，用于境内域名解析：需要输入一个带端口格式的地址，默认为 `114.114.115.115:53`(114 DNS No.2)
   * `IPv4 Local Alternate DNS Address` - IPv4备用境内DNS服务器地址，用于境内域名解析：需要输入一个带端口格式的地址，默认为 `114.114.114.114:53`(114 DNS No.1)
@@ -153,7 +153,7 @@
   * `Localhost Server Name` - 本地DNS服务器名称：请输入正确的域名并且不要超过253字节ASCII数据，留空则使用 pcap-dnsproxy.localhost.server 作为本地服务器名称，默认为空
 
 * `DNSCurve` - DNSCurve 协议基本参数区域
-  * `DNSCurve` - DNSCurve 协议总开关，控制所有和 DNSCurve 协议有关的选项：开启为1/关闭为0，默认为0
+  * `DNSCurve` - **DNSCurve 协议总开关，控制所有和 DNSCurve 协议有关的选项**：开启为1/关闭为0，默认为0
   * `DNSCurve Protocol` - 发送请求所使用的协议，分 UDP 和 TCP：默认为 UDP
   * `DNSCurve Payload Size` - DNSCurve EDNS0 标签附带使用的最大载荷长度，同时亦为发送请求的总长度，并决定请求的填充长度：最小为DNS协议实现要求的512(bytes)，留空则为512(bytes)，默认为留空
   * `Encryption` - 启用加密，DNSCurve 协议支持加密和非加密模式：开启为1/关闭为0，默认为1
@@ -178,8 +178,8 @@
 * `DNSCurve Keys` - DNSCurve 协议密钥区域
   * `Client Public Key` - 自定义客户端公钥：可使用 KeyPairGenerator 生成，留空则每次启动时自动生成，默认为空
   * `Client Secret Key` - 自定义客户端私钥：可使用 KeyPairGenerator 生成，留空则每次启动时自动生成，默认为空
-  * `IPv4 DNS Public Key` - DNSCurve 协议IPv4主要DNS服务器验证用公钥，默认为 B735:1140:206F:225D:3E2B:D822:D7FD:691E:A1C3:3CC8:D666:8D0C:BE04:BFAB:CA43:FB79(OpenDNS)
-  * `IPv4 Alternate DNS Public Key` - DNSCurve 协议IPv4备用DNS服务器验证用公钥，默认为 B735:1140:206F:225D:3E2B:D822:D7FD:691E:A1C3:3CC8:D666:8D0C:BE04:BFAB:CA43:FB79(OpenDNS)
+  * `IPv4 DNS Public Key` - DNSCurve 协议IPv4主要DNS服务器验证用公钥，默认为 `B735:1140:206F:225D:3E2B:D822:D7FD:691E:A1C3:3CC8:D666:8D0C:BE04:BFAB:CA43:FB79`(OpenDNS)
+  * `IPv4 Alternate DNS Public Key` - DNSCurve 协议IPv4备用DNS服务器验证用公钥，默认为 `B735:1140:206F:225D:3E2B:D822:D7FD:691E:A1C3:3CC8:D666:8D0C:BE04:BFAB:CA43:FB79`(OpenDNS)
   * `IPv6 DNS Public Key` - DNSCurve 协议IPv6主要DNS服务器验证用公钥，默认为空
   * `IPv6 Alternate DNS Public Key` - DNSCurve 协议IPv6备用DNS服务器验证用公钥，默认为空
   * `IPv4 DNS Fingerprint` - DNSCurve 协议IPv4主要DNS服务器传输用指纹，留空则自动通过服务器提供者和公钥获取，默认为空
@@ -213,10 +213,10 @@
 **此类型的条目列出的符合要求的域名会直接绕过Hosts，不会使用Hosts功能**<br />
 **直接在条目前添加 `NULL` 即可，有效参数格式为 `NULL 正则表达式`**<br />
 ###### 注意优先级的问题，例如有一片含白名单条目的区域：<br />
-    NULL .*.test.localhost
-    127.0.0.1|127.0.0.2|127.0.0.3 .*.localhost
+    NULL .*\.test\.localhost
+    127.0.0.1|127.0.0.2|127.0.0.3 .*\.localhost
 
-###### 虽然 `.*.localhost` 包含了 `.*.test.localhost` 但由于优先级别自上而下递减，故先命中 `.*.test.localhost` 并返回使用远程服务器解析，从而绕过了下面的条目不使用Hosts的功能
+###### 虽然 `.*\.localhost` 包含了 `.*\.test\.localhost` 但由于优先级别自上而下递减，故先命中 `.*\.test\.localhost` 并返回使用远程服务器解析，从而绕过了下面的条目不使用Hosts的功能
 
 #### `Hosts` - 主要Hosts列表
 **有效参数格式为 `地址(|地址A|地址B) 域名的正则表达式`（括号内为可选项目，注意间隔所在的位置）**<br />
@@ -225,25 +225,25 @@
 * 平行地址原理为一次返回多个记录，而具体使用哪个记录则由请求者决定，一般为第1个<br />
 
 ###### 例如有一个 [Hosts] 下有效数据区域：
-    127.0.0.1|127.0.0.2|127.0.0.3 .*.test.localhost
-    127.0.0.4|127.0.0.5|127.0.0.6 .*.localhost
-    ::1|::2|::3	.*.test.localhost
-    ::4|::5|::6	.*.localhost
+    127.0.0.1|127.0.0.2|127.0.0.3 .*\.test\.localhost
+    127.0.0.4|127.0.0.5|127.0.0.6 .*\.localhost
+    ::1|::2|::3	.*\.test.localhost
+    ::4|::5|::6	.*\.localhost
 
-###### 虽然 `.*.localhost` 包含了 `.*.test.localhost` 但是由于优先级别自上而下递减，故先命中 `.*.test.localhost` 并直接返回，不会再进行其它检查
+###### 虽然 `.*\.localhost` 包含了 `.*\.test\.localhost` 但是由于优先级别自上而下递减，故先命中 `.*\.test\.localhost` 并直接返回，不会再进行其它检查
     请求解析 xxx.localhost 的A记录（IPv4）会返回 127.0.0.4、127.0.0.5和127.0.0.6
     请求解析 xxx.localhost 的AAAA记录（IPv6）会返回 ::4、::5和::6
     请求解析 xxx.test.localhost 的A记录（IPv4）会返回 127.0.0.1、127.0.0.2和127.0.0.3
     请求解析 xxx.test.localhost 的AAAA记录（IPv6）会返回 ::1、::2和::3
 
 #### `Local Hosts` - 境内DNS解析域名列表
-本区域数据用于为域名使用境内DNS服务器解析提高访问速度，使用时请确认境内DNS服务器地址不为空（参见上文 Config.ini 详细参数说明 一节）<br />
+本区域数据用于为域名使用境内DNS服务器解析提高访问速度，使用时请确认境内DNS服务器地址不为空（参见上文 配置文件详细参数说明 一节）<br />
 **有效参数格式为 `域名的正则表达式`**<br />
 * 本功能不会对境内DNS服务器回复进行任何过滤的措施，请确认本区域填入的数据不会受到DNS投毒污染干扰<br />
 
 ###### 例如有一个 [Local Hosts] 下有效数据区域：<br />
 
-    .*.test.localhost
-    .*.localhost
+    .*\.test\.localhost
+    .*\.localhost
 
 ###### 即所有符合以上正则表达式的域名请求都将使用境内DNS服务器解析
