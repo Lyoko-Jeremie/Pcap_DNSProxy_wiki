@@ -1,29 +1,33 @@
 本文档为常见问题的处理方法，当工具无法正常使用时可先参考本文档寻找解决方法
 
 ### 运行结果分析
+* 安装或运行服务时出现：
+  * `Require Administrator Permission` - 请以管理员权限运行
+  * `服务没有及时响应启动或控制请求` - 请检查是否有错误报告生成，详细情况参见下文 Error.log 详细错误报告 一节
+
 * 正常的运行结果应类似：
     >nslookup www.google.com<br />
     服务器:  pcap_dnsproxy.localhost.server（注意：此处由配置文件设置的值确定，参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 配置文件详细参数说明）<br />
-    Address:  127.0.0.1（IPv4，IPv6下为 ::1 ）<br /><br />
+    Address:  127.0.0.1（视所在网络环境而定，原生IPv6为 ::1）<br /><br />
     非权威应答:<br />
     &nbsp;&nbsp;&nbsp;&nbsp;名称:    www.google.com<br />
     &nbsp;&nbsp;&nbsp;&nbsp;Addresses: ……（IP地址或地址列表）<br />
 
-* **如果瞬间出现以下结果，则说明服务没有运行成功或者设置出错，请检查是否有错误报告生成，或请移步 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 安装方法 一节**
+* **如果瞬间出现以下结果，则说明服务没有运行成功或者设置出错，请检查是否有错误报告生成，或请移步 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 `安装方法` 一节**
 
     >nslookup www.google.com<br />
     服务器:  UnKnown<br />
-    Address:  127.0.0.1（IPv4，IPv6下为 ::1 ）<br /><br />
+    Address:  127.0.0.1（视所在网络环境而定，原生IPv6为 ::1）<br /><br />
     *** UnKnown 找不到 www.google.com: No response from server<br />
 	
 * **如果出现以下结果，则说明服务已经运行成功但远程DNS服务器没有回应，请检查是否有错误报告生成**
     * 请务必设置一个正确的、有效的、可以使用的境外DNS服务器
-    * **出现这种情况可能为网络问题。部分地区ISP/运营商对UDP协议转发丢包率比较高，可尝试切换到TCP协议模式（参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 Config.ini 详细参数说明 一节中 “Base - 基本区域” 的 Operation Mode 一节）**
-    * 也可能是因为长时间运行有错误累积造成，项目组正努力解决。可尝试重启服务（参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 注意事项 一节中的 重启服务）
+    * **出现这种情况可能为网络问题。部分地区ISP/运营商对UDP协议转发丢包率比较高，可尝试切换到TCP协议模式（参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 `配置文件详细参数说明` 一节中 Base - 基本区域 的 Operation Mode 一节）**
+    * 也可能是因为长时间运行有错误累积造成，项目组正努力解决。可尝试重启服务（参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中的 `重启服务`）
 
     >nslookup www.google.com<br />
-    服务器:  pcap_dnsproxy.localhost.server（注意：此处由配置文件设置的值确定，参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 配置文件详细参数说明）<br />
-    Address:  127.0.0.1（IPv4，IPv6下为 ::1 ）<br /><br />
+    服务器:  pcap_dnsproxy.localhost.server（注意：此处由配置文件设置的值确定，参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 `配置文件详细参数说明`）<br />
+    Address:  127.0.0.1（视所在网络环境而定，原生IPv6为 ::1）<br /><br />
     DNS request timed out.<br />
     &nbsp;&nbsp;&nbsp;&nbsp;timeout was 2 seconds.<br />
     DNS request timed out.<br />
@@ -32,12 +36,12 @@
     &nbsp;&nbsp;&nbsp;&nbsp;timeout was 2 seconds.<br />
     DNS request timed out.<br />
     &nbsp;&nbsp;&nbsp;&nbsp;timeout was 2 seconds.<br />
-    *** 请求 pcap_dnsproxy.localhost.server 超时（注意：此处由 Config.ini 设置的值确定，参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 Config.ini 详细参数说明）<br />
+    *** 请求 pcap_dnsproxy.localhost.server 超时（视配置文件设置的值而定，参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 `配置文件详细参数说明`）<br />
 
 -----
 当程序运行时发生错误，可能会生成错误报告也就是 `Error.log` 文件，**其位于工具服务注册的目录内**，对解决问题至关重要<br />
-错误报告的格式为 "**日期 时间 -> 错误类型: 详细错误信息(in line 行数 of 所在文件, error code is 错误代码)**"（不含双引号，括号为可能出现内容）
-* 行数为 `Config.ini` 或 `Hosts.ini` 文件内出错内容的行数
+错误报告的格式为 **`日期 时间 -> 错误类型: 详细错误信息(in line 行数 of 所在文件, error code is 错误代码`**（括号为可能出现内容）
+* 行数为配置文件/Hosts文件或IPFilter文件内出错内容的行数
 * 错误代码为 系统/Winsock/WinPcap API 提供的出错代码，详细情况参见下文 Error.log 详细错误报告
 * **由于程序重启时会自动删除之前生成的错误报告，所以如果有错误报告生成建议先备份并尝试解决后再重新启动工具服务**
 
@@ -64,7 +68,6 @@
   * `IPFilter Level error` - IPFilter 过滤级别错误：请检查过滤级别的值，可适用范围为 1 - 65535
   * `DNS Cache error` - DNS缓存配置错误：请检查缓存的参数
   * `DNS Targets error` - DNS目标服务器配置错误：请检查DNS服务器的地址
-  * `Alternate servers error` - 备用服务器配置错误：请检查主要服务器和备用服务器的地址
   * `Hop Limit or TTL Fluctuations error` - Hop Limit 或 TTL 可接受范围错误：请检查范围的值
   * `EDNS0 PayloadSize must longer than 512 bytes(Old DNS packets minimum supported size)` - EDNS0载荷长度过短：实现DNS协议必须支持长度超过 512 bytes 的数据包
   * `EDNS0 PayloadSize may be too long` - EDNS0载荷长度可能过长：此值建议不要超过以太网的MTU(1512 bytes)
