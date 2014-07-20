@@ -36,7 +36,12 @@
     &nbsp;&nbsp;&nbsp;&nbsp;timeout was 2 seconds.<br />
     DNS request timed out.<br />
     &nbsp;&nbsp;&nbsp;&nbsp;timeout was 2 seconds.<br />
-    *** 请求 pcap_dnsproxy.localhost.server 超时（视配置文件设置的值而定，参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 `配置文件详细参数说明`）<br />
+    *** 请求 pcap_dnsproxy.localhost.server 超时（视配置文件设置的值而定，参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 `配置文件详细参数说明`）<br /><br />
+或者：<br /><br />
+    >nslookup -vc www.google.com<br />
+    服务器:  pcap_dnsproxy.localhost.server（注意：此处由配置文件设置的值确定，参见 [ReadMe 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe) 中 `配置文件详细参数说明`）<br />
+    Address:  127.0.0.1（视所在网络环境而定，原生IPv6为 ::1）<br /><br />
+    *** 没有 www.google.com 可以使用的 internal type for both IPv4 and IPv6 Addresses (A+AAAA)记录<br />
 
 -----
 当程序运行时发生错误，可能会生成错误报告也就是 `Error.log` 文件，**其位于工具服务注册的目录内**，对解决问题至关重要<br />
@@ -48,61 +53,68 @@
 ### `Error.log` 详细错误报告，错误报告一共有5大类型：
 
 * `System Error` - 系统错误
-  * `Service start error` - 服务启动失败：可能未在系统注册服务，或在系统内注册的服务路径不正确
+    * `Service start error` - 服务启动失败：可能未在系统注册服务，或在系统内注册的服务路径不正确
 	* 详细情况参见 ReadMe 文档中 安装方法 一节
 	* 其它错误代码原因参见 http://msdn.microsoft.com/en-us/library/windows/desktop/ms686324(v=vs.85).aspx
  
 * `Parameter Error` - 读取配置文件参数错误
-  * `Cannot open any configuration files` - 没有发现任何配置文件：请确认文件是否存在
-  * `Item length error` - 配置文件参数一行数据超过4096字节/4KB，或该行数据长度不符合要求（可根据文件名和行数查找）：请确认该行的内容是否符合要求
-  * `Configuration file version error - 配置文件版本错误：请确认配置文件是否需要更新。注意，Windows/Linux/Mac版配置文件互不通用！
-  * `Configuration file is not the latest version` - 配置文件非最新版本：请确认配置文件是否需要更新。
-  * `Data of a line is too long` - 该参数过长（可根据文件名和行数查找）：一行数据切勿超过4096字节/4KB
-  * `DNS server IPv6 Port error` - IPv6的DNS目标服务器端口错误（可根据文件名和行数查找）：请检查目标服务器的端口
-  * `DNS server IPv6 Address or Port format error` - IPv6的DNS服务器地址格式错误（可根据文件名和行数查找）：请检查IPv6的DNS服务器地址格式
-  * `DNS server IPv6 Address format error` - IPv6的DNS服务器地址格式错误（可根据文件名和行数查找）：请检查IPv6的DNS服务器地址
-  * `DNS server IPv4 Port error` - IPv4的DNS目标服务器端口错误（可根据文件名和行数查找）：请检查目标服务器的端口
-  * `DNS server IPv4 Address or Port format error` - IPv4的DNS服务器地址格式错误（可根据文件名和行数查找）：请检查IPv4的DNS服务器地址格式
-  * `DNS server IPv4 Address format error` - IPv4的DNS服务器地址格式错误（可根据文件名和行数查找）：请检查IPv4的DNS服务器地址
-  * `Localhost server listening Port error` - 本地监听端口错误：请检查本地监听端口的值，可适用范围为 1 - 65535
-  * `IPFilter Level error` - IPFilter 过滤级别错误：请检查过滤级别的值，可适用范围为 1 - 65535
-  * `DNS Cache error` - DNS缓存配置错误：请检查缓存的参数
-  * `DNS Targets error` - DNS目标服务器配置错误：请检查DNS服务器的地址
-  * `Hop Limit or TTL Fluctuations error` - Hop Limit 或 TTL 可接受范围错误：请检查范围的值
-  * `EDNS0 PayloadSize must longer than 512 bytes(Old DNS packets minimum supported size)` - EDNS0载荷长度过短：实现DNS协议必须支持长度超过 512 bytes 的数据包
-  * `EDNS0 PayloadSize may be too long` - EDNS0载荷长度可能过长：此值建议不要超过以太网的MTU(1512 bytes)
-  * `EDNS0 Label must trun ON when request DNSSEC` - 开启DNSSEC请求时必须开启EDNS0标签请求功能
-  * `DNSCurve Targets error` - DNSCurve 协议使用的DNS目标服务器地址错误：请检查 DNSCurve 协议使用DNS服务器的地址
-  * `DNSCurve encryption options error` - DNSCurve 协议加密选项配置错误：开启加密选项和只使用加密模式选项冲突
-  * `DNSCurve Encryption Only mode error` - DNSCurve 协议只使用加密模式配置错误：只使用加密模式必须提供服务器的魔数和指纹
-  * `DNSCurve empty Provider Name error` - DNSCurve 协议服务器提供者错误：不存在魔数或指纹时必须提供服务器的提供者信息以自动获取连接参数
-  * `DNSCurve empty Public Key error` - DNSCurve 协议服务器提供者错误：不存在魔数或指纹时必须提供服务器的公钥以自动获取连接参数
-  * `EDNS0 Label must trun ON when request DNSCurve` - 使用 DNSCurve 协议时必须开启EDNS0标签请求功能
-  * `DNSCurve PayloadSize must longer than 512 bytes(Old DNS packets minimum supported size)` - DNSCurve 协议载荷长度过短：实现DNS协议必须支持长度超过 512 bytes 的数据包
-  * `DNSCurve PayloadSize may be too long` - DNSCurve 协议载荷长度可能过长：此值建议不要超过以太网的MTU(1512 bytes)
+    * `Cannot open any configuration files` - 没有发现任何配置文件：请确认文件是否存在
+    * `Configuration file size is too large` - 配置文件容量过大：请确认配置文件的内容，整个文件的大小不要超过4GB
+    * `Item length error` - 配置文件参数一行数据超过4096字节/4KB，或该行数据长度不符合要求（可根据文件名和行数查找）：请确认该行的内容是否符合要求
+    * `Configuration file version error` - 配置文件版本错误：请确认配置文件是否需要更新
+        * 注意，Windows/Linux/Mac版配置文件互不通用！
+    * `Configuration file is not the latest version` - 配置文件非最新版本：请确认配置文件是否需要更新。
+    * `Data of a line is too long` - 该参数过长（可根据文件名和行数查找）：一行数据切勿超过4096字节/4KB
+    * `Log file size error` - 配置文件指定的最大Log文件容量错误：可接受范围为4KB - 4GB
+    * `DNS server IPv6 Port error` - IPv6的DNS目标服务器端口错误（可根据文件名和行数查找）：请检查目标服务器的端口
+    * `DNS server IPv6 Address format error` - IPv6的DNS服务器地址格式错误（可根据文件名和行数查找）：请检查IPv6的DNS服务器地址
+    * `DNS server IPv4 Port error` - IPv4的DNS目标服务器端口错误（可根据文件名和行数查找）：请检查目标服务器的端口
+    * `DNS server IPv4 Address format error` - IPv4的DNS服务器地址格式错误（可根据文件名和行数查找）：请检查IPv4的DNS服务器地址
+    * `Localhost server listening Port error` - 本地监听端口错误：请检查本地监听端口的值，可适用范围为 1 - 65535
+    * `IPFilter Level error` - IPFilter 过滤级别错误：请检查过滤级别的值，可适用范围为 1 - 65535
+    * `DNS Cache error` - DNS缓存配置错误：请检查缓存的参数
+    * `DNS Targets error` - DNS目标服务器配置错误：请检查DNS服务器的地址
+    * `DNS Records type error` - DNS记录参数错误：请检查 Accept Type 的值是否符合要求
+    * `Hop Limit or TTL Fluctuations error` - Hop Limit 或 TTL 可接受范围错误：请检查范围的值
+    * `EDNS0 PayloadSize must longer than 512 bytes(Old DNS packets minimum supported size)` - EDNS0载荷长度过短：实现DNS协议必须支持长度超过 512 bytes 的数据包
+    * `EDNS0 PayloadSize may be too long` - EDNS0载荷长度可能过长：此值建议不要超过以太网的MTU(1512 bytes)
+    * `EDNS0 Label must trun ON when request DNSSEC` - 开启DNSSEC请求时必须开启EDNS0标签请求功能
+    * `Alternate Multi requesting error` - 主要备用服务器同时请求参数错误 - 请确认备用服务器的信息
+    * `Multi requesting times error` - 多次请求参数错误 - 一次的多次请求次数不能超过8次
+    * `DNSCurve Targets error` - DNSCurve 协议使用的DNS目标服务器地址错误：请检查 DNSCurve 协议使用DNS服务器的地址
+    * `DNSCurve encryption options error` - DNSCurve 协议加密选项配置错误：开启加密选项和只使用加密模式选项冲突
+    * `DNSCurve Encryption Only mode error` - DNSCurve 协议只使用加密模式配置错误：只使用加密模式必须提供服务器的魔数和指纹
+    * `DNSCurve empty Provider Name error` - DNSCurve 协议服务器提供者错误：不存在魔数或指纹时必须提供服务器的提供者信息以自动获取连接参数
+    * `DNSCurve empty Public Key error` - DNSCurve 协议服务器提供者错误：不存在魔数或指纹时必须提供服务器的公钥以自动获取连接参数
+    * `EDNS0 Label must trun ON when request DNSCurve` - 使用 DNSCurve 协议时必须开启EDNS0标签请求功能
+    * `DNSCurve PayloadSize must longer than 512 bytes(Old DNS packets minimum supported size)` - DNSCurve 协议载荷长度过短：实现DNS协议必须支持长度超过 512 bytes 的数据包
+    * `DNSCurve PayloadSize may be too long` - DNSCurve 协议载荷长度可能过长：此值建议不要超过以太网的MTU(1512 bytes)
+
 
 * `IPFilter Error` - 读取 IPFilter 文件错误
-  * `Data of a line is too long` - 该 IPFilter 条目过长（可根据文件名和行数查找）：一行数据切勿超过4096字节/4KB
-  * `Item format error` - IPFilter 条目格式错误（可根据报告的行数查找）：请检查该条目的格式
-  * `Hosts IPv6 address format error` - Hosts的IPv6地址格式错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
-  * `Hosts IPv6 address convert error` - Hosts的IPv6地址转换错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
-  * `Hosts IPv4 address format error` - Hosts的IPv4地址格式错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
-  * `Hosts IPv4 address convert error` - Hosts的IPv4地址转换错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
+    * `IPFilter file size is too large` - IPFilter文件容量过大：请确认IPFilter文件的内容，整个文件的大小不要超过4GB
+    * `Read file(s) error` - 文件跳转读取错误：请与开发者联系
+    * `Data of a line is too long` - 该 IPFilter 条目过长（可根据文件名和行数查找）：一行数据切勿超过4096字节/4KB
+    * `Item format error` - IPFilter 条目格式错误（可根据报告的行数查找）：请检查该条目的格式
+    * `Regular expression pattern error` - 错误的正则表达式（可根据报告的行数查找）：请检查正则表达式的正确性
+    * `IPv6 Address format error` - IPFilter的IPv6地址格式错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
+    * `IPv4 Address format error` - IPFilter的IPv4地址格式错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
+    * `IPv6 Addresses range error` - IPFilter的IPv6地址范围错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
+    * `IPv4 Addresses range error` - IPFilter的IPv6地址范围错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
 
 * `Hosts Error` - 读取 Hosts 文件错误
-  * `Read file(s) error` - 文件跳转读取错误：请与开发者联系
-  * `Hosts file version error` - Hosts 文件版本错误：请确认 Hosts 文件是否需要更新。注意，Windows/Linux/Mac版配置文件互不通用！
-  * `Data of a line is too long` - 该 Hosts 条目过长（可根据文件名和行数查找）：一行数据切勿超过4096字节/4KB
-  * `Item format error` - Hosts 条目格式错误（可根据报告的行数查找）：请检查该条目的格式
-  * `Data is too long when EDNS0 is available` - 开启EDNS0标签的情况下该 Hosts 条目过长：请检查 Hosts 的地址列表是否过长
-  * `Default TTL redefinition` - 默认生存时间重定义（可根据报告的行数查找）：以第一个出现的默认生存时间为准
-  * `Regular expression pattern error` - 错误的正则表达式（可根据报告的行数查找）：请检查正则表达式的正确性
-  * `Repeating items error, the item is not available` - 存在重复的 Hosts 条目（可根据报告的行数查找）：以第一个出现的 Hosts 条目为准
-  * `Hosts IPv6 address format error` - Hosts的IPv6地址格式错误（可根据报告的行数查找）：请检查 Hosts 条目的地址
-  * `Hosts IPv6 address convert error` - Hosts的IPv6地址转换错误（可根据报告的行数查找）：请检查 Hosts 条目的地址
-  * `Hosts IPv4 address format error` - Hosts的IPv4地址格式错误（可根据报告的行数查找）：请检查 Hosts 条目的地址
-  * `Hosts IPv4 address convert error` - Hosts的IPv4地址转换错误（可根据报告的行数查找）：请检查 Hosts 条目的地址
-  * `Too many Hosts IP addresses` - Hosts 条目的平行地址过多
+    * `Hosts file size is too large` - Hosts文件容量过大：请确认Hosts文件的内容，整个文件的大小不要超过4GB
+    * `Read file(s) error` - 文件跳转读取错误：请与开发者联系
+    * `Hosts file version error` - Hosts 文件版本错误：请确认 Hosts 文件是否需要更新。注意，Windows/Linux/Mac版配置文件互不通用！
+    * `Data of a line is too long` - 该 Hosts 条目过长（可根据文件名和行数查找）：一行数据切勿超过4096字节/4KB
+    * `Item format error` - Hosts 条目格式错误（可根据报告的行数查找）：请检查该条目的格式
+    * `Data is too long when EDNS0 is available` - 开启EDNS0标签的情况下该 Hosts 条目过长：请检查 Hosts 的地址列表是否过长
+    * `Default TTL redefinition` - 默认生存时间重定义（可根据报告的行数查找）：以第一个出现的默认生存时间为准
+    * `Regular expression pattern error` - 错误的正则表达式（可根据报告的行数查找）：请检查正则表达式的正确性
+    * `Repeating items error, the item is not available` - 存在重复的 Hosts 条目（可根据报告的行数查找）：以第一个出现的 Hosts 条目为准
+    * `IPv6 Address format error` - Hosts的IPv6地址格式错误（可根据报告的行数查找）：请检查 Hosts 条目的地址
+    * `IPv4 Address format error` - Hosts的IPv4地址格式错误（可根据报告的行数查找）：请检查 Hosts 条目的地址
+    * `Too many Hosts IP addresses` - Hosts 条目的平行地址过多
 
 * `Winsock Error` - Windows Socket 错误
   * `Winsock initialization error` - Winsock初始化失败：请确认使用的操作系统平台是否受支持
