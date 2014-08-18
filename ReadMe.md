@@ -2,6 +2,7 @@
 * 访问 http://www.winpcap.org/install/default.htm 下载并**以管理员权限安装** WinPcap
     * **Release 版本压缩包中也提供有 WinPcap 的安装程序**
     * WinPcap 只需要安装一次，以后更新时请从第2步开始操作
+    * 如果 WinPcap 提示已安装旧版本无法继续时，参见 `FAQ` 中 `运行结果分析` 一节
     * 安装时自启动选项对工具的运行没有影响，因为本工具直接调用 WinPcap API，不需要经过服务器程序
 * 访问 https://github.com/chengr28/pcap_dnsproxy/tree/Release 并使用 GitHub 的 `Download ZIP` 功能将所有文件下载到本地
     * Windows 版本的 Pcap_DNSProxy 在 ZIP 的 Windows 目录内，可将整个目录单独抽出运行
@@ -20,6 +21,7 @@
         * 请先编辑配置文件的 `IPv6 DNS Address` 一栏，参见下文 配置文件详细参数说明 一节
         * 右击 `属性` - `Internet协议版本6(IPv6)` - `属性` - 勾选 `使用下面的DNS服务器地址`
         * 在 `首选DNS服务器` 内填入 `::1` 确定保存并退出即可
+   * 注意：建议将 `本地连接` 和 `无线连接` 以及 `宽带连接` 全部修改！
 
 ### 重启服务方法（**需要以管理员身份进行**）
 * **右键以管理员身份(Vista以及更新版本)或直接以管理员登录双击(XP/2003)运行** `ServiceStop.bat`
@@ -37,6 +39,11 @@
 * 将新版本的 Pcap_DNSProxy 解压到任何位置（亦即 `安装方法` 中第3步）
 * 将配置文件的自定义内容加回新版本配置文件里相应的区域内
 * 按照 `安装方法` 中第4步重新部署 Pcap_DNSProxy
+
+### 安全模式下的使用方法（**需要以管理员身份进行**）：
+程序具备在安全模式下运行的能力，在安全模式下右键以管理员身份直接运行程序
+* 直接运行模式有控制台窗口，关闭程序时直接关闭控制台窗口即可
+* 注意：直接运行可能会生成 `Service start error, ERROR_FAILED_SERVICE_CONTROLLER_CONNECT(The service process could not connect to the service controller).` 错误，因为程序是设计运行于系统服务模式，虽然也可直接运行但并不推荐
 
 ### 卸载方法（需要以管理员身份进行）：
 * 按照 `安装方法` 中第6步还原DNS域名服务器地址配置
@@ -65,32 +72,37 @@
 
 ### 注意事项
 * 如修改DNS服务器，请务必设置一个正确的、有效的、可以正常使用的境外DNS服务器！
-* 如果程序启动提示丢失 wpcap.dll 请重新安装 WinPcap 或者将其更新到最新版本
+* 关于 WinPacap
+  * 如果程序启动提示丢失 wpcap.dll 请重新安装 WinPcap 或者将其更新到最新版本
+  * 安装前注意系统是否已经安装过 WinPcap 建议不要重复安装
 * Linux/Mac 平台下读取文件名首字母大写优先级高于小写，Windows 平台下读取文件名时不存在大小写的区别
-* 配置文件/Hosts文件/IPFilter文件和错误报告所在的目录以上文 `安装方法` 一节中第4步注册的服务信息为准
-    * 注意填写时一行不要超过4096字节/4KB
+* 配置文件/Hosts文件/IPFilter文件和错误报告所在的目录以上文 安装方法 一节中第4步注册的服务信息为准
+  * 填写时一行不要超过4096字节/4KB
+  * 文件读取只支持整个文本单一的编码和换行格式组合，切勿在文本文件中混合所支持的编码或换行格式！
 * 服务启动前请先确认没有其它本地DNS服务器运行或本工具多个拷贝运行中，否则可能会导致监听冲突无法正常工作
-    * 监听冲突会生成错误报告，可留意 Windows Socket 相关的错误（参见 [FAQ 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/FAQ) 中 Error.log 详细错误报告 一节）
+  * 监听冲突会生成错误报告，可留意 Windows Socket 相关的错误（参见 `FAQ` 文档中 `Error.log 详细错误报告` 一节）
 * 杀毒软件/第三方防火墙可能会阻止本程序的操作，请将行为全部允许或将本程序加入到白名单中
-* 如果启动服务时提示 `服务没有及时响应启动或者控制请求` 请留意是否有错误报告生成，详细的错误信息参见 FAQ 文档](https://github.com/chengr28/pcap_dnsproxy/wiki/FAQ) 中 `Error.log 详细错误报告` 一节
+* 如果启动服务时提示 `服务没有及时响应启动或者控制请求` 请留意是否有错误报告生成，详细的错误信息参见 `FAQ` 文档中 `Error.log 详细错误报告` 一节
 * 目录和程序的名称可以随意更改，但请务必在进行安装方法第4步前完成。如果服务注册后需移动工具目录的路径，参见上文 `卸载方法` 第2步的注意事项
 * 由于本人水平有限，程序编写难免会出现差错疏漏，如有问题可至项目页面提出，望谅解 v_v
+
+-----
 
 ### 功能和技术
 * 批处理的作用（运行结束会有运行结果）：
     * ServiceInstall - 将程序注册为系统服务，并启动程序进行 Windows 防火墙测试
         * 运行结束时会显示 `Done. Please confirm the PcapDNSProxyService service had been installed.`
-	* 具体是否成功需要留意屏幕上的提示
+    * 具体是否成功需要留意屏幕上的提示
     * ServiceStart - 启动工具服务
         * 运行结束时会显示 `Done. Please confirm the PcapDNSProxyService service had been started.`
-	* 具体是否成功需要留意屏幕上的提示
+    * 具体是否成功需要留意屏幕上的提示
     * ServiceQuery - 适用于 Windows XP/2003 以及更旧版本Windows的测试批处理，能测试工具服务是否安装成功
     * ServiceStop - 即时停止工具服务，重启服务时需要先停止服务
         * 运行结束时会显示 `Done. Please confirm the PcapDNSProxyService service had been stopped.`
-	* 具体是否成功需要留意屏幕上的提示
+    * 具体是否成功需要留意屏幕上的提示
     * ServiceUninstall - 停止并卸载工具服务
         * 运行结束时会显示 `Done. Please confirm the PcapDNSProxyService service had been deleted.`
-	* 具体是否成功需要留意屏幕上的提示
+    * 具体是否成功需要留意屏幕上的提示
 * 配置文件支持的文件名（**只会读取优先级较高者，优先级较低者将被直接忽略**）：
     * Windows: `Config.ini` > `Config.conf` > `Config`
     * Linux/Mac: `Config.conf` > `Config.ini` > `Config`
@@ -121,32 +133,75 @@
 
 -----
 
+### 特别使用技巧
+这里罗列出部分作者建议的介绍和使用技巧，供大家参考和使用。关于调整配置，参见下文 `配置文件详细参数说明` 一节
+* 一个含有大部分境内域名的 `[Local Hosts]` 如有需要可直接添加到 Pcap_DNSProxy 的 Hosts 里，参见 Hosts 文件格式说明 一节
+    * https://xinhugo-list.googlecode.com/svn/trunk/White_List.txt
+    * 或者可以直接使用 Local Main 功能，将大部分的解析请求发往境内的DNS服务器，参见 `Local Main` 参数
+* DNS缓存类型
+    * Timer/计时型：可以自定义缓存的时间长度，队列长度不限
+    * Queue/队列型：默认缓存时间15分钟，可通过 Hosts 文件的 `Default TTL` 值自定义，同时可自定义缓存队列长度（亦即限制队列长度的 Timer/计时型）
+    * 强烈建议打开DNS缓存功能！
+* 本工具配置选项丰富，配置不同的组合会有不同的效果，介绍几个比较常用的组合：
+  * 默认配置：UDP 请求 + 抓包模式
+  * `Hosts Only = 1` 时：UDP 请求 + 直连模式，比抓包模式的系统资源占用低
+      * 此组合的过滤效果依靠黑名单，并不太可靠
+  * `Local Main = 1` 时：将大部分的解析请求发往境内的DNS服务器，遇到被污染的地址后切换到境外服务器进行解析
+      * 此组合的过滤效果依靠黑名单，并不太可靠
+  * `Protocol = TCP`：先TCP请求失败后再 UDP 请求 + 抓包模式，对网络资源的占用比较高
+      * 由于TCP请求大部分时候不会被投毒污染，此组合的过滤效果比较可靠
+  * 将目标服务器的请求端口改为非标准DNS端口：例如 OpenDNS 支持53标准端口和5353非标准端口的请求
+      * 非标准DNS端口现阶段尚未被干扰，此组合的过滤效果比较可靠
+  * `Multi Request Times = ××` 时：应用到所有除请求境内服务器外的所有请求，一个请求多次发送功能
+      * 此功能用于对抗网络丢包比较严重的情况，对系统和网络资源的占用都比较高，但在网络环境恶劣的情况下能提高获得解析结果的可靠性
+  * `DNSCurve = 1` 同时 Encryption = 0：使用 DNSCurve/DNSCrypt 非加密模式请求域名解析
+      * 此组合等于使用非标准DNS端口请求，但是多了一层标签识别使得可靠性很高，详细情况参见上文
+  * `DNSCurve = 1` 同时 Encryption = 1：使用 DNSCurve/DNSCrypt 加密模式请求域名解析
+      * 此组合加密传输所有域名请求，域名解析可靠性最高
+  * `DNSCurve = 1` 同时 Encryption = 1 同时 Encryption Only = 1：只使用 DNSCurve/DNSCrypt 加密模式请求域名解析
+      * 上文的加密组合并不阻止程序在请求 DNSCurve/DNSCrypt 加密模式失败是使用其它协议请求域名解析，开启 Encryption Only = 1 后将只允许使用加密传输，安全性和可靠性最高
+
+-----
 ### 配置文件详细参数说明
 有效参数格式为 **`选项名称 = 数值/数据`**（注意空格和等号的位置）<br />
 **注意：配置文件只会在工具服务开始时读取，修改本文件的参数后请重启服务（参见上文 `重启服务` 一节）**
 
 * `Base` - 基本参数区域
     * `Version` - 配置文件的版本，用于正确识别配置文件：本参数与程序版本号不相关，切勿修改，默认为发布时的最新配置文件版本
-    * `Print Error` - 错误报告功能：开启为1/关闭为0，默认为1
     * `File Refresh Time` - 文件刷新间隔时间：单位为秒，最短间隔时间为5秒，默认为10秒
     * `File Hash` - 文件 Hash 功能，开启此功能能降低刷新文件时的CPU占用：开启为1/关闭为0，默认为1
 
+* Log - 日志参数区域
+    * `Print Error` - 错误报告功能：开启为1/关闭为0，默认为1
+    * `Print Running Log` - 输出运行信息功能：开启为1/关闭为0，默认为1
+    * `Log Maximum Size` - 日志文件最大容量：直接填数字时单位为字节，可加上单位，支持的单位有KB/MB/GB，可接受范围为4KB - 4GB，如果留空则为8MB，默认为空
+        * 注意：日志文件到达最大容量后将被直接删除，然后重新生成新的日志文件，原来的日志将无法找回！
+
 * `DNS` - 域名解析参数区域
-    * `Protocol` - **发送请求所使用的协议，分 `UDP` 和 `TCP`**：默认为 UDP
+    * `Protocol` - **发送请求所使用的协议，分 `UDP` 和 `TCP`**：默认为 `UDP`
         * 注意：此处所指的协议指的是程序请求远程DNS服务器所使用的协议，而向本程序请求域名解析时可随意使用 UDP 或 TCP
-    * `Hosts Only` - Hosts Only 模式，启用后将不进行任何数据包过滤，只适用本工具的 Hosts 功能：开启为1/关闭为0，默认为0
+    * `Hosts Only` - Hosts Only 直连模式，启用后将使用系统直接请求远程服务器而启用只使用本工具的 Hosts 功能：开启为1/关闭为0，默认为0
+        * 注意：解析的结果是否会被投毒污染与使用的伪包过滤器有关，强烈建议将 `DNS Data Filter` 和 `Blacklist Filter` 过滤模块开启，启用这两个过滤模块后结果理论上将是没有被投毒污染的，否则会被投毒污染！
+    * `Local Main` - 主要境内服务器请求功能，开启后则平时使用 Local 的服务器进行解析，遇到遭投毒污染的解析结果时自动再向境外服务器请求
+        * 注意：解析的结果是否会被投毒污染与使用的伪包过滤器有关，强烈建议将 `DNS Data Filter` 和 `Blacklist Filter` 过滤模块开启，启用这两个过滤模块后结果理论上将是没有被投毒污染的，否则会被投毒污染！
     * `Cache Type` - DNS缓存的类型：分 `Timer`/计时型以及 `Queue`/队列型
     * `Cache Parameter` - DNS缓存的参数：`Timer`/计时型 时为时间长度，`Queue`/队列型 时为队列长度
+
+* `Listen` - 监听参数区域
+    * `Pcap Capture` - 抓包功能总开关，开启后抓包模块才能正常使用：开启为1/关闭为0，默认为1
     * `Operation Mode` - 程序的监听工作模式，分 `Server`/服务器模式、`Private`/私有网络模式 和 `Proxy`/代理模式：默认为 Private
         * `Server`/服务器模式：打开DNS通用端口（TCP/UDP同时打开），可为所有其它设备提供代理域名解析请求服务
-	* `Private`/私有网络模式：打开DNS通用端口（TCP/UDP同时打开），可为仅限于私有网络地址的设备提供代理域名解析请求服务
-	* `Proxy`/代理模式：只打开回环地址的DNS端口（TCP/UDP同时打开），只能为本机提供代理域名解析请求服务
-	* `Custom`/自定义模式：打开DNS通用端口（TCP/UDP同时打开），可用的地址由 IPFilter 参数决定
+        * `Private`/私有网络模式：打开DNS通用端口（TCP/UDP同时打开），可为仅限于私有网络地址的设备提供代理域名解析请求服务
+        * `Proxy`/代理模式：只打开回环地址的DNS端口（TCP/UDP同时打开），只能为本机提供代理域名解析请求服务
+        * `Custom`/自定义模式：打开DNS通用端口（TCP/UDP同时打开），可用的地址由 IPFilter 参数决定
+    * `Listen Protocol` - 监听协议，本地监听的协议：可填入 `IPv4` 和 `IPv6` 和 `IPv4 + IPv6`，默认为 `IPv4 + IPv6`
+        * 只填 `IPv4` 或 `IPv6` 时，只监听指定协议的本地端口
+        * `IPv4 + IPv6` 时同时监听两个协议的本地端口
     * `Listen Port` - 监听端口，本地监听请求的端口：可填入 1-65535 之间的端口，如果留空则为53，默认为空
     * `IPFilter Type` - IPFilter 参数的类型：分为 `Deny` 禁止和 `Permit` 允许，对应 IPFilter 参数应用为黑名单或白名单，默认为 Deny
     * `IPFilter Level` - IPFilter 参数的过滤级别，级别越高过滤越严格，与 IPFilter 条目相对应：0为不启用过滤，如果留空则为0，默认为空
-    * Accept Type - 禁止或只允许所列DNS类型的请求：格式为 "Deny:DNS记录的名称或ID(|DNS记录的名称或ID)" 或 "Permit:DNS记录的名称或ID(|DNS记录的名称或ID)"（不含引号，括号内为可选项目）
-    * 所有可用的DNS类型列表：
+    * `Accept Type` - 禁止或只允许所列DNS类型的请求：格式为 `Deny:DNS记录的名称或ID(|DNS记录的名称或ID)` 或 `Permit:DNS记录的名称或ID(|DNS记录的名称或ID)`（括号内为可选项目）
+        * 所有可用的DNS类型列表：
         * A/1
         * NS/2
         * CNAME/5
@@ -187,37 +242,66 @@
   
 * `Addresses` - 普通模式地址区域
     * `IPv4 DNS Address` - **IPv4主要DNS服务器地址：需要输入一个带端口格式的地址**，默认为 `8.8.4.4:53`(Google Public DNS No.2)
+        * 本参数支持同时请求多服务器的功能，开启后将同时向列表中的服务器请求解析域名，并采用最快回应的服务器的结果
+        * 使用同时请求多服务器格式为 `地址A:端口|地址B:端口|地址C:端口`
+        * 同时请求多服务器启用后将自动启用 `Alternate Multi Request` 参数（参见下文）
     * `IPv4 Alternate DNS Address` - IPv4备用DNS服务器地址：需要输入一个带端口格式的地址，默认为 `8.8.8.8:53`(Google Public DNS No.1)
+        * 本参数支持同时请求多服务器的功能，开启后将同时向列表中的服务器请求解析域名，并采用最快回应的服务器的结果
+        * 使用同时请求多服务器格式为 `地址A:端口|地址B:端口|地址C:端口`
+        * 同时请求多服务器启用后将自动启用 `Alternate Multi Request` 参数（参见下文）
     * `IPv4 Local DNS Address` - IPv4主要境内DNS服务器地址，用于境内域名解析：需要输入一个带端口格式的地址，默认为 `114.114.115.115:53`(114 DNS No.2)
     * `IPv4 Local Alternate DNS Address` - IPv4备用境内DNS服务器地址，用于境内域名解析：需要输入一个带端口格式的地址，默认为 `114.114.114.114:53`(114 DNS No.1)
     * `IPv6 DNS Address` - IPv6主要DNS服务器地址：需要输入一个带端口格式的地址，留空为不启用，默认为空
-        * IPv6的格式为 "[地址]:端口"（不含引号）
+        * IPv6的格式为 `[地址]:端口`
+        * 本参数支持同时请求多服务器的功能，开启后将同时向列表中的服务器请求解析域名，并采用最快回应的服务器的结果
+        * 使用同时请求多服务器格式为 `地址A:端口|地址B:端口|地址C:端口`
+        * 同时请求多服务器启用后将自动启用 `Alternate Multi Request` 参数（参见下文）
     * `IPv6 Alternate DNS Address` - IPv6备用DNS服务器地址：需要输入一个带端口格式的地址，留空为不启用，默认为空
-        * IPv6的格式为 "[地址]:端口"（不含引号）
+        * IPv6的格式为 `[地址]:端口`
+        * 本参数支持同时请求多服务器的功能，开启后将同时向列表中的服务器请求解析域名，并采用最快回应的服务器的结果
+        * 使用同时请求多服务器格式为 `地址A:端口|地址B:端口|地址C:端口`
+        * 同时请求多服务器启用后将自动启用 `Alternate Multi Request` 参数（参见下文）
     * `IPv6 Local DNS Address` - IPv6主要境内DNS服务器地址，用于境内域名解析：需要输入一个带端口格式的地址，留空为不启用，默认为空
-        * IPv6的格式为 "[地址]:端口"（不含引号）
+        * IPv6的格式为 `[地址]:端口`
     * `IPv6 Local Alternate DNS Address` - IPv6备用境内DNS服务器地址，用于境内域名解析：需要输入一个带端口格式的地址，留空为不启用，默认为空
-        * IPv6的格式为 "[地址]:端口"（不含引号）
+        * IPv6的格式为 `[地址]:端口`
 
 * `Values` - 扩展参数值区域
     * `EDNS0 Payload Size` - EDNS0 标签附带使用的最大载荷长度：最小为DNS协议实现要求的512(bytes)，留空则使用 EDNS0 标签要求最短的1220(bytes)，默认为留空
     * `IPv4 TTL` - IPv4主要DNS服务器接受请求的远程DNS服务器数据包的TTL值：0为自动获取，取值为 1-255 之间：默认为0
+        * 本参数支持同时请求多服务器的功能，与 `IPv4 DNS Address` 相对应
+        * 使用同时请求多服务器格式为 `TTL(A)|TTL(B)|TTL(C)`，也可直接默认（即只填一个0不是用此格式）则所有TTL都将由程序自动获取
+        * 使用时多TTL值所对应的顺序与 `IPv4 DNS Address` 中对应的地址顺序相同
     * `IPv6 Hop Limits` - IPv6主要DNS服务器接受请求的远程DNS服务器数据包的 Hop Limits 值：0为自动获取，取值为 1-255 之间，默认为0
+        * 本参数支持同时请求多服务器的功能，与 `IPv6 DNS Address` 相对应
+        * 使用同时请求多服务器格式为 `Hop Limits(A)|Hop Limits(B)|Hop Limits(C)`，也可直接默认（即只填一个0不是用此格式）则所有 Hop Limits 都将由程序自动获取
+        * 使用时多 Hop Limits 值所对应的顺序与 `IPv6 DNS Address` 中对应的地址顺序相同
     * `IPv4 Alternate TTL` - IPv4备用DNS服务器接受请求的远程DNS服务器数据包的TTL值：0为自动获取，取值为 1-255 之间：默认为0
+        * 本参数支持同时请求多服务器的功能，与 `IPv4 Alternate DNS Address` 相对应
+        * 使用同时请求多服务器格式为 `TTL(A)|TTL(B)|TTL(C)`，也可直接默认（即只填一个0不是用此格式）则所有TTL都将由程序自动获取
+        * 使用时多TTL值所对应的顺序与 `IPv4 Alternate DNS Address` 中对应的地址顺序相同
     * `IPv6 Alternate Hop Limits` - IPv6备用DNS服务器接受请求的远程DNS服务器数据包的 Hop Limits 值：0为自动获取，取值为 1-255 之间，默认为0
+        * 本参数支持同时请求多服务器的功能，与 `IPv6 Alternate DNS Address` 相对应
+        * 使用同时请求多服务器格式为 `Hop Limits(A)|Hop Limits(B)|Hop Limits(C)`，也可直接默认（即只填一个0不是用此格式）则所有 Hop Limits 都将由程序自动获取
+        * 使用时多 Hop Limits 值所对应的顺序与 `IPv6 Alternate DNS Address` 中对应的地址顺序相同
     * `Hop Limits Fluctuation` - IPv4 TTL/IPv6 Hop Limits 可接受范围，即 IPv4 TTL/IPv6 Hop Limits 的值±数值的范围内的数据包均可被接受，用于避免网络环境短暂变化造成解析失败的问题：取值为 1-255 之间，默认为2
     * `ICMP Test` - ICMP/Ping测试间隔时间：单位为秒，最短间隔时间为5秒，最长为5位数，默认为900秒/15分钟
     * `Domain Test` - DNS服务器解析域名测试间隔时间：单位为秒，最短间隔时间为5秒，最长为5位数，默认为900秒/15分钟
-    * `Alternate Times` - 备用服务器失败次数阈值，一定周期内如超出阈值会触发服务器切换：最小为10次，默认为10次
+    * `Alternate Times` - 备用服务器失败次数阈值，一定周期内如超出阈值会触发服务器切换：默认为5次
     * `Alternate Time Range` - 备用服务器失败次数阈值计算周期：单位为秒，默认为60秒/1分钟
-    * `Alternate Reset Time` - 备用服务器重置切换时间，切换产生后经过次事件会切换回主要服务器：单位为秒，默认为300秒/5分钟
+    * `Alternate Reset Time` - 备用服务器重置切换时间，切换产生后经过此事件会切换回主要服务器：单位为秒，默认为300秒/5分钟
+    * `Multi Request Times` - 接受一个域名请求后向同一个远程服务器发送多次域名解析请求：0为关闭，1时为收到一个请求时请求2次，2时为收到一个请求时请求3次……最大值为15，也就是最多可同时请求16次，默认为0
+    * 注意：此值将应用到 `Local Hosts` 外对所有远程服务器所有协议的请求，因此可能会对系统以及远程服务器造成压力，请谨慎考虑开启的风险！
+    * 一般除非丢包非常严重干扰正常使用否则不建议开启，开启也不建议将值设得太大。实际使用可以每次+1后重启服务测试效果，找到最合适的值
 
 * `Switches` - 控制开关区域
     * `Domain Case Conversion `- 域名大小写转换，随机转换域名请求的大小写：开启为1/关闭为0，默认为1
     * `EDNS0 Label` - EDNS0 标签支持，开启后将为所有请求添加 EDNS0 标签：开启为1/关闭为0，默认为0
     * `DNSSEC Request` - DNSSEC 请求，开启后将尝试为所有请求添加 DNSSEC 请求：开启为1/关闭为0，默认为0
-    * 注意：此功能为实验性质，本程序不具备任何验证 DNSSEC 回复的能力，单独开启此功能并不能避免DNS投毒污染的问题
-    * `IPv4 Data Filter` - IPv4数据包头检测：开启为1/关闭为0，默认为1
+        * 注意：此功能为实验性质，本程序不具备任何验证 DNSSEC 回复的能力，单独开启此功能并不能避免DNS投毒污染的问题
+    * `Alternate Multi Request` - 备用服务器同时请求参数，开启后将同时请求主要服务器和备用服务器并采用最快回应的服务器的结果：开启为1/关闭为0，默认为0
+    * 同时请求多服务器启用后本参数将强制启用，将同时请求所有存在于列表中的服务器，并采用最快回应的服务器的结果
+    * `IPv4 Data Filter` - IPv4数据包头检测：开启为1/关闭为0，默认为0
     * `TCP Data Filter` - TCP数据包头检测；开启为1/关闭为0，默认为1
         * 注意：此选项只能在程序工作模式为TCP下才能使用，非TCP模式时此参数无效
     * `DNS Data Filter` - DNS数据包头检测：开启为1/关闭为0，默认为1
@@ -318,8 +402,8 @@
 ###### 例如有一个 [Hosts] 下有效数据区域：
     127.0.0.1|127.0.0.2|127.0.0.3 .*\.test\.localhost
     127.0.0.4|127.0.0.5|127.0.0.6 .*\.localhost
-    ::1|::2|::3	.*\.test.localhost
-    ::4|::5|::6	.*\.localhost
+    ::1|::2|::3    .*\.test.localhost
+    ::4|::5|::6    .*\.localhost
 
 ###### 虽然 `.*\.localhost` 包含了 `.*\.test\.localhost` 但是由于优先级别自上而下递减，故先命中 `.*\.test\.localhost` 并直接返回，不会再进行其它检查
     请求解析 xxx.localhost 的A记录（IPv4）会返回 127.0.0.4、127.0.0.5和127.0.0.6
@@ -338,6 +422,31 @@
     .*\.localhost
 
 ###### 即所有符合以上正则表达式的域名请求都将使用境内DNS服务器解析
+
+### Stop - 临时停止读取标签
+在需要停止读取的数据前添加 `[Stop]` 标签即可在中途停止对文件的读取，直到有其它标签时再重新开始读取
+  * 例如有一片数据区域：<br />
+
+    `[Hosts]`<br />
+    `127.0.0.1|127.0.0.2|127.0.0.3 .*\.test\.localhost`<br />
+    `[Stop]`<br />
+    `127.0.0.4|127.0.0.5|127.0.0.6 .*\.localhost`<br />
+    `::1|::2|::3	.*\.test\.localhost`<br />
+    `::4|::5|::6	.*\.localhost`<br />
+
+    `[Local Hosts]`<br />
+    `.*\.test\.localhost`<br />
+    `.*\.localhost`<br />
+
+  * 则从 `[Stop]` 一行开始，下面到 `[Local Hosts]` 之间的数据都将不会被读取
+  * 即实际有效的数据区域是：<br />
+
+    `[Hosts]`<br />
+    `127.0.0.1|127.0.0.2|127.0.0.3 .*\.test\.localhost`<br />
+
+    `[Local Hosts]`<br />
+    `.*\.test\.localhost`<br />
+    `.*\.localhost`<br />
 
 -----
 
