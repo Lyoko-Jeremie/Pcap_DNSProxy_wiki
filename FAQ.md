@@ -70,6 +70,8 @@
     * `Service start error` - 服务启动失败：可能未在系统注册服务，或在系统内注册的服务路径不正确
 	* 详细情况参见 ReadMe 文档中 安装方法 一节
 	* 其它错误代码原因参见 http://msdn.microsoft.com/en-us/library/windows/desktop/ms686324(v=vs.85).aspx
+    * `Old Error Log file deleted` - 日志文件已满并被删除
+        * 日志文件最大容量的配置参见 `详细说明文档` 中 `配置文件详细参数说明` 中的 `Log Maximum Size` 参数
  
 * `Parameter Error` - 读取配置文件参数错误
     * `Cannot open any configuration files` - 没有发现任何配置文件：请确认文件是否存在
@@ -80,6 +82,7 @@
     * `Configuration file is not the latest version` - 配置文件非最新版本：请确认配置文件是否需要更新。
     * `Data of a line is too long` - 该参数过长（可根据文件名和行数查找）：一行数据切勿超过4096字节/4KB
     * `Log file size error` - 配置文件指定的最大Log文件容量错误：可接受范围为4KB - 4GB
+    * `Pcap Capture error` - 抓包模块参数错误：请确定关闭抓包模块时是否有开启其它请求域名解析的方式
     * `DNS server IPv6 Port error` - IPv6的DNS目标服务器端口错误（可根据文件名和行数查找）：请检查目标服务器的端口
     * `DNS server IPv6 Address format error` - IPv6的DNS服务器地址格式错误（可根据文件名和行数查找）：请检查IPv6的DNS服务器地址
     * `DNS server IPv4 Port error` - IPv4的DNS目标服务器端口错误（可根据文件名和行数查找）：请检查目标服务器的端口
