@@ -1,8 +1,22 @@
 本文档为常见问题的处理方法，当工具无法正常使用时可先参考本文档寻找解决方法
 
 ### 运行结果分析
+* WinPcap 提示已安装旧版本无法继续：
+    * 到安装和卸载程序、运行菜单或 %PROGRAMFILES(x86)%(64位系统)/%PROGRAMFILES%(32位系统) 寻找 WinPcap 的卸载程序
+    * 如果找不到卸载程序，则可能需要进入安全模式删除 WinPcap 的所有文件然后重新安装：
+        * %WINDIR%\system32\Packet.dll
+        * %WINDIR%\system32\drivers\npf.sys
+        * %WINDIR%\system32\WanPacket.dll
+        * %WINDIR%\system32\wpcap.dll
+        * %WINDIR%\system32\pthreadVC.dll
+
 * 安装或运行服务时出现：
-  * `Require Administrator Permission` - 请以管理员权限运行
+    * `Require Administrator Permission` - 请以管理员权限运行
+    * `The file(s) may be damaged or corrupt! Please download all files again, also you can skip this check. Are you sure you want to continue install service [Y/N]?`
+        * 意思是文件的 SHA-1 检查验证失败，意味着程序可能在下载或解压途中被损坏
+        * 确保 bat 批处理都是最新版本
+        * 如果修改或更新过程序，确认程序是没有损坏的，请输入 Y 跳过检查继续安装或运行服务
+        * 否则请重新下载程序
   * `服务没有及时响应启动或控制请求` - 请检查是否有错误报告生成，详细情况参见下文 Error.log 详细错误报告 一节
 
 * 正常的运行结果应类似：
@@ -74,13 +88,14 @@
     * `IPFilter Level error` - IPFilter 过滤级别错误：请检查过滤级别的值，可适用范围为 1 - 65535
     * `DNS Cache error` - DNS缓存配置错误：请检查缓存的参数
     * `DNS Targets error` - DNS目标服务器配置错误：请检查DNS服务器的地址
+    * `Local Main error` - 主要境内服务器请求功能错误：请检查境内服务器是否可用
     * `DNS Records type error` - DNS记录参数错误：请检查 Accept Type 的值是否符合要求
     * `Hop Limit or TTL Fluctuations error` - Hop Limit 或 TTL 可接受范围错误：请检查范围的值
     * `EDNS0 PayloadSize must longer than 512 bytes(Old DNS packets minimum supported size)` - EDNS0载荷长度过短：实现DNS协议必须支持长度超过 512 bytes 的数据包
     * `EDNS0 PayloadSize may be too long` - EDNS0载荷长度可能过长：此值建议不要超过以太网的MTU(1512 bytes)
     * `EDNS0 Label must trun ON when request DNSSEC` - 开启DNSSEC请求时必须开启EDNS0标签请求功能
-    * `Alternate Multi requesting error` - 主要备用服务器同时请求参数错误 - 请确认备用服务器的信息
-    * `Multi requesting times error` - 多次请求参数错误 - 一次的多次请求次数不能超过8次
+    * `Alternate Multi requesting error` - 主要备用或多个服务器下同时请求参数错误：请确认所有服务器的信息
+    * `Multi requesting times error` - 接收到一个解析请求向同一个远程服务器发送多次解析请求参数错误 ：一个解析请求的多次解析请求次数不能超过16次，也就是配置文件不能填大于15的值
     * `DNSCurve Targets error` - DNSCurve 协议使用的DNS目标服务器地址错误：请检查 DNSCurve 协议使用DNS服务器的地址
     * `DNSCurve encryption options error` - DNSCurve 协议加密选项配置错误：开启加密选项和只使用加密模式选项冲突
     * `DNSCurve Encryption Only mode error` - DNSCurve 协议只使用加密模式配置错误：只使用加密模式必须提供服务器的魔数和指纹
@@ -140,6 +155,7 @@
   * `DNSCurve Local Signature request error` - DNSCurve 协议本地请求发送失败：可能为网络错误，具体原因可参见错误代码
   * `Set UDP socket timeout error` - 设置UDP请求套接字超时时间错误：具体原因可参见错误代码
   * `Set Complete UDP socket timeout error` - 设置UDP请求套接字超时时间错误：具体原因可参见错误代码
+  * `Set UDP socket SIO_UDP_CONNRESET error` - 设置UDP套接字屏蔽 `ICMP Port Unreachable` 信息错误：具体原因可参见错误代码
   * `Set TCP socket timeout error` - 设置TCP请求套接字超时时间错误：具体原因可参见错误代码
   * `Set ICMP socket timeout error` - 设置ICMP请求套接字超时时间错误：具体原因可参见错误代码
   * `ICMP Echo(Ping) request error` - ICMP/Ping 请求错误：可能为网络错误，具体原因可参见错误代码
