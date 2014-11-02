@@ -1,7 +1,7 @@
 **Pcap_DNSProxy v0.4 Beta(Windows)/v0.3(Linux)/v0.2(Mac) 更新日誌(2014-11-02)：**
 * 添加對 `Streamlined/精簡` 格式 DNSCurve/DNSCrypt 協定的支援
     * 提供隨機 `Curve25519/Salsa20/Poly1305(DNSCurve)` 金鑰組生成程式 KeyPairGenerator v0.1
-* 添加緩存DNS回復包的功能
+* 添加緩存 DNS 回復包的功能
 * 添加切換待命伺服器，提供主要伺服器和待命伺服器自動切換的功能
     * 可自訂切換的條件（請求失敗次數、失敗次數計數週期、重置切換的時間長度）
 * 添加 `Local Main` 主要境內伺服器請求功能
@@ -49,8 +49,8 @@
 * 調整請求/接受通訊端的超時時間
 * 調整請求本地DNS伺服器由抓包模式到直連模式，加快回應速度降低資源佔用
 * 調整 `IPv4 Data Filter/IPv4資料包篩檢程式` 預設為關閉
-* 調整ICMP和隨機功能變數名稱請求模組的編號和序號建置規則
-* 調整ICMP附加資料限制長度最長到 1484 bytes(Ethernet MTU - IPv4 Standard Header - ICMP Header)
+* 調整 ICMP 和隨機功能變數名稱請求模組的編號和序號建置規則
+* 調整 ICMP 附加資料限制長度最長到 1484 bytes(Ethernet MTU - IPv4 Standard Header - ICMP Header)
 * 調整隨機功能變數名稱生成模組，使用 C++ STL 提供的梅森旋轉演算法引擎產生離散型均勻分佈的隨機功能變數名稱
 * 調整內置預設本機伺服器名稱為 `pcap-dnsproxy.localhost.server` 以遵循網域名稱系統的標準
 * 調整記憶體分配策略（標準乙太網MTU長度、資料包緩衝區長度和STL標準庫調用）減少資源佔用
@@ -86,46 +86,46 @@
 
 **Pcap_DNSProxy v0.3.2(Windows)/v0.2(Linux)/v0.1(Mac) 更新日誌：**<br />
 * Pcap_DNSProxy v0.1 Mac Release 正式發佈！
-* 提供可用於x86和x64環境的可執行檔(Linux)
-* 啟用對Ethernet設備的識別(Linux)
-* 修復在錯誤使用低許可權運行程式可能造成的Bug
-* 修復在部分情況下錯誤建置錯誤報告的Bug(Linux)
+* 提供可用於 x86 和 x64 環境的可執行檔(Linux)
+* 啟用對 `Ethernet` 設備的識別(Linux)
+* 修復在錯誤使用低許可權運行程式可能造成的 Bug
+* 修復在部分情況下錯誤建置錯誤報告的 Bug(Linux)
 * 修正說明文檔的錯誤操作(Linux)
 
 ---
 
 **Pcap_DNSProxy v0.3.1(Windows)/v0.1(Linux) 更新日誌：**<br />
 * Pcap_DNSProxy v0.1 Linux Release 正式發佈！
-* 剝離並更新IPv4/IPv6保留地址清單過濾模組(Windows)
+* 剝離並更新 IPv4/IPv6 保留地址清單過濾模組(Windows)
    * 升級解析結果黑名單位址過濾功能
-   * 修復本地IPv6位址獲取功能的Bug
-   * 修復自動刷新本地位址的Bug
-* 修復本地可郵寄地址識別錯誤的Bug(Windows)
+   * 修復本地 IPv6 位址獲取功能的 Bug
+   * 修復自動刷新本地位址的 Bug
+* 修復本地可郵寄地址識別錯誤的 Bug(Windows)
 
 ---
 
 **Pcap_DNSProxy v0.3 更新日誌：**<br />
 * 32位/x86版本使用 `WSAAddressToString()` 和 `WSAStringToAddress()` 替代 `inet_ntop()` 和 `inet_pton()` 以支援 Windows XP 以及更舊的系統 [Roy Tam]
 * 添加對固定清單功能變數名稱請求境內功能變數名稱解析伺服器的功能 [陈斐]
-* 為Windows防火牆測試添加IPv6版本支援
-* INI版本和Hosts版本更新至0.3
+* 為 Windows 防火牆測試添加 IPv6 版本支援
+* INI 版本和 Hosts 版本更新至 0.3
     * 為設定檔添加版本檢測功能
-    * 為Hosts添加白名單功能
+    * 為 Hosts 添加白名單功能
 * 更新設定檔讀取模組
-    * 修復部分編碼/換行格式下錯誤輸出行數至錯誤報表的Bug
-    * 修復Hosts檔一定情況下錯誤識別注釋的Bug
+    * 修復部分編碼/換行格式下錯誤輸出行數至錯誤報表的 Bug
+    * 修復 Hosts 檔一定情況下錯誤識別注釋的 Bug
     * 增強對不同換行格式的識別
-* 修復ICMP(v6)/Ping測試模組的Bug
-* 修復白名單功能變數名稱請求測試在TCP模式下被禁用的Bug
-* 修復WinPcap抓取資料包執行緒退出後可能導致的記憶體洩漏問題
-* 注釋 Console 和部分 Ethernet 的調試代碼
-* 原始程式碼全部轉為 USC-2(Little-Endian) 編碼，Dos\Windows檔案格式
+* 修復 ICMP(v6)/Ping 測試模組的 Bug
+* 修復白名單功能變數名稱請求測試在TCP模式下被禁用的 Bug
+* 修復 WinPcap 抓取資料包執行緒退出後可能導致的記憶體洩漏問題
+* 注釋 Console 和部分 `Ethernet` 的調試代碼
+* 原始程式碼全部轉為 `USC-2(Little-Endian)` 編碼和 `Dos\Windows` 檔案格式
 
 ---
 
 **Pcap_DNSProxy v0.2 更新日誌：**<br />
-* 重寫編碼讀取模組，新增支援 Macintosh 換行格式
-* 修復無法在 PPPoE 環境下使用的Bug
+* 重寫編碼讀取模組，新增支援 ·Macintosh· 換行格式
+* 修復無法在 PPPoE 環境下使用的 Bug
 * 使用C語言標準庫傳回值
 * 巨集定義錯誤報表類型
 
