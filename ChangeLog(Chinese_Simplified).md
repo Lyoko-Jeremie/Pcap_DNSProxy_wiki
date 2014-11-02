@@ -32,17 +32,17 @@
     * 支持的一行最大长度增到 4KB/4096 bytes
     * 添加新的单行和多行注释格式支持
     *  使用指定端口时添加对服务名称的支持：`TCPMUX|ECHO|DISCARD|SYSTAT|DAYTIME|NETSTAT|QOTD|MSP|CHARGEN|FTP|SSH|TELNET|SMTP|TIME|RAP|RLP|NAME|WHOIS|TACACS|DNS|XNSAUTH|MTP|BOOTPS|BOOTPC|TFTP|RJE|FINGER|TTYLINK|SUPDUP|SUNRPC|SQL|NTP|EPMAP|NETBIOSNS|NETBIOSDGM|NETBIOSSSN|IMAP|BFTP|SGMP|SQLSRV|DMSP|SNMP|SNMPTRAP|ATRTMP|ATHBP|QMTP|IPX|IMAP|IMAP3|BGMP|TSP|IMMP|ODMR|RPC2PORTMAP|CLEARCASE|HPALARMMGR|ARNS|AURP|LDAP|UPS|SLP|SNPP|MICROSOFTDS|KPASSWD|TCPNETHASPSRV|RETROSPECT|ISAKMP|BIFFUDP|WHOSERVER|SYSLOG|ROUTERSERVER|NCP|COURIER|COMMERCE|RTSP|NNTP|HTTPRPCEPMAP|IPP|LDAPS|MSDP|AODV|FTPSDATA|FTPS|NAS|TELNETS`
-  * 为 Hosts 文件添加 CSV/逗号分隔值 格式的支持
-  * 添加 `BANNED 正则表达式` 语法直接返回域名查找失败信息，用于快速屏蔽域名
-  * URI 标准化 IPv6 地址格式，IP(v4/v6) 地址格式更改为带端口格式
-  * 支持部分非标准的缩略 IPv4/IPv6 地址格式（但不建议使用）
-  * 添加自定义 Hosts 生存时间的功能
-  * 支持检查文件大小的功能
-  * 为 Hosts 文件和 IPFilter 数据库监视模块添加 `Keccak/SHA-3_512(FIPS 202 Draft, April 2014)` 散列算法特征检测，在数据量较大时可降低监视时的CPU资源占用
-  * 为 Hosts 数据库添加排序的功能，避免因为错误的顺序造成问题
-  * 在开启散列算法特征检测文件改变的情况下，自动更新 Hosts 列表时将自动清空系统 DNS 缓存(Windows)
-  * 重写文本文件编码读取模块，支持混合换行格式编码（但不建议使用）
-  * 可兼容 v0.3 以前的文件版本，但强烈建议升级为当前版本 v0.4
+    * 为 Hosts 文件添加 CSV/逗号分隔值 格式的支持
+    * 添加 `BANNED 正则表达式` 语法直接返回域名查找失败信息，用于快速屏蔽域名
+    * URI 标准化 IPv6 地址格式，IP(v4/v6) 地址格式更改为带端口格式
+    * 支持部分非标准的缩略 IPv4/IPv6 地址格式（但不建议使用）
+    * 添加自定义 Hosts 生存时间的功能
+    * 支持检查文件大小的功能
+    * 为 Hosts 文件和 IPFilter 数据库监视模块添加 `Keccak/SHA-3_512(FIPS 202 Draft, April 2014)` 散列算法特征检测，在数据量较大时可降低监视时的CPU资源占用
+    * 为 Hosts 数据库添加排序的功能，避免因为错误的顺序造成问题
+    * 在开启散列算法特征检测文件改变的情况下，自动更新 Hosts 列表时将自动清空系统 DNS 缓存(Windows)
+    * 重写文本文件编码读取模块，支持混合换行格式编码（但不建议使用）
+    * 可兼容 v0.3 以前的文件版本，但强烈建议升级为当前版本 v0.4
 * 添加新的防火墙测试模块(Windows)
 * 添加窗口模式以支持在安全模式下的运行(Windows)
 * 错误报告在窗口模式下现在会实时显示
@@ -60,8 +60,8 @@
 * 改进首次启动时进行的防火墙测试模块(Windows)
 * 改进无法找到或禁用重启网络适配器后自动重试的功能(Windows)
 * 移除生成错误报告
-  * 找不到 Hosts 文件时
-  * Windows XP 系统下不支持IPv6时
+    * 找不到 Hosts 文件时
+    * Windows XP 系统下不支持IPv6时
 * 修复超过额定长度（本次更新前为2KB）的文件读取能会造成的错误
 * 修复 UDP 协议下过早关闭端口造成系统发送 `ICMP(v6) Port Unreachable` 端口不可到达信息的错误
 * 修复 TCP 协议下因为远程服务器无响应而造成的过长时间不回应请求的错误
@@ -78,17 +78,16 @@
 * 在非管理员权限下运行批处理无法修改系统服务信息的错误现在将有提醒(Windows) [Haruyuki Arita/Hugo Chan/Ryans233/watchingyoufall]
 * 使用 Microsoft 的 `File Checksum Integrity Verifier` 的 SHA-1 算法，下载或解压出错导致文件损坏现在将有提醒(Windows) [Hugo Chan]
 * 修复 Makefile 的错误(Linux) [otakuchiyan]
-* 源代码现在开始将使用 UTF-8 编码(Windows)
+* 源代码现在开始将使用 `UTF-8` 编码(Windows)
 * 项目升级到 Visual Studio 2013(Windows)
 * 修复在IPv6环境下抓取来自境内域名解析服务器回复包的错误，但此功能在新版已被移除，特此公告 [David Webb/eqielb]
 
 ---
 
 **Pcap_DNSProxy v0.3.2(Windows)/v0.2(Linux)/v0.1(Mac) 更新日志：**<br />
-
 * Pcap_DNSProxy v0.1 Mac Release 正式发布！
-* 提供可用于x86和x64环境的可执行文件(Linux)
-* 启用对Ethernet设备的识别(Linux)
+* 提供可用于 x86 和 x64 环境的可执行文件(Linux)
+* 启用对 `Ethernet` 设备的识别(Linux)
 * 修复在错误使用低权限运行程序可能造成的Bug
 * 修复在部分情况下错误生成错误报告的Bug(Linux)
 * 修正说明文档的错误操作(Linux)
@@ -97,35 +96,35 @@
 
 **Pcap_DNSProxy v0.3.1(Windows)/v0.1(Linux) 更新日志：**<br />
 * Pcap_DNSProxy v0.1 Linux Release 正式发布！
-* 剥离并更新IPv4/IPv6保留地址列表过滤模块(Windows)
-  * 升级解析结果黑名单地址过滤功能
-  * 修复本地IPv6地址获取功能的Bug
-  * 修复自动刷新本地地址的Bug
-* 修复本地可通讯地址识别错误的Bug(Windows)
+* 剥离并更新 IPv4/IPv6 保留地址列表过滤模块(Windows)
+    * 升级解析结果黑名单地址过滤功能
+    * 修复本地 IPv6 地址获取功能的 Bug
+    * 修复自动刷新本地地址的 Bug
+* 修复本地可通讯地址识别错误的 Bug(Windows)
 
 ---
 
 **Pcap_DNSProxy v0.3 更新日志：**<br />
-* 32位/x86版本使用 WSAAddressToString() 和 WSAStringToAddress() 替代 inet_ntop() 和 inet_pton() 以支持 Windows XP 以及更旧的系统 [Roy Tam]
+* 32位/x86版本使用 `WSAAddressToString()` 和 `WSAStringToAddress()` 替代 `inet_ntop()` 和 `inet_pton()` 以支持 Windows XP 以及更旧的系统 [Roy Tam]
 * 添加对固定列表域名请求境内域名解析服务器的功能 [陈斐]
-* 为Windows防火墙测试添加IPv6版本支持
-* INI版本和Hosts版本更新至0.3
-  * 为配置文件添加版本检测功能
-  * 为Hosts添加白名单功能
+* 为 Windows 防火墙测试添加IPv6版本支持
+* INI 版本和 Hosts 版本更新至0.3
+    * 为配置文件添加版本检测功能
+    * 为 Hosts 添加白名单功能
 * 更新配置文件读取模块
-  * 修复部分编码/换行格式下错误输出行数至错误报告的Bug
-  * 修复Hosts文件一定情况下错误识别注释的Bug
-  * 增强对不同换行格式的识别
-* 修复ICMP(v6)/Ping测试模块的Bug
-* 修复白名单域名请求测试在TCP模式下被禁用的Bug
-* 修复WinPcap抓取数据包线程退出后可能导致的内存泄漏问题
-* 注释 Console 和部分 Ethernet 的调试代码
-* 源代码全部转为 USC-2(Little-Endian) 编码，Dos\Windows档案格式
+    * 修复部分编码/换行格式下错误输出行数至错误报告的 Bug
+    * 修复 Hosts 文件一定情况下错误识别注释的 Bug
+    * 增强对不同换行格式的识别
+* 修复 ICMP(v6)/Ping 测试模块的 Bug
+* 修复白名单域名请求测试在 TCP 模式下被禁用的Bug
+* 修复 WinPcap 抓取数据包线程退出后可能导致的内存泄漏问题
+* 注释 Console 和部分 `Ethernet` 的调试代码
+* 源代码全部转为 ·USC-2(Little-Endian)· 编码和 `Dos\Windows` 档案格式
 
 ---
 
 **Pcap_DNSProxy v0.2 更新日志：**<br />
-* 重写编码读取模块，新增支持 Macintosh 换行格式
+* 重写编码读取模块，新增支持 `Macintosh` 换行格式
 * 修复无法在 PPPoE 环境下使用的Bug
 * 使用C语言标准库返回值
 * 宏定义错误报告类型
