@@ -358,9 +358,139 @@
     * `IPv6 Receive Magic Number` - DNSCurve 協定IPv6主要DNS伺服器接收魔數：長度必須為8位元組，留空則使用程式內置的接收魔數，預設留空
     * `IPv6 Alternate Receive Magic Number` - DNSCurve 協定IPv6備用DNS伺服器接收魔數：長度必須為8位元組，留空則使用程式內置的接收魔數，預設留空
     * `IPv4 DNS Magic Number` - DNSCurve 協定IPv4主要DNS伺服器發送魔數：長度必須為8位元組，留空則自動獲取，預設留空
-    * `IPv4 Alternate DNS Magic Number - DNSCurve 協定IPv4備用DNS伺服器發送魔數：長度必須為8位元組，留空則自動獲取，預設留空
+    * `IPv4 Alternate DNS Magic Number` - DNSCurve 協定IPv4備用DNS伺服器發送魔數：長度必須為8位元組，留空則自動獲取，預設留空
     * `IPv6 DNS Magic Number` - 協定IPv6主要DNS伺服器發送魔數：長度必須為8位元組，留空則自動獲取，預設留空
     * `IPv6 Alternate DNS Magic Number` - DNSCurve 協定IPv6備用DNS伺服器發送魔數：長度必須為8位元組，留空則自動獲取，預設留空
 
 -----
 
+### Hosts 檔案格式說明
+**Hosts設定檔分為`Base`/基本區域、`Hosts`/主要Hosts清單 和 `Local Hosts`/境內DNS解析功能變數名稱清單 三個區域**<br />
+* 部分區域通過標籤識別，修改時切勿將其刪除
+* 優先順序：Local Hosts/境內DNS解析功能變數名稱清單 > Hosts/主要Hosts清單，Whitelist/白名單條目 和 Banned/黑名單條目 的優先順序由位置決定，參見下文詳細說明
+* 一條條目的總長度切勿超過4096位元組/4KB
+* 需要注釋請在條目開頭添加 #/井號
+* 優先順序別自上而下遞減，條目越前優先順序越高
+* 平行 Hosts 條目支援數量由請求功能變數名稱以及 EDNS0 Payload 長度決定，建議不要超過70個A記錄或40個AAAA記錄
+
+#### `Base` - 基本參數區域
+    * `Version` - 設定檔的版本，用於正確識別 Hosts 檔：本參數與程式版本號不相關，切勿修改，預設為發佈時的最新設定檔版本
+    * `Default TTL` - Hosts 條目預設存留時間：單位為秒，留空則為900秒/15分鐘，預設為空
+
+#### `Whitelist` - 白名單條目
+**此類型的條目列出的符合要求的功能變數名稱會直接繞過Hosts，不會使用Hosts功能**<br />
+**直接在條目前添加 `Null` 即可，有效參數格式為 `Null 正則運算式`**<br />
+###### 注意優先順序的問題，例如有一片含白名單條目的區域：<br />
+    NULL .*\.test\.localhost
+    127.0.0.1|127.0.0.2|127.0.0.3 .*\.localhost
+
+###### 雖然 `.*\.localhost` 包含了 `.*\.test\.localhost` 但由於優先順序別自上而下遞減，故先命中 `.*\.test\.localhost` 並返回使用遠端伺服器解析，從而繞過了下面的條目不使用Hosts的功能
+
+#### `Banned` - 黑名單條目
+**此類型的條目列出的符合要求的功能變數名稱會直接返回功能變數名稱不存在的功能，避免重定向導致的超時問題**<br />
+**直接在條目前添加 `Banned` 即可，有效參數格式為 `Banned 正則運算式`**<br />
+###### 注意優先順序的問題，例如有一片含黑名單條目的區域：<br />
+    Banned .*\.test\.localhost
+    127.0.0.1|127.0.0.2|127.0.0.3 .*\.localhost
+
+###### 雖然 `.*\.localhost` 包含了 `.*\.test\.localhost` 但由於優先順序別自上而下遞減，故先命中 `.*\.test\.localhost` 並直接返回功能變數名稱不存在，從而繞過了下面的條目，達到遮罩功能變數名稱的目的
+
+#### `Hosts` - 主要Hosts清單
+**有效參數格式為 `位址(|位址A|位址B) 功能變數名稱的正則運算式`（括弧內為可選項目，注意間隔所在的位置）**<br />
+* 位址與正則運算式之間的間隔字元可為Space/半形空格或者HT/水準定位符號，間隔長度不限，但切勿輸入全形空格
+* 一條條目只能接受一種網址類別型（IPv4/IPv6），如有同一個功能變數名稱需要同時進行IPv4/IPv6的Hosts，請分為兩個條目輸入
+* 平行位址原理為一次返回多個記錄，而具體使用哪個記錄則由要求者決定，一般為第1個<br />
+
+###### 例如有一個 [Hosts] 下有效資料區域：
+    127.0.0.1|127.0.0.2|127.0.0.3 .*\.test\.localhost
+    127.0.0.4|127.0.0.5|127.0.0.6 .*\.localhost
+    ::1|::2|::3    .*\.test.localhost
+    ::4|::5|::6    .*\.localhost
+
+###### 雖然 `.*\.localhost` 包含了 `.*\.test\.localhost` 但是由於優先順序別自上而下遞減，故先命中 `.*\.test\.localhost` 並直接返回，不會再進行其它檢查
+    請求解析 xxx.localhost 的A記錄（IPv4）會返回 127.0.0.4、127.0.0.5和127.0.0.6
+    請求解析 xxx.localhost 的AAAA記錄（IPv6）會返回 ::4、::5和::6
+    請求解析 xxx.test.localhost 的A記錄（IPv4）會返回 127.0.0.1、127.0.0.2和127.0.0.3
+    請求解析 xxx.test.localhost 的AAAA記錄（IPv6）會返回 ::1、::2和::3
+
+#### `Local Hosts` - 境內DNS解析功能變數名稱清單
+本區域資料用於為功能變數名稱使用境內DNS伺服器解析提高存取速度，使用時請確認境內DNS伺服器位址不為空（參見上文 設定檔詳細參數說明 一節）<br />
+**有效參數格式為 `功能變數名稱的正則運算式`**<br />
+* 本功能不會對境內DNS伺服器回復進行任何過濾，請確認本區域填入的資料不會受到DNS投毒污染干擾<br />
+
+###### 例如有一個 [Local Hosts] 下有效資料區域：<br />
+
+    .*\.test\.localhost
+    .*\.localhost
+
+###### 即所有符合以上正則運算式的功能變數名稱請求都將使用境內DNS伺服器解析
+
+### Stop - 臨時停止讀取標籤
+在需要停止讀取的資料前添加 `[Stop]` 標籤即可在中途停止對檔的讀取，直到有其它標籤時再重新開始讀取
+    * 例如有一片資料區域：<br />
+
+    [Hosts]<br />
+    127.0.0.1|127.0.0.2|127.0.0.3 .*\.test\.localhost<br />
+    [Stop]<br />
+    127.0.0.4|127.0.0.5|127.0.0.6 .*\.localhost<br />
+    ::1|::2|::3	.*\.test\.localhost<br />
+    ::4|::5|::6	.*\.localhost<br />
+
+    [Local Hosts]<br />
+    .*\.test\.localhost<br />
+    .*\.localhost<br />
+
+* 則從 `[Stop]` 一行開始，下面到 `[Local Hosts]` 之間的資料都將不會被讀取
+* 即實際有效的資料區域是：<br />
+
+    `[Hosts]`<br />
+    `127.0.0.1|127.0.0.2|127.0.0.3 .*\.test\.localhost`<br />
+
+    `[Local Hosts]`<br />
+    `.*\.test\.localhost`<br />
+    `.*\.localhost`<br />
+
+-----
+
+### IPFilter 檔案格式說明
+IPFilter 設定檔分為 Blacklist/黑名單區域 和 IPFilter/位址過濾區域
+* 區域通過標籤識別，修改時切勿將其刪除
+* 一條條目的總長度切勿超過4096位元組/4KB
+* 需要注釋請在條目開頭添加 #/井號
+
+#### Blacklist - 黑名單區域
+當 `Blacklist Filter` 為開啟時，將檢查本清單功能變數名稱與解析結果，如果解析結果裡含有與功能變數名稱對應的黑名單位址，則會直接丟棄此解析結果<br />
+有效參數格式為 `位址(|位址A|位址B) 功能變數名稱的正則運算式`（括弧內為可選項目，注意間隔所在的位置）<br />
+* 位址與正則運算式之間的間隔字元可為Space/半形空格或者HT/水準定位符號，間隔長度不限，但切勿輸入全形空格
+* 一條條目只能接受一種網址類別型（IPv4/IPv6），如有同一個功能變數名稱需要同時進行IPv4/IPv6位址的過濾，請分為兩個條目輸入
+
+#### IPFilter - 位址過濾區域
+位址過濾黑名單或白名單由設定檔的 `IPFilter Type` 值決定，`Deny` 禁止/黑名單和 `Permit` 允許/白名單<br />
+有效參數格式為 `開始位址 - 結束位址, 過濾等級, 條目簡介注釋`<br />
+* 同時支援IPv4和IPv6位址，但填寫時請分開為2個條目
+* 同一類型的位址位址段有重複的條目將會被自動合併
+
+* Stop - 臨時停止讀取標籤
+在需要停止讀取的資料前添加 `[Stop]` 標籤即可在中途停止對檔的讀取，直到有其它標籤時再重新開始讀取
+  * 例如有一片資料區域：
+
+    `[Blacklist]`<br />
+    `127.0.0.1 localhost`<br />
+    `[Stop]`<br />
+    `::1 localhost`<br />
+
+    `[IPFilter]`<br />
+    `Address(Start) - Address(End)    , Level, Comments`<br />
+    `127.0.0.0      - 127.255.255.255 ,     0, IPv4 Link-Local addresses`<br />
+    `::             - ::1             ,     0, IPv6 Link-Local addresses`<br />
+
+* 則從 `[Stop]` 一行開始，下面到 `[IPFilter]` 之間的資料都將不會被讀取
+* 即實際有效的資料區域是：
+
+    `[Blacklist]`<br />
+    `127.0.0.1 localhost`<br />
+
+    `[IPFilter]`<br />
+    `Address(Start) - Address(End)    , Level, Comments`<br />
+    `127.0.0.0      - 127.255.255.255 ,     0, IPv4 Link-Local addresses`<br />
+    `::             - ::1             ,     0, IPv6 Link-Local addresses`<br />
