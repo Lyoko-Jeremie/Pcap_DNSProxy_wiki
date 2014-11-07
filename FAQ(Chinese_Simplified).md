@@ -60,16 +60,15 @@
 -----
 当程序运行时发生错误，可能会生成错误报告也就是 `Error.log` 文件，**其位于工具服务注册的目录内**，对解决问题至关重要<br />
 错误报告的格式为 **`日期 时间 -> 错误类型: 详细错误信息(in line 行数 of 所在文件, error code is 错误代码`**（括号为可能出现内容）
-* 行数为配置文件/Hosts文件或IPFilter文件内出错内容的行数
 * 错误代码为 系统/Winsock/WinPcap API 提供的出错代码，详细情况参见下文 Error.log 详细错误报告
 * **由于程序重启时会自动删除之前生成的错误报告，所以如果有错误报告生成建议先备份并尝试解决后再重新启动工具服务**
 
-### `Error.log` 详细错误报告，错误报告一共有5大类型：
+### `Error.log` 详细错误报告，错误报告一共有7大类型：
 
 * `System Error` - 系统错误
     * `Service start error` - 服务启动失败：可能未在系统注册服务，或在系统内注册的服务路径不正确
-	    * 详细情况参见 ReadMe 文档中 安装方法 一节
-	    * 其它错误代码原因参见 http://msdn.microsoft.com/en-us/library/windows/desktop/ms686324(v=vs.85).aspx
+	* 详细情况参见 ReadMe 文档中 安装方法 一节
+	* 其它错误代码原因参见 http://msdn.microsoft.com/en-us/library/windows/desktop/ms686324(v=vs.85).aspx
     * Multi byte(s) to wide char(s) error - 多字节字符转换为宽字节字符错误，遇到此错误请与作者联系
     * `Old Error Log file deleted` - 日志文件已满并被删除
         * 日志文件最大容量的配置参见 `详细说明文档` 中 `配置文件详细参数说明` 中的 `Log Maximum Size` 参数
@@ -109,7 +108,6 @@
     * `DNSCurve PayloadSize must longer than 512 bytes(Old DNS packets minimum supported size)` - DNSCurve 协议载荷长度过短：实现DNS协议必须支持长度超过 512 bytes 的数据包
     * `DNSCurve PayloadSize may be too long` - DNSCurve 协议载荷长度可能过长：此值建议不要超过以太网的MTU(1512 bytes)
 
-
 * `IPFilter Error` - 读取 IPFilter 文件错误
     * `IPFilter file size is too large` - IPFilter文件容量过大：请确认IPFilter文件的内容，整个文件的大小不要超过4GB
     * `Read file(s) error` - 文件跳转读取错误：请与开发者联系
@@ -136,52 +134,52 @@
     * `Too many Hosts IP addresses` - Hosts 条目的平行地址过多
 
 * `Winsock Error` - Windows Socket 错误
-  * `Winsock initialization error` - Winsock初始化失败：请确认使用的操作系统平台是否受支持
-  * `Windows Firewall Test error` - Windows防火墙测试失败：请确认是否为管理员身份运行批处理
-  * `UDP Monitor socket initialization error` - UDP本地套接字初始化失败：原因参见错误代码
-  * `Bind UDP Monitor socket error` - UDP本地套接字绑定失败：本地可能已经存在DNS服务器或者多重运行了本工具，具体原因参见错误代码
-  * `TCP Monitor socket initialization error` - TCP本地套接字初始化失败：原因参见错误代码
-  * `Bind TCP Monitor socket error` - TCP本地套接字绑定失败：本地可能已经存在DNS服务器或者多重运行了本工具，具体原因参见错误代码
-  * `TCP Monitor socket listening initialization error` - TCP本地套接字监听失败：原因参见错误代码
-  * `Get localhost name error` - 获取本地计算机名称失败：原因参见错误代码
-  * `Get localhost address(es) error` - 获取本地计算机地址失败：没有任何生效的网络适配器，可能是硬件或者驱动程序的问题
-  * `Local IPv4 Address format error` - 本地计算机IPv4地址格式错误：原因参见错误代码
-  * `Local IPv6 Address format error` - 本地计算机IPv6地址格式错误：原因参见错误代码
-  * `UDP request initialization error` - UDP请求套接字初始化失败：原因参见错误代码
-  * `Complete UDP request initialization error` - UDP请求套接字初始化失败：原因参见错误代码
-  * `UDP request error` - UDP请求发送失败：可能为网络错误，具体原因可参见错误代码
-  * `Complete UDP request error` - UDP请求发送失败：可能为网络错误，具体原因可参见错误代码
-  * `TCP request initialization error` - TCP请求套接字初始化失败：原因参见错误代码
-  * `DNSCurve TCP request error` - DNSCurve 协议TCP请求发送失败：可能为网络错误，具体原因可参见错误代码
-  * `DNSCurve UDP request error` - DNSCurve 协议UDP请求发送失败：可能为网络错误，具体原因可参见错误代码
-  * `DNSCurve socket(s) initialization error` - DNSCurve 协议请求套接字初始化失败：可能为网络错误，具体原因可参见错误代码
-  * `DNSCurve Local Signature request initialization error` - DNSCurve 协议本地请求套接字初始化失败：可能为网络错误，具体原因可参见错误代码
-  * `DNSCurve Local Signature request error` - DNSCurve 协议本地请求发送失败：可能为网络错误，具体原因可参见错误代码
-  * `Set UDP socket timeout error` - 设置UDP请求套接字超时时间错误：具体原因可参见错误代码
-  * `Set Complete UDP socket timeout error` - 设置UDP请求套接字超时时间错误：具体原因可参见错误代码
-  * `Set UDP socket SIO_UDP_CONNRESET error` - 设置UDP套接字屏蔽 `ICMP Port Unreachable` 信息错误：具体原因可参见错误代码
-  * `Set TCP socket timeout error` - 设置TCP请求套接字超时时间错误：具体原因可参见错误代码
-  * `Set ICMP socket timeout error` - 设置ICMP请求套接字超时时间错误：具体原因可参见错误代码
-  * `ICMP Echo(Ping) request error` - ICMP/Ping 请求错误：可能为网络错误，具体原因可参见错误代码
-  * `Set ICMPv6 socket timeout error` - 设置ICMPv6请求套接字超时时间错误：具体原因可参见错误代码
-  * `ICMPv6 Echo(Ping) request error` - ICMPv6/Ping 请求错误：可能为网络错误，具体原因可参见错误代码
-  * Winsock 错误代码具体含义可移步 http://msdn.microsoft.com/en-us/library/windows/desktop/ms740668(v=vs.85).aspx
+    * `Winsock initialization error` - Winsock初始化失败：请确认使用的操作系统平台是否受支持
+    * `Windows Firewall Test error` - Windows防火墙测试失败：请确认是否为管理员身份运行批处理
+    * `UDP Monitor socket initialization error` - UDP本地套接字初始化失败：原因参见错误代码
+    * `Bind UDP Monitor socket error` - UDP本地套接字绑定失败：本地可能已经存在DNS服务器或者多重运行了本工具，具体原因参见错误代码
+    * `TCP Monitor socket initialization error` - TCP本地套接字初始化失败：原因参见错误代码
+    * `Bind TCP Monitor socket error` - TCP本地套接字绑定失败：本地可能已经存在DNS服务器或者多重运行了本工具，具体原因参见错误代码
+    * `TCP Monitor socket listening initialization error` - TCP本地套接字监听失败：原因参见错误代码
+    * `Get localhost name error` - 获取本地计算机名称失败：原因参见错误代码
+    * `Get localhost address(es) error` - 获取本地计算机地址失败：没有任何生效的网络适配器，可能是硬件或者驱动程序的问题
+    * `Local IPv4 Address format error` - 本地计算机IPv4地址格式错误：原因参见错误代码
+    * `Local IPv6 Address format error` - 本地计算机IPv6地址格式错误：原因参见错误代码
+    * `UDP request initialization error` - UDP请求套接字初始化失败：原因参见错误代码
+    * `Complete UDP request initialization error` - UDP请求套接字初始化失败：原因参见错误代码
+    * `UDP request error` - UDP请求发送失败：可能为网络错误，具体原因可参见错误代码
+    * `Complete UDP request error` - UDP请求发送失败：可能为网络错误，具体原因可参见错误代码
+    * `TCP request initialization error` - TCP请求套接字初始化失败：原因参见错误代码
+    * `DNSCurve TCP request error` - DNSCurve 协议TCP请求发送失败：可能为网络错误，具体原因可参见错误代码
+    * `DNSCurve UDP request error` - DNSCurve 协议UDP请求发送失败：可能为网络错误，具体原因可参见错误代码
+    * `DNSCurve socket(s) initialization error` - DNSCurve 协议请求套接字初始化失败：可能为网络错误，具体原因可参见错误代码
+    * `DNSCurve Local Signature request initialization error` - DNSCurve 协议本地请求套接字初始化失败：可能为网络错误，具体原因可参见错误代码
+    * `DNSCurve Local Signature request error` - DNSCurve 协议本地请求发送失败：可能为网络错误，具体原因可参见错误代码
+    * `Set UDP socket timeout error` - 设置UDP请求套接字超时时间错误：具体原因可参见错误代码
+    * `Set Complete UDP socket timeout error` - 设置UDP请求套接字超时时间错误：具体原因可参见错误代码
+    * `Set UDP socket SIO_UDP_CONNRESET error` - 设置UDP套接字屏蔽 `ICMP Port Unreachable` 信息错误：具体原因可参见错误代码
+    * `Set TCP socket timeout error` - 设置TCP请求套接字超时时间错误：具体原因可参见错误代码
+    * `Set ICMP socket timeout error` - 设置ICMP请求套接字超时时间错误：具体原因可参见错误代码
+    * `ICMP Echo(Ping) request error` - ICMP/Ping 请求错误：可能为网络错误，具体原因可参见错误代码
+    * `Set ICMPv6 socket timeout error` - 设置ICMPv6请求套接字超时时间错误：具体原因可参见错误代码
+    * `ICMPv6 Echo(Ping) request error` - ICMPv6/Ping 请求错误：可能为网络错误，具体原因可参见错误代码
+    * Winsock 错误代码具体含义可移步 http://msdn.microsoft.com/en-us/library/windows/desktop/ms740668(v=vs.85).aspx
 
 * `WinPcap Error` - WinPcap 错误
-  * `Insufficient permissions or not any available network devices` - 没有任何可用的网络适配器：请检查硬件设备和驱动程序是否安装正确，也可能是权限不足
-  * `XXX is not a Ethernet device` - 发现非 Ethernet 类型的网络适配器：这不是错误，但可以说明系统内存在非 Ethernet 类型的网络适配器
-  * `An error occurred in XXX` - 名称为 XXX 的网络适配器抓取数据包错误
-  * `EOF was reached reading from an offline capture in XXX` - 名称为 XXX 的网络适配器已经离线或不可用
-  * 本类型错误会直接将WinPcap的错误信息直接打印至错误报告
-  * WinPcap错误信息的具体含义可移步 http://www.winpcap.org/docs/docs_40_2/html/group__wpcapfunc.html
+    * `Insufficient permissions or not any available network devices` - 没有任何可用的网络适配器：请检查硬件设备和驱动程序是否安装正确，也可能是权限不足
+    * `XXX is not a Ethernet device` - 发现非 Ethernet 类型的网络适配器：这不是错误，但可以说明系统内存在非 Ethernet 类型的网络适配器
+    * `An error occurred in XXX` - 名称为 XXX 的网络适配器抓取数据包错误
+    * `EOF was reached reading from an offline capture in XXX` - 名称为 XXX 的网络适配器已经离线或不可用
+    * 本类型错误会直接将WinPcap的错误信息直接打印至错误报告
+    * WinPcap错误信息的具体含义可移步 http://www.winpcap.org/docs/docs_40_2/html/group__wpcapfunc.html
 
 * `DNSCurve Error` - DNSCurve 协议错误
-  * `Libsodium initialization error` - Libsodium 库初始化错误：请与开发者联系
-  * `Client keypair(public key and secret key) error` - 自定义客户端密钥对错误：请检查密钥对的正确性
-  * `TCP get signature data request error` - TCP协议自动获取服务器连接参数信息错误：如果此错误持续并导致 DNSCurve 协议无法使用，请将服务器的魔数和指纹直接写入配置文件中
-  * `UDP get signature data request error` - UDP协议自动获取服务器连接参数信息错误：如果此错误持续并导致 DNSCurve 协议无法使用，请将服务器的魔数和指纹直接写入配置文件中
-  * `Ramdom module close error` - 随机数生成模块关闭错误：请与开发者联系
-  * `IPv6 Main Server Fingerprint signature validation error` - IPv6主要服务器证书验证错误：请检查该服务器是否可用
-  * `IPv6 Alternate Server Fingerprint signature validation error` - IPv6备用服务器证书验证错误：请检查该服务器是否可用
-  * `IPv4 Main Server Fingerprint signature validation error` - IPv4主要服务器证书验证错误：请检查该服务器是否可用
-  * `IPv4 Alternate Server Fingerprint signature validation error` - IPv4备用服务器证书验证错误：请检查该服务器是否可用
+    * `Libsodium initialization error` - Libsodium 库初始化错误：请与开发者联系
+    * `Client keypair(public key and secret key) error` - 自定义客户端密钥对错误：请检查密钥对的正确性
+    * `TCP get signature data request error` - TCP协议自动获取服务器连接参数信息错误：如果此错误持续并导致 DNSCurve 协议无法使用，请将服务器的魔数和指纹直接写入配置文件中
+    * `UDP get signature data request error` - UDP协议自动获取服务器连接参数信息错误：如果此错误持续并导致 DNSCurve 协议无法使用，请将服务器的魔数和指纹直接写入配置文件中
+    * `Ramdom module close error` - 随机数生成模块关闭错误：请与开发者联系
+    * `IPv6 Main Server Fingerprint signature validation error` - IPv6主要服务器证书验证错误：请检查该服务器是否可用
+    * `IPv6 Alternate Server Fingerprint signature validation error` - IPv6备用服务器证书验证错误：请检查该服务器是否可用
+    * `IPv4 Main Server Fingerprint signature validation error` - IPv4主要服务器证书验证错误：请检查该服务器是否可用
+    * `IPv4 Alternate Server Fingerprint signature validation error` - IPv4备用服务器证书验证错误：请检查该服务器是否可用
