@@ -162,6 +162,7 @@
       * 上文的加密组合并不阻止程序在请求 DNSCurve/DNSCrypt 加密模式失败是使用其它协议请求域名解析，开启 `Encryption Only = 1` 后将只允许使用加密传输，安全性和可靠性最高
 
 -----
+
 ### 配置文件详细参数说明
 有效参数格式为 **`选项名称 = 数值/数据`**（注意空格和等号的位置）<br />
 **注意：配置文件只会在工具服务开始时读取，修改本文件的参数后请重启服务（参见上文 `重启服务` 一节）**
@@ -339,6 +340,7 @@
        * 注意：自动获取 DNSCurve 服务器连接信息时必须输入提供者的域名，不能留空
 
 * `DNSCurve Keys` - DNSCurve 协议密钥区域
+注意：公开网站上的 "公钥" 普遍为验证用的公钥，用于验证与服务器通讯时使用的指纹，两者为不同性质的公钥不可混用！
     * `Client Public Key` - 自定义客户端公钥：可使用 KeyPairGenerator 生成，留空则每次启动时自动生成，默认为空
     * `Client Secret Key` - 自定义客户端私钥：可使用 KeyPairGenerator 生成，留空则每次启动时自动生成，默认为空
     * `IPv4 DNS Public Key` - DNSCurve 协议IPv4主要DNS服务器验证用公钥，默认为 `B735:1140:206F:225D:3E2B:D822:D7FD:691E:A1C3:3CC8:D666:8D0C:BE04:BFAB:CA43:FB79`(OpenDNS)
@@ -356,7 +358,7 @@
     * `IPv6 Receive Magic Number` - DNSCurve 协议IPv6主要DNS服务器接收魔数：长度必须为8字节，留空则使用程序内置的接收魔数，默认留空
     * `IPv6 Alternate Receive Magic Number` - DNSCurve 协议IPv6备用DNS服务器接收魔数：长度必须为8字节，留空则使用程序内置的接收魔数，默认留空
     * `IPv4 DNS Magic Number` - DNSCurve 协议IPv4主要DNS服务器发送魔数：长度必须为8字节，留空则自动获取，默认留空
-    * `IPv4 Alternate DNS Magic Number - DNSCurve 协议IPv4备用DNS服务器发送魔数：长度必须为8字节，留空则自动获取，默认留空
+    * `IPv4 Alternate DNS Magic Number` - DNSCurve 协议IPv4备用DNS服务器发送魔数：长度必须为8字节，留空则自动获取，默认留空
     * `IPv6 DNS Magic Number` - 协议IPv6主要DNS服务器发送魔数：长度必须为8字节，留空则自动获取，默认留空
     * `IPv6 Alternate DNS Magic Number` - DNSCurve 协议IPv6备用DNS服务器发送魔数：长度必须为8字节，留空则自动获取，默认留空
 
@@ -372,8 +374,8 @@
 * 平行 Hosts 条目支持数量由请求域名以及 EDNS0 Payload 长度决定，建议不要超过70个A记录或40个AAAA记录
 
 #### `Base` - 基本参数区域
-    * `Version` - 配置文件的版本，用于正确识别 Hosts 文件：本参数与程序版本号不相关，切勿修改，默认为发布时的最新配置文件版本
-    * `Default TTL` - Hosts 条目默认生存时间：单位为秒，留空则为900秒/15分钟，默认为空
+* `Version` - 配置文件的版本，用于正确识别 Hosts 文件：本参数与程序版本号不相关，切勿修改，默认为发布时的最新配置文件版本
+* `Default TTL` - Hosts 条目默认生存时间：单位为秒，留空则为900秒/15分钟，默认为空
 
 #### `Whitelist` - 白名单条目
 **此类型的条目列出的符合要求的域名会直接绕过Hosts，不会使用Hosts功能**<br />
@@ -463,7 +465,7 @@ IPFilter 配置文件分为 Blacklist/黑名单区域 和 IPFilter/地址过滤�
 * 一条条目只能接受一种地址类型（IPv4/IPv6），如有同一个域名需要同时进行IPv4/IPv6地址的过滤，请分为两个条目输入
 
 #### IPFilter - 地址过滤区域
-地址过滤黑名单或白名单由配置文件的 IPFilter Type 值决定，Deny 禁止/黑名单和 Permit 允许/白名单<br />
+地址过滤黑名单或白名单由配置文件的 `IPFilter Type` 值决定，`Deny` 禁止/黑名单和 `Permit` 允许/白名单<br />
 有效参数格式为 `开始地址 - 结束地址, 过滤等级, 条目简介注释`<br />
 * 同时支持IPv4和IPv6地址，但填写时请分开为2个条目
 * 同一类型的地址地址段有重复的条目将会被自动合并
