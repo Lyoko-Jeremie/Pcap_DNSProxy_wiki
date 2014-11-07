@@ -59,7 +59,7 @@
 * 運行結果應類似：
 
     >nslookup www.google.com<br />
-    服务器:  pcap-dnsproxy.localhost.server（視設定檔設置的值而定，參見下文 `配置文件详细参数说明` 一節）
+    服务器:  pcap-dnsproxy.localhost.server（視設定檔設置的值而定，參見下文 `配置文件详细参数说明` 一節）<br />
     Address:  127.0.0.1（視所在網路環境而定，原生IPv6為 ::1）<br />
 <br />
     非权威应答:<br />
@@ -70,4 +70,297 @@
 
 -----
 
+### 注意事項
+* 如修改DNS伺服器，請務必設置一個正確的、有效的、可以正常使用的境外DNS伺服器！
+    * 關於 WinPacap
+    * 如果程式啟動提示丟失 wpcap.dll 請重新安裝 WinPcap 或者將其更新到最新版本
+* 安裝前注意系統是否已經安裝過 WinPcap 建議不要重複安裝
+* Linux/Mac 平臺下讀取檔案名首字母大寫優先順序高於小寫，Windows 平臺下讀取檔案名時不存在大小寫的區別
+* 設定檔/Hosts檔/IPFilter檔和錯誤報表所在的目錄以上文 安裝方法 一節中第4步註冊的服務資訊為准
+    * 填寫時一行不要超過4096位元組/4KB
+    * 檔讀取只支援整個文本單一的編碼和換行格式組合，切勿在文字檔中混合所支援的編碼或換行格式！
+* 服務啟動前請先確認沒有其它本地DNS伺服器運行或本工具多個拷貝運行中，否則可能會導致監聽衝突無法正常工作
+    * 監聽衝突會建置錯誤報告，可留意 Windows Socket 相關的錯誤（參見 `FAQ` 文檔中 `Error.log 詳細錯誤報表` 一節）
+* 殺毒軟體/協力廠商防火牆可能會阻止本程式的操作，請將行為全部允許或將本程式加入到白名單中
+* 如果啟動服務時提示 `服務沒有及時回應啟動或者控制請求` 請留意是否有錯誤報表生成，詳細的錯誤資訊參見 `FAQ` 文檔中 `Error.log 詳細錯誤報表` 一節
+* 目錄和程式的名稱可以隨意更改，但請務必在進行安裝方法第4步前完成。如果服務註冊後需移動工具目錄的路徑，參見上文 `卸載方法` 第2步的注意事項
+* 由於本人水準有限，程式編寫難免會出現差錯疏漏，如有問題可至專案頁面提出，望諒解 v_v
+
+-----
+
+### 功能和技術
+* 批次處理的作用（運行結束會有運行結果）：
+    * `ServiceInstall` - 將程式註冊為系統服務，並啟動程式進行 Windows 防火牆測試
+        * 運行結束時會顯示 `Done. Please confirm the PcapDNSProxyService service had been installed.`
+        * 具體是否成功需要留意螢幕上的提示
+    * `ServiceStart` - 啟動工具服務
+        * 運行結束時會顯示 `Done. Please confirm the PcapDNSProxyService service had been started.`
+        * 具體是否成功需要留意螢幕上的提示
+    * `ServiceQuery` - 適用于 Windows XP/2003 以及更舊版本Windows的測試批次處理，能測試控管服務是否安裝成功
+    * `ServiceStop` - 即時停止工具服務，重啟服務時需要先停止服務
+        * 運行結束時會顯示 `Done. Please confirm the PcapDNSProxyService service had been stopped.`
+        * 具體是否成功需要留意螢幕上的提示
+    * `ServiceUninstall` - 停止並卸載工具服務
+        * 運行結束時會顯示 `Done. Please confirm the PcapDNSProxyService service had been deleted.`
+        * 具體是否成功需要留意螢幕上的提示
+* 設定檔支援的檔案名（**只會讀取優先順序較高者，優先順序較低者將被直接忽略**）：
+    * Windows: `Config.ini` > `Config.conf` > `Config`
+    * Linux/Mac: `Config.conf` > `Config.ini` > `Config`
+* Hosts 檔支援的檔案名（優先順序自上而下遞減）：
+    * Windows: `Hosts.ini` > `Hosts.conf` > `Hosts` > `Hosts.txt`
+    * Linux/Mac: `Hosts.conf` > `Hosts.ini` > `Hosts` > `Hosts.txt`
+* **Hosts 檔存在即會讀取，優先順序高者先讀取，存在相同條目時將附加到優先順序高者後，請求回應時位置越前，相同的位址將會被自動合併**
+    * IPFilter 資料庫支援的檔案名（優先順序自上而下遞減）：
+    * `IPFilter.dat`
+    * `IPFilter.csv`
+    * `IPFilter.txt`
+    * `IPFilter`
+    * `Guarding.P2P`
+    * `Guarding`
+    * **IPFilter 檔存在即會讀取，相同的位址範圍將會被自動合併**
+* 請求功能變數名稱解析優先順序
+    * 使用系統API函數進行功能變數名稱解析（大部分）：系統 Hosts > Pcap_DNSProxy 的 Hosts 條目（Whitelist/白名單條目 > Hosts/主要Hosts清單） > DNS緩存 > Local Hosts/境內DNS解析功能變數名稱清單 > 遠端DNS伺服器
+    * 直接使用網路介面卡設置進行功能變數名稱解析（小部分）：Pcap_DNSProxy 的 Hosts.ini（Whitelist/白名單條目 > Hosts/主要Hosts清單） > DNS緩存 > Local Hosts/境內DNS解析功能變數名稱清單 > 遠端DNS伺服器
+    * 請求遠端DNS伺服器的優先順序：Hosts Only 模式 > TCP模式的DNSCurve 加密/非加密模式（如有） > UDP模式的DNSCurve 加密/非加密模式（如有） > TCP模式普通請求（如有） > UDP模式普通請求
+* 一個含有大部分境內功能變數名稱的 [Local Hosts] 如有需要可直接添加到 Pcap_DNSProxy 的 Hosts 裡
+    * https://xinhugo-list.googlecode.com/svn/trunk/White_List.txt
+* DNS緩存類型
+    * Timer/計時型：可以自訂緩存的時間長度，佇列長度不限
+    * Queue/佇列型：預設緩存時間15分鐘，可通過 Hosts 檔的 `Default TTL` 值自訂，同時可自訂緩存佇列長度（亦即限制佇列長度的 Timer/計時型）
+* 本工具的 DNSCurve/DNSCrypt 協定是內置的實現，不需要安裝 DNSCrypt 官方的工具！
+    * DNSCurve 協定為 Streamlined/精簡類型
+    * 注意：DNSCrypt 官方工具會佔用本地DNS埠導致 Pcap_DNSProxy 部署失敗
+
+-----
+
+### 特別使用技巧
+這裡羅列出部分作者建議的介紹和使用技巧，供大家參考和使用。關於調整配置，參見下文 `設定檔詳細參數說明` 一節
+* 一個含有大部分境內功能變數名稱的 `[Local Hosts]` 如有需要可直接添加到 Pcap_DNSProxy 的 Hosts 裡，參見 Hosts 檔案格式說明 一節
+    * HTTPs://xinhugo-list.googlecode.com/svn/trunk/White_List.txt
+    * 或者可以直接使用 Local Main 功能，將大部分的解析請求發往境內的DNS伺服器，參見 `Local Main` 參數
+* DNS緩存類型
+    * Timer/計時型：可以自訂緩存的時間長度，佇列長度不限
+    * Queue/佇列型：預設緩存時間15分鐘，可通過 Hosts 檔的 `Default TTL` 值自訂，同時可自訂緩存佇列長度（亦即限制佇列長度的 Timer/計時型）
+    * 強烈建議打開DNS緩存功能！
+* 本工具配置選項豐富，配置不同的組合會有不同的效果，介紹幾個比較常用的組合：
+    * 預設配置：UDP 請求 + 抓包模式
+    * `Hosts Only = 1` 時：UDP 請求 + 直連模式，比抓包模式的系統資源佔用低
+        * 此組合的過濾效果依靠黑名單，並不太可靠
+    * `Local Main = 1` 時：將大部分的解析請求發往境內的DNS伺服器，遇到被污染的位址後切換到境外伺服器進行解析
+        * 此組合的過濾效果依靠黑名單，並不太可靠
+    * `Protocol = TCP`：先TCP請求失敗後再 UDP 請求 + 抓包模式，對網路資源的佔用比較高
+        * 由於TCP請求大部分時候不會被投毒污染，此組合的過濾效果比較可靠
+    * 將目標伺服器的請求埠改為非標準DNS埠：例如 OpenDNS 支援53標準埠和5353非標準埠的請求
+        * 非標準DNS埠現階段尚未被干擾，此組合的過濾效果比較可靠
+    * `Multi Request Times = ××` 時：應用到所有除請求境內伺服器外的所有請求，一個請求多次發送功能
+        * 此功能用於對抗網路丟包比較嚴重的情況，對系統和網路資源的佔用都比較高，但在網路環境惡劣的情況下能提高獲得解析結果的可靠性
+    * `DNSCurve = 1` 同時 `Encryption = 0`：使用 DNSCurve/DNSCrypt 非加密模式請求功能變數名稱解析
+        * 此組合等於使用非標準DNS埠請求，但是多了一層標籤識別使得可靠性很高，詳細情況參見上文
+    * `DNSCurve = 1` 同時 `Encryption = 1`：使用 DNSCurve/DNSCrypt 加密模式請求功能變數名稱解析
+        * 此組合加密傳輸所有功能變數名稱請求，功能變數名稱解析可靠性最高
+    * `DNSCurve = 1` 同時 `Encryption = 1` 同時 `Encryption Only = 1`：只使用 DNSCurve/DNSCrypt 加密模式請求功能變數名稱解析
+        * 上文的加密組合並不阻止程式在請求 DNSCurve/DNSCrypt 加密模式失敗是使用其它協定請求功能變數名稱解析，開啟 `Encryption Only = 1` 後將只允許使用加密傳輸，安全性和可靠性最高
+
+-----
+
+### 設定檔詳細參數說明
+有效參數格式為 **`選項名稱 = 數值/資料`**（注意空格和等號的位置）<br />
+**注意：設定檔只會在工具服務開始時讀取，修改本檔的參數後請重啟服務（參見上文 `重啟服務` 一節）**
+
+* `Base` - 基本參數區域
+    * `Version` - 設定檔的版本，用於正確識別設定檔：本參數與程式版本號不相關，切勿修改，預設為發佈時的最新設定檔版本
+    * `File Refresh Time` - 檔刷新間隔時間：單位為秒，最短間隔時間為5秒，預設為10秒
+    * `File Hash` - 檔 Hash 功能，開啟此功能能降低刷新檔時的CPU佔用：開啟為1/關閉為0，預設為1
+
+* Log - 日誌參數區域
+    * `Print Error` - 錯誤報表功能：開啟為1/關閉為0，預設為1
+    * `Print Running Log` - 輸出運行資訊功能：開啟為1/關閉為0，預設為1
+    * `Log Maximum Size` - 日誌檔最大容量：直接填數位時單位為位元組，可加上單位，支援的單位有KB/MB/GB，可接受範圍為4KB - 4GB，如果留空則為8MB，預設為空
+        * 注意：日誌檔到達最大容量後將被直接刪除，然後重新生成新的日誌檔，原來的日誌將無法找回！
+
+    * `DNS` - 功能變數名稱解析參數區域
+    * `Protocol` - **發送請求所使用的協定，分 `UDP` 和 `TCP`**：預設為 `UDP`
+        * 注意：此處所指的協定指的是程式請求遠端DNS伺服器所使用的協定，而向本程式請求功能變數名稱解析時可隨意使用 UDP 或 TCP
+    * `Hosts Only` - Hosts Only 直連模式，啟用後將使用系統直接請求遠端伺服器而啟用只使用本工具的 Hosts 功能：開啟為1/關閉為0，預設為0
+        * 注意：解析的結果是否會被投毒污染與使用的偽包篩檢程式有關，強烈建議將 `DNS Data Filter` 和 `Blacklist Filter` 過濾模組開啟，啟用這兩個過濾模組後結果理論上將是沒有被投毒污染的，否則會被投毒污染！
+    * `Local Main` - 主要境內伺服器請求功能，開啟後則平時使用 Local 的伺服器進行解析，遇到遭投毒污染的解析結果時自動再向境外伺服器請求
+        * 注意：解析的結果是否會被投毒污染與使用的偽包篩檢程式有關，強烈建議將 `DNS Data Filter` 和 `Blacklist Filter` 過濾模組開啟，啟用這兩個過濾模組後結果理論上將是沒有被投毒污染的，否則會被投毒污染！
+    * `Cache Type` - DNS緩存的類型：分 `Timer`/計時型以及 `Queue`/佇列型
+    * `Cache Parameter` - DNS緩存的參數：`Timer`/計時型 時為時間長度，`Queue`/佇列型 時為佇列長度
+
+* `Listen` - 監聽參數區域
+    * `Pcap Capture` - 抓包功能總開關，開啟後抓包模組才能正常使用：開啟為1/關閉為0，預設為1
+    * `Operation Mode` - 程式的監聽工作模式，分 `Server`/伺服器模式、`Private`/私有網路模式 和 `Proxy`/代理模式：預設為 Private
+        * `Server`/伺服器模式：打開DNS通用埠（TCP/UDP同時打開），可為所有其它設備提供代理功能變數名稱解析請求服務
+        * `Private`/私有網路模式：打開DNS通用埠（TCP/UDP同時打開），可為僅限於私有網路位址的設備提供代理功能變數名稱解析請求服務
+        * `Proxy`/代理模式：只打開回環位址的DNS埠（TCP/UDP同時打開），只能為本機提供代理功能變數名稱解析請求服務
+    * `Custom`/自訂模式：打開DNS通用埠（TCP/UDP同時打開），可用的位址由 IPFilter 參數決定
+    * `Listen Protocol` - 監聽協定，本地監聽的協定：可填入 `IPv4` 和 `IPv6` 和 `IPv4 + IPv6`，預設為 `IPv4 + IPv6`
+        * 只填 `IPv4` 或 `IPv6` 時，只監聽指定協定的本地埠
+        * `IPv4 + IPv6` 時同時監聽兩個協定的本地埠
+    * `Listen Port` - 監聽埠，本地監聽請求的埠：可填入 1-65535 之間的埠，如果留空則為53，預設為空
+    * `IPFilter Type` - IPFilter 參數的類型：分為 `Deny` 禁止和 `Permit` 允許，對應 IPFilter 參數應用為黑名單或白名單，預設為 Deny
+    * `IPFilter Level` - IPFilter 參數的過濾級別，級別越高過濾越嚴格，與 IPFilter 條目相對應：0為不啟用過濾，如果留空則為0，預設為空
+    * `Accept Type` - 禁止或只允許所列DNS類型的請求：格式為 `Deny:DNS記錄的名稱或ID(|DNS記錄的名稱或ID)` 或 `Permit:DNS記錄的名稱或ID(|DNS記錄的名稱或ID)`（括弧內為可選項目）
+        * 所有可用的DNS類型清單：
+        * `A/1`
+        * `NS/2`
+        * `CNAME/5`
+        * `SOA/6`
+        * `PTR/12`
+        * `MX/15`
+        * `TXT/16`
+        * `RP/17`
+        * `SIG/24`
+        * `KEY/25`
+        * `AAAA/28`
+        * `LOC/29`
+        * `SRV/33`
+        * `NAPTR/35`
+        * `KX/36`
+        * `CERT/37`
+        * `DNAME/39`
+        * `OPT/41`
+        * `APL/42`
+        * `DS/43`
+        * `SSHFP/44`
+        * `IPSECKEY/45`
+        * `RRSIG/46`
+        * `NSEC/47`
+        * `DNSKEY/48`
+        * `DHCID/49`
+        * `NSEC3/50`
+        * `NSEC3PARAM/51`
+        * `HIP/55`
+        * `SPF/99`
+        * `TKEY/249`
+        * `TSIG/250`
+        * `IXFR/251`
+        * `AXFR/252`
+        * `ANY/255`
+        * `TA/32768`
+        * `DLV/32769`
+ 
+* `Addresses` - 普通模式位址區域
+    * `IPv4 DNS Address` - **IPv4主要DNS伺服器位址：需要輸入一個帶埠格式的位址**，預設為 `8.8.4.4:53`(Google Public DNS No.2)
+        * 本參數支援同時請求多伺服器的功能，開啟後將同時向清單中的伺服器請求解析功能變數名稱，並採用最快回應的伺服器的結果
+        * 使用同時請求多伺服器格式為 `位址A:埠|位址B:埠|位址C:埠`
+        * 同時請求多伺服器啟用後將自動啟用 `Alternate Multi Request` 參數（參見下文）
+    * `IPv4 Alternate DNS Address` - IPv4備用DNS伺服器位址：需要輸入一個帶埠格式的位址，預設為 `8.8.8.8:53`(Google Public DNS No.1)
+        * 本參數支援同時請求多伺服器的功能，開啟後將同時向清單中的伺服器請求解析功能變數名稱，並採用最快回應的伺服器的結果
+        * 使用同時請求多伺服器格式為 `位址A:埠|位址B:埠|位址C:埠`
+        * 同時請求多伺服器啟用後將自動啟用 `Alternate Multi Request` 參數（參見下文）
+    * `IPv4 Local DNS Address` - IPv4主要境內DNS伺服器位址，用於境內功能變數名稱解析：需要輸入一個帶埠格式的位址，預設為 `114.114.115.115:53`(114 DNS No.2)
+    * `IPv4 Local Alternate DNS Address` - IPv4備用境內DNS伺服器位址，用於境內功能變數名稱解析：需要輸入一個帶埠格式的位址，預設為 `114.114.114.114:53`(114 DNS No.1)
+    * `IPv6 DNS Address` - IPv6主要DNS伺服器位址：需要輸入一個帶埠格式的位址，留空為不啟用，預設為空
+        * IPv6的格式為 `[位址]:埠`
+        * 本參數支援同時請求多伺服器的功能，開啟後將同時向清單中的伺服器請求解析功能變數名稱，並採用最快回應的伺服器的結果
+        * 使用同時請求多伺服器格式為 `位址A:埠|位址B:埠|位址C:埠`
+        * 同時請求多伺服器啟用後將自動啟用 `Alternate Multi Request` 參數（參見下文）
+    * `IPv6 Alternate DNS Address` - IPv6備用DNS伺服器位址：需要輸入一個帶埠格式的位址，留空為不啟用，預設為空
+        * IPv6的格式為 `[位址]:埠`
+        * 本參數支援同時請求多伺服器的功能，開啟後將同時向清單中的伺服器請求解析功能變數名稱，並採用最快回應的伺服器的結果
+        * 使用同時請求多伺服器格式為 `位址A:埠|位址B:埠|位址C:埠`
+        * 同時請求多伺服器啟用後將自動啟用 `Alternate Multi Request` 參數（參見下文）
+    * `IPv6 Local DNS Address` - IPv6主要境內DNS伺服器位址，用於境內功能變數名稱解析：需要輸入一個帶埠格式的位址，留空為不啟用，預設為空
+        * IPv6的格式為 `[位址]:埠`
+    * `IPv6 Local Alternate DNS Address` - IPv6備用境內DNS伺服器位址，用於境內功能變數名稱解析：需要輸入一個帶埠格式的位址，留空為不啟用，預設為空
+        * IPv6的格式為 `[位址]:埠`
+
+* `Values` - 擴展參數值區域
+    * `EDNS0 Payload Size` - EDNS0 標籤附帶使用的最大載荷長度：最小為DNS協定實現要求的512(bytes)，留空則使用 EDNS0 標籤要求最短的1220(bytes)，預設為留空
+    * `IPv4 TTL` - IPv4主要DNS伺服器接受請求的遠端DNS伺服器資料包的TTL值：0為自動獲取，取值為 1-255 之間：預設為0
+        * 本參數支援同時請求多伺服器的功能，與 `IPv4 DNS Address` 相對應
+        * 使用同時請求多伺服器格式為 `TTL(A)|TTL(B)|TTL(C)`，也可直接預設（即只填一個0不是用此格式）則所有TTL都將由程式自動獲取
+        * 使用時多TTL值所對應的順序與 `IPv4 DNS Address` 中對應的位址順序相同
+    * `IPv6 Hop Limits` - IPv6主要DNS伺服器接受請求的遠端DNS伺服器資料包的 Hop Limits 值：0為自動獲取，取值為 1-255 之間，預設為0
+        * 本參數支援同時請求多伺服器的功能，與 `IPv6 DNS Address` 相對應
+        * 使用同時請求多伺服器格式為 `Hop Limits(A)|Hop Limits(B)|Hop Limits(C)`，也可直接預設（即只填一個0不是用此格式）則所有 Hop Limits 都將由程式自動獲取
+        * 使用時多 Hop Limits 值所對應的順序與 `IPv6 DNS Address` 中對應的位址順序相同
+    * `IPv4 Alternate TTL` - IPv4備用DNS伺服器接受請求的遠端DNS伺服器資料包的TTL值：0為自動獲取，取值為 1-255 之間：預設為0
+        * 本參數支援同時請求多伺服器的功能，與 `IPv4 Alternate DNS Address` 相對應
+        * 使用同時請求多伺服器格式為 `TTL(A)|TTL(B)|TTL(C)`，也可直接預設（即只填一個0不是用此格式）則所有TTL都將由程式自動獲取
+        * 使用時多TTL值所對應的順序與 `IPv4 Alternate DNS Address` 中對應的位址順序相同
+    * `IPv6 Alternate Hop Limits` - IPv6備用DNS伺服器接受請求的遠端DNS伺服器資料包的 Hop Limits 值：0為自動獲取，取值為 1-255 之間，預設為0
+        * 本參數支援同時請求多伺服器的功能，與 `IPv6 Alternate DNS Address` 相對應
+        * 使用同時請求多伺服器格式為 `Hop Limits(A)|Hop Limits(B)|Hop Limits(C)`，也可直接預設（即只填一個0不是用此格式）則所有 Hop Limits 都將由程式自動獲取
+        * 使用時多 Hop Limits 值所對應的順序與 `IPv6 Alternate DNS Address` 中對應的位址順序相同
+    * `Hop Limits Fluctuation` - IPv4 TTL/IPv6 Hop Limits 可接受範圍，即 IPv4 TTL/IPv6 Hop Limits 的值±數值的範圍內的資料包均可被接受，用於避免網路環境短暫變化造成解析失敗的問題：取值為 1-255 之間，預設為2
+    * `ICMP Test` - ICMP/Ping測試間隔時間：單位為秒，最短間隔時間為5秒，最長為5位數，預設為900秒/15分鐘
+    * `Domain Test` - DNS伺服器解析功能變數名稱測試間隔時間：單位為秒，最短間隔時間為5秒，最長為5位數，預設為900秒/15分鐘
+    * `Alternate Times` - 待命伺服器失敗次數閾值，一定週期內如超出閾值會觸發伺服器切換：預設為5次
+    * `Alternate Time Range` - 待命伺服器失敗次數閾值計算週期：單位為秒，預設為60秒/1分鐘
+    * `Alternate Reset Time` - 待命伺服器重置切換時間，切換產生後經過此事件會切換回主要伺服器：單位為秒，預設為300秒/5分鐘
+    * `Multi Request Times` - 接受一個功能變數名稱請求後向同一個遠端伺服器發送多次功能變數名稱解析請求：0為關閉，1時為收到一個請求時請求2次，2時為收到一個請求時請求3次......最大值為15，也就是最多可同時請求16次，預設為0
+        * 注意：此值將應用到 `Local Hosts` 外對所有遠端伺服器所有協定的請求，因此可能會對系統以及遠端伺服器造成壓力，請謹慎考慮開啟的風險！
+        * 一般除非丟包非常嚴重干擾正常使用否則不建議開啟，開啟也不建議將值設得太大。實際使用可以每次+1後重啟服務測試效果，找到最合適的值
+
+* `Switches` - 控制開關區域
+    * `Domain Case Conversion `- 功能變數名稱大小寫轉換，隨機轉換功能變數名稱請求的大小寫：開啟為1/關閉為0，預設為1
+    * `EDNS0 Label` - EDNS0 標籤支援，開啟後將為所有請求添加 EDNS0 標籤：開啟為1/關閉為0，預設為0
+    * `DNSSEC Request` - DNSSEC 請求，開啟後將嘗試為所有請求添加 DNSSEC 請求：開啟為1/關閉為0，預設為0
+        * 注意：此功能為實驗性質，本程式不具備任何驗證 DNSSEC 回復的能力，單獨開啟此功能並不能避免DNS投毒污染的問題
+    * `Alternate Multi Request` - 待命伺服器同時請求參數，開啟後將同時請求主要伺服器和待命伺服器並採用最快回應的伺服器的結果：開啟為1/關閉為0，預設為0
+        * 同時請求多伺服器啟用後本參數將強制啟用，將同時請求所有存在於清單中的伺服器，並採用最快回應的伺服器的結果
+    * `IPv4 Data Filter` - IPv4資料包頭檢測：開啟為1/關閉為0，預設為0
+    * `TCP Data Filter` - TCP資料包頭檢測；開啟為1/關閉為0，預設為1
+        * 注意：此選項只能在程式工作模式為TCP下才能使用，非TCP模式時此參數無效
+    * `DNS Data Filter` - DNS資料包頭檢測：開啟為1/關閉為0，預設為1
+    * `Blacklist Filter` - 解析結果黑名單過濾：開啟為1/關閉為0，預設為1
+
+* `Data` - 資料區域
+    * `ICMP ID` - ICMP/Ping資料包頭部ID的值：格式為 `0x***` 的十六進位字元，如果留空則獲取執行緒的ID作為請求用ID，預設為空
+    * `ICMP Sequence` - ICMP/Ping資料包頭部Sequence/序號的值：格式為 `0x****` 的十六進位字元，如果留空則為 `0x0001` ，預設為空
+    * `Domain Test Data` - DNS伺服器解析功能變數名稱測試：請輸入正確、確認不會被投毒污染的功能變數名稱並且不要超過253位元組ASCII資料，留空則會隨機生成一個功能變數名稱進行測試，預設為空
+    * `Domain Test ID` - DNS資料包頭部ID的值：格式為 `0x****` 的十六進位字元，如果留空則為 `0x0001` ，預設為空
+    * `ICMP PaddingData` - ICMP附加資料，Ping程式發送請求時為補足資料使其達到Ethernet類型網路最低的可發送長度時添加的資料：長度介乎于 18位元組 - 1512位元組 ASCII資料之間，留空則使用 Microsoft Windows Ping 程式的ICMP附加資料，預設為空
+    * `Localhost Server Name` - 本地DNS伺服器名稱：請輸入正確的功能變數名稱並且不要超過253位元組ASCII資料，留空則使用 pcap-dnsproxy.localhost.server 作為本機伺服器名稱，預設為空
+
+* `DNSCurve` - DNSCurve 協定基本參數區域
+    * `DNSCurve` - **DNSCurve 協定總開關，控制所有和 DNSCurve 協定有關的選項**：開啟為1/關閉為0，預設為0
+    * `DNSCurve Protocol` - 發送請求所使用的協定，分 UDP 和 TCP：預設為 UDP
+    * `DNSCurve Payload Size` - DNSCurve EDNS0 標籤附帶使用的最大載荷長度，同時亦為發送請求的總長度，並決定請求的填充長度：最小為DNS協定實現要求的512(bytes)，留空則為512(bytes)，預設為留空
+    * `Encryption` - 啟用加密，DNSCurve 協定支援加密和非加密模式：開啟為1/關閉為0，預設為1
+    * `Encryption Only` - 只使用加密模式：開啟為1/關閉為0，預設為1
+        * 注意：使用 只使用加密模式 時必須提供伺服器的魔數和指紋
+    * `Key Recheck Time` - DNSCurve 協定DNS伺服器連接資訊檢查間隔：單位為秒，最短為10秒，預設為3600秒/1小時
+
+* `DNSCurve Addresses` - DNSCurve 協定位址區域
+    * `DNSCurve IPv4 DNS Address` - DNSCurve 協定IPv4主要DNS伺服器位址：需要輸入一個帶埠格式的位址，預設為 `208.67.220.220:443`(OpenDNS No.2)
+    * `DNSCurve IPv4 Alternate DNS Address` - DNSCurve 協定IPv4備用DNS伺服器位址：需要輸入一個帶埠格式的位址，預設為 `208.67.222.222:443`(OpenDNS No.1)
+    * `DNSCurve IPv6 DNS Address` - DNSCurve 協定IPv6主要DNS伺服器位址：需要輸入一個帶埠格式的位址，預設為空
+    * `DNSCurve IPv6 Alternate DNS Address` - DNSCurve 協定IPv6備用DNS伺服器位址：需要輸入一個帶埠格式的位址，預設為空
+    * `DNSCurve IPv4 Provider Name` - DNSCurve 協定IPv4主要DNS伺服器提供者：請輸入正確的功能變數名稱並且不要超過253位元組ASCII資料，預設為 `2.dnscrypt-cert.opendns.com`(OpenDNS)
+        * 注意：自動獲取 DNSCurve 伺服器連接資訊時必須輸入提供者的功能變數名稱，不能留空
+    * `DNSCurve IPv4 Alternate Provider Name` - DNSCurve 協定IPv4備用DNS伺服器提供者：請輸入正確的功能變數名稱並且不要超過253位元組ASCII資料，預設為 `2.dnscrypt-cert.opendns.com`(OpenDNS)
+        * 注意：自動獲取 DNSCurve 伺服器連接資訊時必須輸入提供者的功能變數名稱，不能留空
+    * `DNSCurve IPv6 Provider Name` - DNSCurve 協定IPv6主要DNS伺服器提供者：輸入正確的功能變數名稱並且不要超過253位元組ASCII資料，預設為空
+        * 注意：自動獲取 DNSCurve 伺服器連接資訊時必須輸入提供者的功能變數名稱，不能留空
+    * `DNSCurve IPv6 Provider Name` - DNSCurve 協定IPv6備用DNS伺服器提供者：請輸入正確的功能變數名稱並且不要超過253位元組ASCII資料，預設為空
+        * 注意：自動獲取 DNSCurve 伺服器連接資訊時必須輸入提供者的功能變數名稱，不能留空
+
+* `DNSCurve Keys` - DNSCurve 協定金鑰區域
+注意：公開網站上的 "公開金鑰" 普遍為驗證用的公開金鑰，用於驗證與伺服器通訊時使用的指紋，兩者為不同性質的公開金鑰不可混用！
+    * `Client Public Key` - 自訂用戶端公開金鑰：可使用 KeyPairGenerator 生成，留空則每次啟動時自動生成，預設為空
+    * `Client Secret Key` - 自訂用戶端私密金鑰：可使用 KeyPairGenerator 生成，留空則每次啟動時自動生成，預設為空
+    * `IPv4 DNS Public Key` - DNSCurve 協定IPv4主要DNS伺服器驗證用公開金鑰，預設為 `B735:1140:206F:225D:3E2B:D822:D7FD:691E:A1C3:3CC8:D666:8D0C:BE04:BFAB:CA43:FB79`(OpenDNS)
+    * `IPv4 Alternate DNS Public Key` - DNSCurve 協定IPv4備用DNS伺服器驗證用公開金鑰，預設為 `B735:1140:206F:225D:3E2B:D822:D7FD:691E:A1C3:3CC8:D666:8D0C:BE04:BFAB:CA43:FB79`(OpenDNS)
+    * `IPv6 DNS Public Key` - DNSCurve 協定IPv6主要DNS伺服器驗證用公開金鑰，預設為空
+    * `IPv6 Alternate DNS Public Key` - DNSCurve 協定IPv6備用DNS伺服器驗證用公開金鑰，預設為空
+    * `IPv4 DNS Fingerprint` - DNSCurve 協定IPv4主要DNS伺服器傳輸用指紋，留空則自動通過伺服器提供者和公開金鑰獲取，預設為空
+    * `IPv4 Alternate DNS Fingerprint` - DNSCurve 協定IPv4備用DNS伺服器傳輸用指紋，留空則自動通過伺服器提供者和公開金鑰獲取，預設為空
+    * `IPv6 DNS Fingerprint` - DNSCurve 協定IPv6備用DNS伺服器傳輸用指紋，留空則自動通過伺服器提供者和公開金鑰獲取，預設為空
+    * `IPv6 Alternate DNS Fingerprint` - DNSCurve 協定IPv6備用DNS伺服器傳輸用指紋，留空則自動通過伺服器提供者和公開金鑰獲取，預設為空
+
+* `DNSCurve Magic Number` - DNSCurve 協定魔數區域
+    * `IPv4 Receive Magic Number` - DNSCurve 協定IPv4主要DNS伺服器接收魔數：長度必須為8位元組，留空則使用程式內置的接收魔數，預設留空
+    * `IPv4 Alternate Receive Magic Number` - DNSCurve 協定IPv4備用DNS伺服器接收魔數：長度必須為8位元組，留空則使用程式內置的接收魔數，預設留空
+    * `IPv6 Receive Magic Number` - DNSCurve 協定IPv6主要DNS伺服器接收魔數：長度必須為8位元組，留空則使用程式內置的接收魔數，預設留空
+    * `IPv6 Alternate Receive Magic Number` - DNSCurve 協定IPv6備用DNS伺服器接收魔數：長度必須為8位元組，留空則使用程式內置的接收魔數，預設留空
+    * `IPv4 DNS Magic Number` - DNSCurve 協定IPv4主要DNS伺服器發送魔數：長度必須為8位元組，留空則自動獲取，預設留空
+    * `IPv4 Alternate DNS Magic Number - DNSCurve 協定IPv4備用DNS伺服器發送魔數：長度必須為8位元組，留空則自動獲取，預設留空
+    * `IPv6 DNS Magic Number` - 協定IPv6主要DNS伺服器發送魔數：長度必須為8位元組，留空則自動獲取，預設留空
+    * `IPv6 Alternate DNS Magic Number` - DNSCurve 協定IPv6備用DNS伺服器發送魔數：長度必須為8位元組，留空則自動獲取，預設留空
+
+-----
 
