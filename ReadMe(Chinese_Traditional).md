@@ -297,6 +297,7 @@
 
 * `Switches` - 控制開關區域
     * `Domain Case Conversion `- 功能變數名稱大小寫轉換，隨機轉換功能變數名稱請求的大小寫：開啟為1/關閉為0，預設為1
+    * `Compression Pointer Mutation` - 隨機添加壓縮指標：開啟為1/關閉為0，預設為0
     * `EDNS0 Label` - EDNS0 標籤支援，開啟後將為所有請求添加 EDNS0 標籤：開啟為1/關閉為0，預設為0
     * `DNSSEC Request` - DNSSEC 請求，開啟後將嘗試為所有請求添加 DNSSEC 請求：開啟為1/關閉為0，預設為0
         * 注意：此功能為實驗性質，本程式不具備任何驗證 DNSSEC 回復的能力，單獨開啟此功能並不能避免DNS投毒污染的問題
