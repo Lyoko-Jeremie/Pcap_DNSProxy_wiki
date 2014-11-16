@@ -107,6 +107,7 @@
     * `DNSCurve empty Provider Name error` - DNSCurve 協定伺服器提供者錯誤：不存在魔數或指紋時必須提供伺服器的提供者資訊以自動獲取連接參數
     * `DNSCurve empty Public Key error` - DNSCurve 協定伺服器提供者錯誤：不存在魔數或指紋時必須提供伺服器的公開金鑰以自動獲取連接參數
     * `EDNS0 Label must trun ON when request DNSCurve` - 使用 DNSCurve 協定時必須開啟EDNS0標籤請求功能
+    * `Compression Pointer Mutation must trun OFF when request EDNS0 Label` - 使用 Compression Pointer Mutation 時不能開啟EDNS0標籤請求功能，兩者並不相容
     * `DNSCurve PayloadSize must longer than 512 bytes(Old DNS packets minimum supported size)` - DNSCurve 協定載荷長度過短：實現DNS協定必須支援長度超過 512 bytes 的資料包
     * `DNSCurve PayloadSize may be too long` - DNSCurve 協定載荷長度可能過長：此值建議不要超過乙太網的MTU(1512 bytes)
 
