@@ -297,6 +297,7 @@
 
 * `Switches` - 控制开关区域
     * `Domain Case Conversion `- 域名大小写转换，随机转换域名请求的大小写：开启为1/关闭为0，默认为1
+    * `Compression Pointer Mutation` - 随机添加压缩指针：开启为1/关闭为0，默认为0
     * `EDNS0 Label` - EDNS0 标签支持，开启后将为所有请求添加 EDNS0 标签：开启为1/关闭为0，默认为0
     * `DNSSEC Request` - DNSSEC 请求，开启后将尝试为所有请求添加 DNSSEC 请求：开启为1/关闭为0，默认为0
         * 注意：此功能为实验性质，本程序不具备任何验证 DNSSEC 回复的能力，单独开启此功能并不能避免DNS投毒污染的问题
