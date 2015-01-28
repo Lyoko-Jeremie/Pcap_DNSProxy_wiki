@@ -22,7 +22,7 @@
 * 正常的运行结果应类似：
     >nslookup www.google.com<br />
     服务器:  pcap_dnsproxy.localhost.server（注意：此处由配置文件设置的值确定，参见 [ReadMe 文档](https://github.com/chengr28/Pcap_DNSProxy/wiki/ReadMe) 中 配置文件详细参数说明）<br />
-    Address:  127.0.0.1（视所在网络环境而定，原生IPv6为 ::1）<br /><br />
+    Address:  127.0.0.1（视所在网络环境而定，本地监听协议为 IPv6 时为 ::1）<br /><br />
     非权威应答:<br />
     &nbsp;&nbsp;&nbsp;&nbsp;名称:    www.google.com<br />
     &nbsp;&nbsp;&nbsp;&nbsp;Addresses: ……（IP地址或地址列表）<br />
@@ -31,17 +31,17 @@
 
     >nslookup www.google.com<br />
     服务器:  UnKnown<br />
-    Address:  127.0.0.1（视所在网络环境而定，原生IPv6为 ::1）<br /><br />
+    Address:  127.0.0.1（视所在网络环境而定，本地监听协议为 IPv6 时为 ::1）<br /><br />
     *** UnKnown 找不到 www.google.com: No response from server<br />
 	
-* **如果出现以下结果，则说明服务已经运行成功但远程DNS服务器没有回应，请检查是否有错误报告生成**
-    * 请务必设置一个正确的、有效的、可以使用的境外DNS服务器
-    * **出现这种情况可能为网络问题。部分地区ISP/运营商对UDP协议转发丢包率比较高，可尝试切换到TCP协议模式（参见 [ReadMe 文档](https://github.com/chengr28/Pcap_DNSProxy/wiki/ReadMe) 中 `配置文件详细参数说明` 一节中 Base - 基本区域 的 Operation Mode 一节）**
+* **如果出现以下结果，则说明服务已经运行成功但远程 DNS 服务器没有回应，请检查是否有错误报告生成**
+    * 请务必设置一个正确的、有效的、可以使用的境外 DNS 服务器
+    * **出现这种情况可能为网络问题。部分地区 ISP/运营商对 UDP 协议转发丢包率比较高，可尝试切换到 TCP 协议模式（参见 [ReadMe 文档](https://github.com/chengr28/Pcap_DNSProxy/wiki/ReadMe) 中 `配置文件详细参数说明` 一节中 Base - 基本区域 的 Operation Mode 一节）**
     * 也可能是因为长时间运行有错误累积造成，项目组正努力解决。可尝试重启服务（参见 [ReadMe 文档](https://github.com/chengr28/Pcap_DNSProxy/wiki/ReadMe) 中的 `重启服务`）
 
     >nslookup www.google.com<br />
     服务器:  pcap_dnsproxy.localhost.server（注意：此处由配置文件设置的值确定，参见 [ReadMe 文档](https://github.com/chengr28/Pcap_DNSProxy/wiki/ReadMe) 中 `配置文件详细参数说明`）<br />
-    Address:  127.0.0.1（视所在网络环境而定，原生IPv6为 ::1）<br /><br />
+    Address:  127.0.0.1（视所在网络环境而定，本地监听协议为 IPv6 时为 ::1）<br /><br />
     DNS request timed out.<br />
     &nbsp;&nbsp;&nbsp;&nbsp;timeout was 2 seconds.<br />
     DNS request timed out.<br />
@@ -54,7 +54,7 @@
 或者：<br /><br />
     >nslookup -vc www.google.com<br />
     服务器:  pcap_dnsproxy.localhost.server（注意：此处由配置文件设置的值确定，参见 [ReadMe 文档](https://github.com/chengr28/Pcap_DNSProxy/wiki/ReadMe) 中 `配置文件详细参数说明`）<br />
-    Address:  127.0.0.1（视所在网络环境而定，原生IPv6为 ::1）<br /><br />
+    Address:  127.0.0.1（视所在网络环境而定，本地监听协议为 IPv6 时为 ::1）<br /><br />
     *** 没有 www.google.com 可以使用的 internal type for both IPv4 and IPv6 Addresses (A+AAAA)记录<br />
 
 -----
@@ -69,109 +69,127 @@
     * `Service start error` - 服务启动失败：可能未在系统注册服务，或在系统内注册的服务路径不正确
 	* 详细情况参见 ReadMe 文档中 安装方法 一节
 	* 其它错误代码原因参见 http://msdn.microsoft.com/en-us/library/windows/desktop/ms686324(v=vs.85).aspx
-    * Multi byte(s) to wide char(s) error - 多字节字符转换为宽字节字符错误，遇到此错误请与作者联系
+    * `Multi bytes to wide chars error` - 多字节字符转换为宽字节字符错误，遇到此错误请与作者联系
     * `Old Error Log file deleted` - 日志文件已满并被删除
         * 日志文件最大容量的配置参见 `详细说明文档` 中 `配置文件详细参数说明` 中的 `Log Maximum Size` 参数
+    * `Read Hosts module Monitor terminated` - Hosts 读取模块已经停止监视，建议立即重新启动服务或程序
+    * `Read IPFilter module Monitor terminated` - IPFilter 读取模块已经停止监视，建议立即重新启动服务或程序
+    * `Alternate Server module Monitor terminated` - 备用服务器切换模块已经停止运行，建议立即重新启动服务或程序
+    * `DNS Cache Timer module Monitor terminated` - DNS 缓存模块已经停止运行，建议立即重新启动服务或程序
+    * `Get Local Address Information module Monitor terminated` - 本地地址监控模块已经停止监视，建议立即重新启动服务或程序
+    * `Domain Test module Monitor terminated` - 域名测试模块已经停止运行，建议立即重新启动服务或程序
+    * `ICMP Test module Monitor terminated` - ICMP 请求模块已经停止请求，建议立即重新启动服务或程序
+    * `ICMPv6 Test module Monitor terminated` - ICMPv6 请求已经停止请求，建议立即重新启动服务或程序
+    * `UDP listening module Monitor terminated` - UDP 协议监听模块已经停止监视，建议立即重新启动服务或程序
+    * `TCP listening module Monitor terminated` - TCP 协议监听模块已经停止监视，建议立即重新启动服务或程序
  
 * `Parameter Error` - 读取配置文件参数错误
     * `Cannot open any configuration files` - 没有发现任何配置文件：请确认文件是否存在
     * `Configuration file size is too large` - 配置文件容量过大：请确认配置文件的内容，整个文件的大小不要超过4GB
     * `Item length error` - 配置文件参数一行数据超过4096字节/4KB，或该行数据长度不符合要求（可根据文件名和行数查找）：请确认该行的内容是否符合要求
-    * `Configuration file version error` - 配置文件版本错误：请确认配置文件是否需要更新
-        * 注意，Windows/Linux/Mac版配置文件互不通用！
-    * `Configuration file is not the latest version` - 配置文件非最新版本：请确认配置文件是否需要更新。
-    * `Data of a line is too long` - 该参数过长（可根据文件名和行数查找）：一行数据切勿超过4096字节/4KB
-    * `Log file size error` - 配置文件指定的最大Log文件容量错误：可接受范围为4KB - 4GB
+    * `Configuration file version error` - 配置文件版本错误：请确认配置文件是否需要更新。注意，Windows/Linux/Mac 版配置文件互不通用！
+    * `Configuration file is not the latest version` - 配置文件非最新版本：请确认配置文件是否需要更新
+    * `Data of a line is too short` - 该参数过短（可根据文件名和行数查找）：请确认配置文件的内容
+    * `Data of a line is too long` - 该参数过长（可根据文件名和行数查找）：一行数据切勿超过 4096字节/4KB
+    * `Log file size error` - 配置文件指定的最大日志文件容量错误：可接受范围为 4KB - 4GB
     * `Pcap Capture error` - 抓包模块参数错误：请确定关闭抓包模块时是否有开启其它请求域名解析的方式
-    * `DNS server IPv6 Port error` - IPv6的DNS目标服务器端口错误（可根据文件名和行数查找）：请检查目标服务器的端口
-    * `DNS server IPv6 Address format error` - IPv6的DNS服务器地址格式错误（可根据文件名和行数查找）：请检查IPv6的DNS服务器地址
+    * `DNS server IPv6 Port error` - IPv6 的 DNS 目标服务器端口错误（可根据文件名和行数查找）：请检查目标服务器的端口
+    * `DNS server IPv6 Address format error` - IPv6 的 DNS 服务器地址格式错误（可根据文件名和行数查找）：请检查 IPv6 的 DNS 服务器地址
     * `DNS server IPv4 Port error` - IPv4的DNS目标服务器端口错误（可根据文件名和行数查找）：请检查目标服务器的端口
-    * `DNS server IPv4 Address format error` - IPv4的DNS服务器地址格式错误（可根据文件名和行数查找）：请检查IPv4的DNS服务器地址
+    * `DNS server IPv4 Address format error` - IPv4 的 DNS 服务器地址格式错误（可根据文件名和行数查找）：请检查 IPv4 的 DNS 服务器地址
     * `Localhost server listening Port error` - 本地监听端口错误：请检查本地监听端口的值，可适用范围为 1 - 65535
     * `IPFilter Level error` - IPFilter 过滤级别错误：请检查过滤级别的值，可适用范围为 1 - 65535
-    * `DNS Cache error` - DNS缓存配置错误：请检查缓存的参数
-    * `DNS Targets error` - DNS目标服务器配置错误：请检查DNS服务器的地址
+    * `DNS Cache error` - DNS 缓存配置错误：请检查缓存的参数
+    DNS Targets error` - DNS 目标服务器配置错误：请检查 DNS 服务器的地址
     * `Local Main error` - 主要境内服务器请求功能错误：请检查境内服务器是否可用
-    * `DNS Records type error` - DNS记录参数错误：请检查 Accept Type 的值是否符合要求
+    * `DNS Records type error` - DNS 记录参数错误：请检查 Accept Type 的值是否符合要求
     * `Hop Limit or TTL Fluctuations error` - Hop Limit 或 TTL 可接受范围错误：请检查范围的值
-    * `EDNS0 PayloadSize must longer than 512 bytes(Old DNS packets minimum supported size)` - EDNS0载荷长度过短：实现DNS协议必须支持长度超过 512 bytes 的数据包
-    * `EDNS0 PayloadSize may be too long` - EDNS0载荷长度可能过长：此值建议不要超过以太网的MTU(1512 bytes)
-    * `EDNS0 Label must trun ON when request DNSSEC` - 开启DNSSEC请求时必须开启EDNS0标签请求功能
+    * `EDNS0 Payload Size must longer than 512 bytes(Old DNS packets minimum supported size)` - EDNS0 载荷长度过短：实现DNS协议必须支持长度超过 512 bytes 的数据包
+    * `EDNS0 Payload Size may be too long` - EDNS0 载荷长度可能过长：此值建议不要超过以太网的MTU(1512 bytes)
+    * `EDNS0 Label must trun ON when request DNSSEC` - 开启 DNSSEC 请求时必须开启 EDNS0 标签请求功能
+    * `EDNS0 Label must trun ON when request DNSCurve` - 开启 DNSCurve 协议请求时必须开启 EDNS0 标签请求功能
     * `Alternate Multi requesting error` - 主要备用或多个服务器下同时请求参数错误：请确认所有服务器的信息
     * `Multi requesting times error` - 接收到一个解析请求向同一个远程服务器发送多次解析请求参数错误 ：一个解析请求的多次解析请求次数不能超过16次，也就是配置文件不能填大于15的值
-    * `DNSCurve Targets error` - DNSCurve 协议使用的DNS目标服务器地址错误：请检查 DNSCurve 协议使用DNS服务器的地址
+    * `DNSCurve Targets error` - DNSCurve 协议使用的 DNS 目标服务器地址错误：请检查 DNSCurve 协议使用DNS服务器的地址
     * `DNSCurve encryption options error` - DNSCurve 协议加密选项配置错误：开启加密选项和只使用加密模式选项冲突
     * `DNSCurve Encryption Only mode error` - DNSCurve 协议只使用加密模式配置错误：只使用加密模式必须提供服务器的魔数和指纹
     * `DNSCurve empty Provider Name error` - DNSCurve 协议服务器提供者错误：不存在魔数或指纹时必须提供服务器的提供者信息以自动获取连接参数
     * `DNSCurve empty Public Key error` - DNSCurve 协议服务器提供者错误：不存在魔数或指纹时必须提供服务器的公钥以自动获取连接参数
-    * `EDNS0 Label must trun ON when request DNSCurve` - 使用 DNSCurve 协议时必须开启EDNS0标签请求功能
-    * `Compression Pointer Mutation must trun OFF when request EDNS0 Label` - 使用 Compression Pointer Mutation 时不能开启EDNS0标签请求功能，两者并不兼容
-    * `DNSCurve PayloadSize must longer than 512 bytes(Old DNS packets minimum supported size)` - DNSCurve 协议载荷长度过短：实现DNS协议必须支持长度超过 512 bytes 的数据包
-    * `DNSCurve PayloadSize may be too long` - DNSCurve 协议载荷长度可能过长：此值建议不要超过以太网的MTU(1512 bytes)
+    * `EDNS0 Label must trun ON when request DNSCurve` - 使用 DNSCurve 协议时必须开启 EDNS0 标签请求功能
+    * `Compression Pointer Mutation must trun OFF when request EDNS0 Label` - 使用 Compression Pointer Mutation 时不能开启 EDNS0 标签请求功能，两者并不兼容
+    * `DNSCurve Payload Size must longer than 512 bytes(Old DNS packets minimum supported size)` - DNSCurve 协议载荷长度过短：实现 DNS 协议必须支持长度超过 512 bytes 的数据包
+    * `DNSCurve Payload Size may be too long` - DNSCurve 协议载荷长度可能过长：此值建议不要超过以太网的 MTU(1512 bytes)
 
 * `IPFilter Error` - 读取 IPFilter 文件错误
-    * `IPFilter file size is too large` - IPFilter文件容量过大：请确认IPFilter文件的内容，整个文件的大小不要超过4GB
+    * `IPFilter file size is too large` - IPFilter 文件容量过大：请确认 IPFilter 文件的内容，整个文件的大小不要超过 4GB
     * `Read file(s) error` - 文件跳转读取错误：请与开发者联系
-    * `Data of a line is too long` - 该 IPFilter 条目过长（可根据文件名和行数查找）：一行数据切勿超过4096字节/4KB
+    * `Data of a line is too long` - 该 IPFilter 条目过长（可根据文件名和行数查找）：一行数据切勿超过 4096字节/4KB
     * `Item format error` - IPFilter 条目格式错误（可根据报告的行数查找）：请检查该条目的格式
-    * `Regular expression pattern error` - 错误的正则表达式（可根据报告的行数查找）：请检查正则表达式的正确性
-    * `IPv6 Address format error` - IPFilter的IPv6地址格式错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
-    * `IPv4 Address format error` - IPFilter的IPv4地址格式错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
-    * `IPv6 Addresses range error` - IPFilter的IPv6地址范围错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
-    * `IPv4 Addresses range error` - IPFilter的IPv6地址范围错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
+    * `Regular expression pattern error` - 错误的正则表达式（可根据报告的行数查找）：请检查正则表达式的正确
+    * `IPv6 Address format error` - IPFilter 的 IPv6 地址格式错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
+    * `IPv4 Address format error` - IPFilter 的 IPv4 地址格式错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
+    * `IPv6 Addresses range error` - IPFilter 的 IPv6 地址范围错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
+    * `IPv4 Addresses range error` - IPFilter 的 IPv6 地址范围错误（可根据报告的行数查找）：请检查 IPFilter 条目的地址
+    * `Repeating items error, this item is not available` - 存在重复的 IPFilter 条目（可根据报告的行数查找）：本条目将不启用的提示
+    * `IPv4 Prefix error` - IPv4 网络后缀长度错误（可根据报告的行数查找）：IPv4 网络后缀的长度介乎与 1-32
+    * `IPv6 Prefix error` - IPv6 网络后缀长度错误（可根据报告的行数查找）：IPv6 网络后缀的长度介乎与 1-128
+    * `Level error` - IPFilter 过滤级别错误（可根据报告的行数查找）：过滤级别介乎与 0 - 0xFFFF(65535)
 
 * `Hosts Error` - 读取 Hosts 文件错误
-    * `Hosts file size is too large` - Hosts文件容量过大：请确认Hosts文件的内容，整个文件的大小不要超过4GB
+    * `Hosts file size is too large` - Hosts 文件容量过大：请确认Hosts文件的内容，整个文件的大小不要超过4GB
     * `Read file(s) error` - 文件跳转读取错误：请与开发者联系
-    * `Hosts file version error` - Hosts 文件版本错误：请确认 Hosts 文件是否需要更新。注意，Windows/Linux/Mac版配置文件互不通用！
     * `Data of a line is too long` - 该 Hosts 条目过长（可根据文件名和行数查找）：一行数据切勿超过4096字节/4KB
     * `Item format error` - Hosts 条目格式错误（可根据报告的行数查找）：请检查该条目的格式
     * `Data is too long when EDNS0 is available` - 开启EDNS0标签的情况下该 Hosts 条目过长：请检查 Hosts 的地址列表是否过长
     * `Default TTL redefinition` - 默认生存时间重定义（可根据报告的行数查找）：以第一个出现的默认生存时间为准
     * `Regular expression pattern error` - 错误的正则表达式（可根据报告的行数查找）：请检查正则表达式的正确性
     * `Repeating items error, the item is not available` - 存在重复的 Hosts 条目（可根据报告的行数查找）：以第一个出现的 Hosts 条目为准
-    * `IPv6 Address format error` - Hosts的IPv6地址格式错误（可根据报告的行数查找）：请检查 Hosts 条目的地址
-    * `IPv4 Address format error` - Hosts的IPv4地址格式错误（可根据报告的行数查找）：请检查 Hosts 条目的地址
+    * `IPv6 Address format error` - Hosts 的IPv6地址格式错误（可根据报告的行数查找）：请检查 Hosts 条目的地址
+    * `IPv4 Address format error` - Hosts 的IPv4地址格式错误（可根据报告的行数查找）：请检查 Hosts 条目的地址
     * `Too many Hosts IP addresses` - Hosts 条目的平行地址过多
 
 * `Winsock Error` - Windows Socket 错误
-    * `Winsock initialization error` - Winsock初始化失败：请确认使用的操作系统平台是否受支持
-    * `Windows Firewall Test error` - Windows防火墙测试失败：请确认是否为管理员身份运行批处理
-    * `UDP Monitor socket initialization error` - UDP本地套接字初始化失败：原因参见错误代码
-    * `Bind UDP Monitor socket error` - UDP本地套接字绑定失败：本地可能已经存在DNS服务器或者多重运行了本工具，具体原因参见错误代码
-    * `TCP Monitor socket initialization error` - TCP本地套接字初始化失败：原因参见错误代码
-    * `Bind TCP Monitor socket error` - TCP本地套接字绑定失败：本地可能已经存在DNS服务器或者多重运行了本工具，具体原因参见错误代码
-    * `TCP Monitor socket listening initialization error` - TCP本地套接字监听失败：原因参见错误代码
-    * `Get localhost name error` - 获取本地计算机名称失败：原因参见错误代码
-    * `Get localhost address(es) error` - 获取本地计算机地址失败：没有任何生效的网络适配器，可能是硬件或者驱动程序的问题
-    * `Local IPv4 Address format error` - 本地计算机IPv4地址格式错误：原因参见错误代码
-    * `Local IPv6 Address format error` - 本地计算机IPv6地址格式错误：原因参见错误代码
-    * `UDP request initialization error` - UDP请求套接字初始化失败：原因参见错误代码
-    * `Complete UDP request initialization error` - UDP请求套接字初始化失败：原因参见错误代码
-    * `UDP request error` - UDP请求发送失败：可能为网络错误，具体原因可参见错误代码
-    * `Complete UDP request error` - UDP请求发送失败：可能为网络错误，具体原因可参见错误代码
-    * `TCP request initialization error` - TCP请求套接字初始化失败：原因参见错误代码
-    * `DNSCurve TCP request error` - DNSCurve 协议TCP请求发送失败：可能为网络错误，具体原因可参见错误代码
-    * `DNSCurve UDP request error` - DNSCurve 协议UDP请求发送失败：可能为网络错误，具体原因可参见错误代码
+    * `Winsock initialization error` - Winsock 初始化失败：请确认使用的操作系统平台是否受支持
+    * `Windows Firewall Test error` - Windows 防火墙测试失败：请确认是否为管理员身份运行批处理
+    * `UDP Monitor socket initialization error` - UDP 协议本地套接字初始化失败：原因参见错误代码
+    * `Bind UDP Monitor socket error` - UDP 协议本地套接字绑定失败：本地可能已经存在 DNS 服务器或者多重运行了本工具，具体原因参见错误代码
+    * `TCP Monitor socket initialization error` - TCP 协议本地套接字初始化失败：原因参见错误代码
+    * `Bind TCP Monitor socket error` - TCP 协议本地套接字绑定失败：本地可能已经存在 DNS 服务器或者多重运行了本工具，具体原因参见错误代码
+    * `TCP Monitor socket listening initialization error` - TCP 协议本地套接字监听失败：原因参见错误代码
+    * `Get localhost names error` - 获取本地计算机名称失败：原因参见错误代码
+    * `Get localhost addresses error` - 获取本地计算机地址失败：没有任何生效的网络适配器，可能是硬件或者驱动程序的问题
+    * `Local IPv4 Address format error` - 本地计算机 IPv4 地址格式错误：原因参见错误代码
+    * `Local IPv6 Address format error` - 本地计算机 IPv6 地址格式错误：原因参见错误代码
+    * `UDP request initialization error` - UDP 协议请求套接字初始化失败：原因参见错误代码
+    * `Complete UDP request initialization error` - UDP 协议请求套接字初始化失败：原因参见错误代码
+    * `UDP request error` - UDP 协议请求发送失败：可能为网络错误，具体原因可参见错误代码
+    * `Complete UDP request error` - UDP 协议请求发送失败：可能为网络错误，具体原因可参见错误代码
+    * `TCP request initialization error` - TCP 协议请求套接字初始化失败：原因参见错误代码
+    * `DNSCurve TCP sockets initialization error` - DNSCurve 协议 TCP 协议套接字初始化失败：可能为网络错误，具体原因可参见错误代码
+    * `DNSCurve TCP request error` - DNSCurve 协议 TCP 请求发送失败：可能为网络错误，具体原因可参见错误代码
+    * `DNSCurve UDP sockets initialization error` - DNSCurve 协议 UDP 协议套接字初始化失败：可能为网络错误，具体原因可参见错误代码
+    * `DNSCurve UDP request error` - DNSCurve 协议 UDP 协议请求发送失败：可能为网络错误，具体原因可参见错误代码
     * `DNSCurve socket(s) initialization error` - DNSCurve 协议请求套接字初始化失败：可能为网络错误，具体原因可参见错误代码
     * `DNSCurve Local Signature request initialization error` - DNSCurve 协议本地请求套接字初始化失败：可能为网络错误，具体原因可参见错误代码
     * `DNSCurve Local Signature request error` - DNSCurve 协议本地请求发送失败：可能为网络错误，具体原因可参见错误代码
-    * `Set UDP socket timeout error` - 设置UDP请求套接字超时时间错误：具体原因可参见错误代码
-    * `Set Complete UDP socket timeout error` - 设置UDP请求套接字超时时间错误：具体原因可参见错误代码
-    * `Set UDP socket SIO_UDP_CONNRESET error` - 设置UDP套接字屏蔽 `ICMP Port Unreachable` 信息错误：具体原因可参见错误代码
-    * `Set TCP socket timeout error` - 设置TCP请求套接字超时时间错误：具体原因可参见错误代码
-    * `Set ICMP socket timeout error` - 设置ICMP请求套接字超时时间错误：具体原因可参见错误代码
-    * `ICMP Echo(Ping) request error` - ICMP/Ping 请求错误：可能为网络错误，具体原因可参见错误代码
-    * `Set ICMPv6 socket timeout error` - 设置ICMPv6请求套接字超时时间错误：具体原因可参见错误代码
-    * `ICMPv6 Echo(Ping) request error` - ICMPv6/Ping 请求错误：可能为网络错误，具体原因可参见错误代码
-    * Winsock 错误代码具体含义可移步 http://msdn.microsoft.com/en-us/library/windows/desktop/ms740668(v=vs.85).aspx
+    * `Set TCP socket non-blocking mode error` - 设置 TCP 协议套接字非阻塞模式错误：可能为网络错误，具体原因可参见错误代码
+    * `Set UDP socket non-blocking mode error` - 设置 UDP 协议套接字非阻塞模式错误：可能为网络错误，具体原因可参见错误代码
+    * `Set UDP socket timeout error` - 设置 UDP 协议套接字超时时间错误：具体原因可参见错误代码
+    * `Set Complete UDP socket timeout error` - 设置 UDP 协议套接字超时时间错误：具体原因可参见错误代码
+    * `Set UDP socket SIO_UDP_CONNRESET error` - 设置 UDP 协议套接字屏蔽 ICMP Port Unreachable 信息错误：具体原因可参见错误代码
+    * `Set TCP socket timeout error` - 设置 TCP 协议套接字超时时间错误：具体原因可参见错误代码
+    * `Set ICMP socket timeout error` - 设置 ICMP 协议套接字超时时间错误：具体原因可参见错误代码
+    * `ICMP Echo(Ping) request error` - ICMP/Ping 协议请求错误：可能为网络错误，具体原因可参见错误代码
+    * `Set ICMPv6 socket timeout error` - 设置 ICMPv6 协议套接字超时时间错误：具体原因可参见错误代码
+    * `ICMPv6 Echo(Ping) request error` - ICMPv6/Ping 协议请求错误：可能为网络错误，具体原因可参见错误代码
+    * `Winsock 错误代码具体含义可移步 http://msdn.microsoft.com/en-us/library/windows/desktop/ms740668(v=vs.85).aspx
 
 * `WinPcap Error` - WinPcap 错误
     * `Insufficient permissions or not any available network devices` - 没有任何可用的网络适配器：请检查硬件设备和驱动程序是否安装正确，也可能是权限不足
     * `XXX is not a Ethernet device` - 发现非 Ethernet 类型的网络适配器：这不是错误，但可以说明系统内存在非 Ethernet 类型的网络适配器
     * `An error occurred in XXX` - 名称为 XXX 的网络适配器抓取数据包错误
     * `EOF was reached reading from an offline capture in XXX` - 名称为 XXX 的网络适配器已经离线或不可用
-    * 本类型错误会直接将WinPcap的错误信息直接打印至错误报告
+    * 本类型错误会直接将 WinPcap 的错误信息直接打印至错误报告
     * WinPcap错误信息的具体含义可移步 http://www.winpcap.org/docs/docs_40_2/html/group__wpcapfunc.html
 
 * `DNSCurve Error` - DNSCurve 协议错误
