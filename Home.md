@@ -15,8 +15,8 @@
 
 ### Branch
 Source is in master branch，binary is in Release branch.
-* [master branch](https://github.com/chengr28/pcap_dnsproxy)<br />
-* [Release branch](https://github.com/chengr28/pcap_dnsproxy/tree/Release)<br />
+* [master branch](https://github.com/chengr28/Pcap_DNSProxy)<br />
+* [Release branch](https://github.com/chengr28/Pcap_DNSProxy/tree/Release)<br />
 
 ### Links
 * [[Pcap_DNSProxy in Sourceforge|https://sourceforge.net/projects/pcap-dnsproxy]]
