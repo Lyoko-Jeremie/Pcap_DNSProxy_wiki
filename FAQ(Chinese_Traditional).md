@@ -72,7 +72,9 @@
         * 詳細情況參見 ReadMe 文檔中 安裝方法 一節
         * 其它錯誤代碼原因參見 http://msdn.microsoft.com/en-us/library/windows/desktop/ms686324(v=vs.85).aspx
     * `Multi bytes to wide chars error` - 多位元組字元轉換為寬位元組字元錯誤，遇到此錯誤請與作者聯繫
-    * `Old Error Log file deleted` - 日誌檔已滿並被刪除
+    * `Old Error Log file was deleted` - 日誌檔已滿並被刪除
+        * 日誌檔最大容量的配置參見 `詳細說明文檔` 中 `設定檔詳細參數說明` 中的 `Log Maximum Size` 參數
+    * `Old Running Log file was deleted` - 運行日誌檔已滿並被刪除
         * 日誌檔最大容量的配置參見 `詳細說明文檔` 中 `設定檔詳細參數說明` 中的 `Log Maximum Size` 參數
     * `Read Hosts module Monitor terminated` - Hosts 讀取模組已經停止監視，建議立即重新開機服務或程式
     * `Read IPFilter module Monitor terminated` - IPFilter 讀取模組已經停止監視，建議立即重新開機服務或程式
