@@ -115,9 +115,6 @@
 
 ### 特別使用技巧
 這裡羅列出部分作者建議的介紹和使用技巧，供大家參考和使用。關於調整配置，參見下文 `設定檔詳細參數說明` 一節
-* 一個含有大部分境內功能變數名稱的 `[Local Hosts]` 如有需要可直接添加到 Pcap_DNSProxy 的 Hosts 裡，參見 Hosts 檔案格式說明 一節
-    * https://xinhugo-list.googlecode.com/svn/trunk/White_List.txt
-    * 或者可以直接使用 `Local Main` 功能，將大部分的解析請求發往境內的 DNS 伺服器，參見 `Local Main` 參數
 * DNS緩存類型
     * `Timer/計時型`：可以自訂緩存的時間長度，佇列長度不限
     * `Queue/佇列型`：預設緩存時間15分鐘，可通過 `Default TTL` 值自訂，同時可自訂緩存佇列長度（亦即限制佇列長度的 `Timer/計時型`）
@@ -164,6 +161,7 @@
         * 注意：此處所指的協定指的是程式請求遠端 DNS 伺服器時所使用的協定，而向本程式請求功能變數名稱解析時可隨意使用 UDP 或 TCP
     * `Hosts Only` - Hosts Only 直連模式，啟用後將使用系統直接請求遠端伺服器而啟用只使用本工具的 Hosts 功能：開啟為1/關閉為0，預設為 0
     * `Local Main` - 主要境內伺服器請求功能，開啟後則平時使用 Local 的伺服器進行解析，遇到遭投毒污染的解析結果時自動再向境外伺服器請求
+    * `Local Hosts` - 白名單境內伺服器請求功能，開啟後才能使用自帶或自訂的 Local Hosts 白名單：開啟為1/關閉為0，預設為 0
     * `Local Routing` - Local 路由表識別功能，開啟後所有使用 Local 請求的解析結果都會被檢查，路由表命中後會直接返回結果，命中失敗將丟棄解析結果並向境外伺服器再次發起請求：開啟為1/關閉為0，預設為 0
     * `Cache Type` - DNS 緩存的類型：分 Timer/計時型以及 Queue/佇列型
     * `Cache Parameter` - DNS 緩存的參數：Timer/計時型 時為時間長度（單位為秒），`Queue/佇列型` 時為佇列長度
@@ -176,9 +174,10 @@
         * `Private/私有網路模式`：打開DNS通用埠（TCP/UDP 同時打開），可為僅限於私有網路位址的設備提供代理功能變數名稱解析請求服務
         * `Proxy/代理模式`：只打開回環位址的DNS埠（TCP/UDP 同時打開），只能為本機提供代理功能變數名稱解析請求服務
         * `Custom/自訂模式`：打開DNS通用埠（TCP/UDP 同時打開），可用的位址由 IPFilter 參數決定
-    * `Listen Protocol` - 監聽協定，本地監聽的協定：可填入 IPv4 和 IPv6 和 IPv4 + IPv6，預設為 IPv4 + IPv6
-        * 只填 IPv4 或 IPv6 時，只監聽指定協定的本地埠
-        * IPv4 + IPv6 時同時監聽兩個協定的本地埠
+    * `Listen Protocol` - 監聽協定，本地監聽的協定：可填入 `IPv4` 和 `IPv6` 和 `TCP` 和 `UDP`，預設為 `IPv4 + IPv6 + UDP`
+        * 只填 IPv4 或 IPv6 配合 UDP 或 TCP 時，只監聽指定協定的本地埠
+        * IPv4 + IPv6 + TCP + UDP 時同時監聽兩個協定的本地埠
+        * 填入的協定可隨意組合
     * `Listen Port` - 監聽埠，本地監聽請求的埠：可填入 1-65535 之間的埠，如果留空則為 53，預設為空
     * `IPFilter Type` - IPFilter 參數的類型：分為 Deny 禁止和 Permit 允許，對應 IPFilter 參數應用為黑名單或白名單，預設為 Deny
     * `IPFilter Level` - IPFilter 參數的過濾級別，級別越高過濾越嚴格，與 IPFilter 條目相對應：0為不啟用過濾，如果留空則為 0，預設為空
@@ -269,6 +268,8 @@
 
 * `Addresses` - 普通模式位址區域
 注意：IPv4 位址格式為 `IPv4 位址:埠`，IPv6位址格式為`[IPv6 位址]:埠`（均不含引號）
+    * `IPv4 Listen Address` - IPv4 本地監聽位址：預設為空
+        * 填入此值後 IPv4 協定的 `Operation Mode` 和 `Listen Port` 參數將被自動忽略
     * `IPv4 DNS Address` - IPv4 主要 DNS 伺服器位址：需要輸入一個帶埠格式的位址，預設為 `8.8.4.4:53`
         * 本參數支援同時請求多伺服器的功能，開啟後將同時向清單中的伺服器請求解析功能變數名稱，並採用最快回應的伺服器的結果
         * 使用同時請求多伺服器格式為 `位址 A:埠|位址 B:埠|位址 C:埠`（不含引號），同時請求多伺服器啟用後將自動啟用 `Alternate Multi Request` 參數（參見下文）
@@ -366,6 +367,8 @@
         * 指定埠時可使用服務名稱代替，參見上表
     * `IPv4 Local Alternate DNS Address` - IPv4 備用境內 DNS 伺服器位址，用於境內功能變數名稱解析：需要輸入一個帶埠格式的位址，預設為 `114.114.114.114:53`
         * 指定埠時可使用服務名稱代替，參見上表
+    * `IPv6 Listen Address` - IPv6 本地監聽位址：預設為空
+        * 填入此值後 IPv6 協定的 `Operation Mode` 和 `Listen Port` 參數將被自動忽略
     * `IPv6 DNS Address` - IPv6 主要 DNS 伺服器位址：需要輸入一個帶埠格式的位址，留空為不啟用，預設為空
         * 指定埠時可使用服務名稱代替，參見上表
     * `IPv6 Alternate DNS Address` - IPv6 備用 DNS 伺服器位址：需要輸入一個帶埠格式的位址，留空為不啟用，預設為空
@@ -529,7 +532,8 @@ Hosts 設定檔分為 `Hosts/主要Hosts清單` 和 `Local Hosts/境內DNS解析
 
 #### `Local Hosts` - 境內 DNS 解析功能變數名稱清單
 本區域資料用於為功能變數名稱使用境內 DNS 伺服器解析提高存取速度，使用時請確認境內DNS伺服器位址不為空（參見上文 設定檔詳細參數說明 一節）<br />
-**有效參數格式為 `功能變數名稱的正則運算式`**<br />
+* **要使用本功能，必須將設定檔內的 `Local Hosts` 選項打開！**<br />
+* **有效參數格式為 `功能變數名稱的正則運算式`**<br />
 * 本功能不會對境內 DNS 伺服器回復進行任何過濾，請確認本區域填入的資料不會受到 DNS 投毒污染干擾<br />
 
 ###### 例如有一個 [Local Hosts] 下有效資料區域：<br />
