@@ -70,7 +70,9 @@
 	* 详细情况参见 ReadMe 文档中 安装方法 一节
 	* 其它错误代码原因参见 http://msdn.microsoft.com/en-us/library/windows/desktop/ms686324(v=vs.85).aspx
     * `Multi bytes to wide chars error` - 多字节字符转换为宽字节字符错误，遇到此错误请与作者联系
-    * `Old Error Log file deleted` - 日志文件已满并被删除
+    * `Old Error Log file was deleted` - 日志文件已满并被删除
+        * 日志文件最大容量的配置参见 `详细说明文档` 中 `配置文件详细参数说明` 中的 `Log Maximum Size` 参数
+    * `Old Running Log file was deleted` - 运行日志文件已满并被删除
         * 日志文件最大容量的配置参见 `详细说明文档` 中 `配置文件详细参数说明` 中的 `Log Maximum Size` 参数
     * `Read Hosts module Monitor terminated` - Hosts 读取模块已经停止监视，建议立即重新启动服务或程序
     * `Read IPFilter module Monitor terminated` - IPFilter 读取模块已经停止监视，建议立即重新启动服务或程序
