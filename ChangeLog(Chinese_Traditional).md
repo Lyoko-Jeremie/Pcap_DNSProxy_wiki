@@ -1,46 +1,49 @@
-**Pcap_DNSProxy v0.4 Beta 13(Windows)/v0.3(Linux)/v0.2(Mac) 更新日誌(2015-02-18)：**
-* 添加對 `Streamlined/精簡` 格式 DNSCurve/DNSCrypt 協定的支援
-    * 提供隨機 `Curve25519/Salsa20/Poly1305(DNSCurve)` 金鑰組生成程式 KeyPairGenerator v0.1
+**Pcap_DNSProxy v0.4 Beta 14(Windows)/v0.3(Linux)/v0.2(Mac) 更新日誌(2015-03-15)：**
+* 添加對 Streamlined/精簡 格式 DNSCurve/DNSCrypt 協定的支援
+    * 提供隨機 Curve25519/Salsa20/Poly1305(DNSCurve) 金鑰組生成程式 KeyPairGenerator v0.1
 * 添加緩存 DNS 回復包的功能
 * 添加切換待命伺服器，提供主要伺服器和待命伺服器自動切換的功能
     * 可自訂切換的條件（請求失敗次數、失敗次數計數週期、重置切換的時間長度）
-* 添加 `Local Main` 主要境內伺服器請求功能
-    * 即平時使用 Local 的伺服器進行解析，遇到遭投毒污染的解析結果時自動再向境外伺服器請求
+* 添加 Local Main 主要境內伺服器請求功能
+    * 即平時使用 Local 伺服器進行解析，遇到遭投毒污染的解析結果時自動再向境外伺服器請求
     * 解析的結果是否會被投毒污染與使用的偽包篩檢程式有關，詳細情況參見說明文檔
 * 添加接收到一個解析請求向同一個遠端伺服器發送多次解析請求的功能，可提高遠端伺服器丟包時功能變數名稱解析的可靠性
 * 添加自訂請求伺服器埠的功能
 * 添加自訂本地監聽地址和埠的功能
+* 添加本地多監聽位址/多監聽埠的功能
 * 添加以 DNS 請求的類型為條件的遮罩功能
-* 添加 IPv6 `6to4/ISATAP/Teredo` 隧道的支援
+* 添加 IPv6 6to4/ISATAP/Teredo 隧道的支援
 * 為本機伺服器監聽 IPv4/IPv6 增加控制選項（請求時相同協定優先，不同協定 IPv6 優先）
-* 添加 `Domain Case Conversion/隨機轉換功能變數名稱請求大小寫` 的功能，預設為開啟
-* 添加 `Compression Pointer Mutation/隨機添加壓縮指標` 的功能，預設為關閉
-* 為抓包模組添加總開關 `Pcap Capture`
+* 添加 Domain Case Conversion/隨機轉換功能變數名稱請求大小寫 的功能，預設為開啟
+* 添加 Compression Pointer Mutation/隨機添加壓縮指標 的功能，預設為關閉
+* 為抓包模組添加總開關 Pcap Capture
 * 為抓包模組添加 IPv4 擴展頭部的支援
-* 為 `TCP Data Filter/TCP資料包篩檢程式` 添加檢查 `Checksum/校驗和` 的功能
+* 為 TCP Data Filter/TCP資料包篩檢程式 添加檢查 Checksum/校驗和 的功能
 * 為 IPv4/IPv6 黑名單位址過濾功能添加新的投毒污染位址
 * 黑名單位址過濾功能應用到所有解析過程以避免權威伺服器被污染的情況下所有結果被投毒污染的結果
 * 黑名單位址過濾功能現在將過濾所有解析結果的位址
-* 為 `Operation Mode` 增加 `Private` 和 `Custom` 模式 [陈斐]
-    * `Private` 模式只允許私有網路請求解析
-    * `Custom` 模式禁止或只允許清單中的位址請求解析，使用單獨的位址過濾庫（支援 `IPFilter.dat` 和 `Guarding.P2P` 格式）進行控制
+* 為 Operation Mode 增加 Private 和 Custom 模式 [陈斐]
+    * Private 模式只允許私有網路請求解析
+    * Custom 模式禁止或只允許清單中的位址請求解析，使用單獨的位址過濾庫（支援 IPFilter.dat 和 Guarding.P2P 格式）進行控制
 * 為 IPFilter 位址過濾庫添加黑名單解析結果過濾功能
 * 添加對超過 UDP 協定最大不分片長度的截斷資料包使用 TCP 協定重試的功能
-* 添加對 `EDNS0` 標籤和 `DNSSEC(AD/CD/DO)` 請求功能的支援（開啟 `DNSSEC` 請求後必須強制添加 `EDNS0` 標籤）
-* 添加 `Hosts Only` 直連模式只使用本工具具有正則運算式的 Hosts 功能
-* 添加 `Local Routing` 本地路由表功能
+* 添加對 EDNS0 標籤和 DNSSEC(AD/CD/DO) 請求功能的支援（開啟 DNSSEC 請求後必須強制添加 EDNS0 標籤）
+* 添加 Hosts Only 直連模式只使用本工具具有正則運算式的 Hosts 功能
+* 添加 Local Routing 本地路由表功能
+* 添加自訂 Hosts 存留時間的功能
 * 程式設定檔和 Hosts 檔版本升級到 v0.4
     * 支援的一行最大長度增到 4KB/4096 bytes
     * 添加新的單行和多行注釋格式支援
-    * 為 Hosts 檔添加 `CSV/逗號分隔值` 格式的支援
-    * 為 Hosts 檔添加 `BANNED 正則運算式` 語法直接返回功能變數名稱查找失敗資訊，用於快速遮罩功能變數名稱
-    * 為 IPFilter 資料庫添加 `IP位址 ALL` 語法直接遮罩所有含此 IP 位址/位址範圍的解析結果
+    * 為 Hosts 檔添加 CSV/逗號分隔值 格式的支援
+    * 為 Hosts 檔添加 "BANNED 正則運算式"（不含引號）語法直接返回功能變數名稱查找失敗資訊，用於快速遮罩功能變數名稱
+    * 為 IPFilter 資料庫添加 "IP 位址 ALL"（不含引號）語法直接遮罩所有含此IP位址/位址範圍的解析結果
     * URI 標準化 IPv6 位址格式，IPv4/IPv6 位址格式更改為帶埠格式
-    * 支援部分非標準的縮略 IPv4/IPv6 位址格式
-    * 添加自訂 Hosts 存留時間的功能
+    * 支援部分非標準的縮略 IPv4/IPv6 位址格式（但不建議使用）
     * 支援檢查檔案大小的功能
-    * 為 Hosts 檔和 IPFilter 資料庫監視模組添加 `Keccak/SHA-3_512(FIPS 202 Draft, April 2014)` 散列演算法特徵檢測，在資料量較大時可降低監視時的 CPU 資源佔用
-    * 為 Hosts 資料庫添加排序的功能，避免因為錯誤的順序造成問題
+    * 支援自訂檔最大佔用空間的設定
+    * 支援自訂 Hosts 和 IPFilter 資料庫檔案名稱的功能
+    * 為 Hosts 檔和 IPFilter 資料庫監視模組添加 Keccak/SHA-3_512(FIPS 202 Draft, April 2014) 散列演算法特徵檢測，在資料量較大時可降低監視時的 CPU 資源佔用
+    * 為資料庫添加排序的功能，避免因為錯誤的順序造成問題
     * 在開啟散列演算法特徵檢測檔改變以及開啟 DNS 緩存的情況下，自動更新 Hosts 清單和 IPFilter 資料庫時將自動清空程式的 DNS 緩存
     * 在開啟散列演算法特徵檢測檔改變的情況下，自動更新 Hosts 清單時將自動清空系統 DNS 緩存(Windows)
     * 重寫文字檔編碼讀取模組，支援混合換行格式編碼
@@ -50,13 +53,13 @@
 * 錯誤報表在視窗模式下現在會即時顯示
 * 請求本機伺服器的完整網功能變數名稱現在會返回本機伺服器的所有 IPv4/IPv6 位址
 * 調整請求本地DNS伺服器由抓包模式到直連模式，加快回應速度降低資源佔用
-* 調整 `IPv4 Data Filter/IPv4資料包篩檢程式` 預設為關閉
+* 調整 IPv4 Data Filter/IPv4資料包篩檢程式 預設為關閉
 * 調整 ICMP 和隨機功能變數名稱請求模組的編號和序號建置規則
-* 調整 ICMP 附加資料限制長度最長到 1484 bytes(`Ethernet MTU - IPv4 Standard Header - ICMP Header`)
+* 調整 ICMP 附加資料限制長度最長到 1484 bytes(Ethernet MTU - IPv4 Standard Header - ICMP Header)
 * 調整隨機功能變數名稱生成模組，使用 C++ STL 提供的梅森旋轉演算法引擎產生離散型均勻分佈的隨機功能變數名稱
-* 調整內置預設本機伺服器的完整網功能變數名稱為 `pcap-dnsproxy.localhost.server` 以遵循網域名稱系統的標準
+* 調整內置預設本機伺服器的完整網功能變數名稱為 "pcap-dnsproxy.localhost.server"（不含引號）以遵循網域名稱系統的標準
 * 調整記憶體分配策略（標準乙太網MTU長度、資料包緩衝區長度和STL標準庫調用）減少資源佔用
-* 調整錯誤報表為帶 BOM 的 `UTF-8` 編碼，避免可能產生的亂碼問題 [Hugo Chan]
+* 調整錯誤報表為帶 BOM 的 UTF-8 編碼，避免可能產生的亂碼問題 [Hugo Chan]
 * 調整正則運算式為完全符合模式，提供更準確的匹配效果 [Hugo Chan]
 * 合併 x86 和 x64 版本可執行檔(Windows) [Hugo Chan]
 * 改進初次開機時進行的防火牆測試模組(Windows)
@@ -65,15 +68,16 @@
     * 找不到 Hosts 檔時
     * Windows XP 系統下不支援 IPv6 時
 * 修復超過額定長度（本次更新前為2KB）的檔讀取能會造成的錯誤
-* 修復 UDP 協定下過早關閉埠造成系統發送 `ICMP(v6) Port Unreachable` 埠不可到達資訊的錯誤
+* 修復 UDP 協定下過早關閉埠造成系統發送 ICMP(v6) Port Unreachable 埠不可到達資訊的錯誤
 * 修復 TCP 協定下因為遠端伺服器無回應而造成的過長時間不回應請求的錯誤
+* 修復存在橋接器配接器時可能造成的崩潰 [JonyOang]
 * 修復多執行緒模型下競爭讀寫全域物件可能造成的錯誤
 * 修復自身伺服器名稱讀取和 IPv6 環境下回複自身伺服器名稱的錯誤
 * 修復反向解析功能變數名稱時回復自身伺服器名稱到所有私有網路位址對應功能變數名稱的錯誤
 * 修復在 IPv6 環境下抓包回復時的匹配錯誤
 * 修復網路介面卡被禁用重啟後 WinPcap/Libpcap 無法抓取資料包的錯誤
 * 修復特殊 IPv4/IPv6 位址檢測模組的錯誤
-* 修復隨機功能變數名稱生成模組可能生產空功能變數名稱(`ROOT`)的錯誤
+* 修復隨機功能變數名稱生成模組可能生產空功能變數名稱(ROOT)的錯誤
 * 修復超長 Hosts 條目可能導致的溢出錯誤以及最短長度限制的問題
 * 修復部分情況下無法讀取檔最後一行的錯誤 [Hugo Chan]
 * 服務現在將設定為在第一次和第二次遇到錯誤時自動重新啟動 [yfdyh000]
@@ -81,21 +85,11 @@
 * 合併批次處理 [yfdyh000]
 * 修復批次處理在開啟 UAC 的情況下無法使用的錯誤(Windows) [Haruyuki Arita/Hugo Chan/Ryans233/streamgo/watchingyoufall]
 * 在非管理員許可權下運行批次處理無法修改系統服務資訊的錯誤現在將有提醒(Windows) [Haruyuki Arita/Hugo Chan/Ryans233/watchingyoufall]
-* 使用 Microsoft 的 `File Checksum Integrity Verifier` 的 SHA-1 演算法，下載或解壓出錯導致檔損壞現在將有提醒(Windows) [Hugo Chan]
-* 修復 `Makefile` 的錯誤(Linux) [otakuchiyan]
-* 原始程式碼現在開始將使用 `UTF-8` 編碼(Windows)
-* 專案升級到 `Visual Studio 2013`(Windows)
+* 使用 Microsoft 的 File Checksum Integrity Verifier 的 SHA-1 演算法，下載或解壓出錯導致檔損壞現在將有提醒(Windows) [Hugo Chan]
+* 修復 Makefile 的錯誤(Linux) [otakuchiyan]
+* 原始程式碼現在開始將使用 UTF-8 編碼(Windows)
+* 專案升級到 Visual Studio 2013(Windows)
 * 修復在 IPv6 環境下抓取來自境內功能變數名稱解析伺服器回復包的錯誤，但此功能在新版已被移除，特此公告 [David Webb/eqielb]
-
----
-
-**Pcap_DNSProxy v0.3.2(Windows)/v0.2(Linux)/v0.1(Mac) 更新日誌：**<br />
-* Pcap_DNSProxy v0.1 Mac Release 正式發佈！
-* 提供可用於 x86 和 x64 環境的可執行檔(Linux)
-* 啟用對 `Ethernet` 設備的識別(Linux)
-* 修復在錯誤使用低許可權運行程式可能造成的 Bug
-* 修復在部分情況下錯誤建置錯誤報告的 Bug(Linux)
-* 修正說明文檔的錯誤操作(Linux)
 
 ---
 
