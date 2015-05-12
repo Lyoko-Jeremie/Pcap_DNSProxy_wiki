@@ -21,5 +21,4 @@ Source is in master branch，binary is in Release branch.
 
 ### Contacts
 * [Twitter](https://twitter.com/chengr28)
-* [Google+](https://plus.google.com/104603245338932141930)
 * Open issue here!
