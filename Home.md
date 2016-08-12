@@ -19,6 +19,6 @@ Source is in master branch，binary is in Release branch.
 ### Links
 * [[Pcap_DNSProxy in Sourceforge|https://sourceforge.net/projects/pcap-dnsproxy]]
 
+---
 ### Contacts
-* [Twitter](https://twitter.com/chengr28)
-* Open issue here!
+* Open a new issue here!
