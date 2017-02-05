@@ -1,5 +1,5 @@
 ### WARNING
-**Pcap_DNSProxy** can be only used for academic exchanges witch follow GNU GPL License. Please do NOT use it for illegal ways in your country(ies). Confirm your need before using Pcap_DNSProxy. If you get some troublesome results or law problems about using Pcap_DNSProxy, at your own risk. See LICENSE before using source from Pcap_DNSProxy project.
+**Pcap_DNSProxy** can be only used for academic exchanges witch follow GNU GPL License. Please do NOT use it for illegal ways in your country(ies). Confirm your need before using Pcap_DNSProxy. If you get some troublesome results or law problems about using Pcap_DNSProxy, at your own risk. Read LICENSE before using source from Pcap_DNSProxy project.
 
 ---
 ### 特别声明
